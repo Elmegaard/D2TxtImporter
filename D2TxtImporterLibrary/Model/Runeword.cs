@@ -80,7 +80,10 @@ namespace D2TxtImporterLibrary.Model
                     Properties = properties
                 };
 
-                result.Add(runeword);
+                if (properties.Count > 0)
+                {
+                    result.Add(runeword);
+                }
             }
 
             return result;

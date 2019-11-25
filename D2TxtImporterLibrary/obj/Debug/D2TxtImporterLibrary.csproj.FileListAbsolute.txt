@@ -1,6 +1,0 @@
-E:\Git\d2_txt_importer\D2TxtImporterLibrary\bin\Debug\D2TxtImporterLibrary.dll
-E:\Git\d2_txt_importer\D2TxtImporterLibrary\bin\Debug\D2TxtImporterLibrary.pdb
-E:\Git\d2_txt_importer\D2TxtImporterLibrary\obj\Debug\D2TxtImporterLibrary.csprojAssemblyReference.cache
-E:\Git\d2_txt_importer\D2TxtImporterLibrary\obj\Debug\D2TxtImporterLibrary.csproj.CoreCompileInputs.cache
-E:\Git\d2_txt_importer\D2TxtImporterLibrary\obj\Debug\D2TxtImporterLibrary.dll
-E:\Git\d2_txt_importer\D2TxtImporterLibrary\obj\Debug\D2TxtImporterLibrary.pdb

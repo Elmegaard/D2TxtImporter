@@ -30,7 +30,6 @@ namespace D2TxtImporterLibrary
             TxtExporter.Uniques(_diabloPath + "/uniques.txt", uniques);
             TxtExporter.Runewords(_diabloPath + "/runewords.txt", runewords);
             TxtExporter.CubeRecipes(_diabloPath + "/cube_recipes.txt", cubeRecipes);
-
         }
 
         public static List<string> ReadCsvFile(string path)
