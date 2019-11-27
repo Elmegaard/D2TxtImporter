@@ -76,6 +76,8 @@ namespace D2TxtImporterLibrary.Model
 
                 ItemStatCosts[itemStatCost.Stat] = itemStatCost;
             }
+
+            FixBrokenEntries();
         }
 
         public override string ToString()
@@ -119,10 +121,19 @@ namespace D2TxtImporterLibrary.Model
             ItemStatCosts[ethereal.Stat] = ethereal;
         }
 
+        public static void FixBrokenEntries()
+        {
+            var sockets = ItemStatCosts["item_numsockets"];
+            sockets.DescriptionPriority = 1;
+            sockets.DescriptionFunction = 29;
+            sockets.DescriptonStringPositive = "Socketed";
+            sockets.GroupDescriptionStringNegative = "Socketed";
+            sockets.DescriptionValue = 3; // Use value as is
+        }
+
         public string PropertyString(int? value, int? value2, string parameter)
         {
-            var lstValue = "";
-
+            string lstValue;
             var valueString = GetValueString(value, value2);
 
             if (DescriptonStringPositive == null)
@@ -238,6 +249,11 @@ namespace D2TxtImporterLibrary.Model
                             valueString = lstValue.Replace("%d%", value.Value.ToString())
                                                      .Replace("%d", value2.Value.ToString())
                                                      .Replace("%s", Skill.GetSkill(parameter).Name);
+
+                            if (value2.Value == 0)
+                            {
+                                valueString += " - TODO: Why is this showing 0 for ranges?";
+                            }
                             break;
                         case 16:
                             valueString = lstValue.Replace("%d", valueString)
@@ -287,6 +303,9 @@ namespace D2TxtImporterLibrary.Model
                             break;
                         case 28:
                             valueString = $"+{valueString} to {Skill.GetSkill(parameter).Name}";
+                            break;
+                        case 29: // Custom for sockets
+                            valueString = $"{lstValue} ({valueString})";
                             break;
                         default:
                             throw new Exception($"Property String not implemented for function '{DescriptionFunction.Value}' for stat '{Stat}'");
