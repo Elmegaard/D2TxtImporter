@@ -15,12 +15,7 @@ namespace D2TxtImporterLibrary.Model
         public string Code { get; set; }
         public List<ItemProperty> Properties { get; set; }
 
-        public static int? ToNullableInt(string s)
-        {
-            int i;
-            if (int.TryParse(s, out i)) return i;
-            return null;
-        }
+ 
 
         public override string ToString()
         {

@@ -5,7 +5,7 @@ namespace D2TxtImporterLibrary.Model
     public class EffectProperty
     {
         public string Code { get; set; }
-        public string ItemString => Code;
+        public string Stat { get; set; }
 
         public static Dictionary<string, EffectProperty> EffectProperties;
 
@@ -21,7 +21,8 @@ namespace D2TxtImporterLibrary.Model
 
                 var effect = new EffectProperty
                 {
-                    Code = values[0]
+                    Code = values[0],
+                    Stat = values[5]
                 };
 
                 EffectProperties[effect.Code] = effect;

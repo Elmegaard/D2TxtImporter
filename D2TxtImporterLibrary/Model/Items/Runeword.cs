@@ -35,10 +35,12 @@ namespace D2TxtImporterLibrary.Model
                 {
                     if (!string.IsNullOrEmpty(propArray[i]) && !propArray[i].StartsWith("*"))
                     {
-                        var prop = new ItemProperty(propArray[i], propArray[i + 1], ToNullableInt(propArray[i + 2]), ToNullableInt(propArray[i + 3]));
+                        var prop = new ItemProperty(propArray[i], propArray[i + 1], Utility.ToNullableInt(propArray[i + 2]), Utility.ToNullableInt(propArray[i + 3]));
                         properties.Add(prop);
                     }
                 }
+
+                properties = properties.OrderBy(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority ).ToList();
 
                 // Add the runes
                 var runeArray = values.Skip(14).ToArray();

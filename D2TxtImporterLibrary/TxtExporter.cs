@@ -64,7 +64,7 @@ namespace D2TxtImporterLibrary
 
                 foreach (var prop in unique.Properties)
                 {
-                    sb.AppendLine(prop.Property.ItemString + ": " + prop.Min + " - " + prop.Max);
+                    sb.AppendLine(prop.PropertyString);
                 }
 
                 sb.AppendLine();
@@ -102,7 +102,7 @@ namespace D2TxtImporterLibrary
 
                 foreach (var prop in runeword.Properties)
                 {
-                    sb.AppendLine(prop.Property.ItemString + ": " + prop.Min + " - " + prop.Max);
+                    sb.AppendLine(prop.PropertyString);
                 }
 
                 sb.AppendLine();

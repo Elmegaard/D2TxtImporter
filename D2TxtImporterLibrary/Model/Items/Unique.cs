@@ -11,7 +11,6 @@ namespace D2TxtImporterLibrary.Model
         public string Type { get; set; }
         public Equipment Equipment { get; set; }
 
-
         public static List<Unique> Import(string excelFolder)
         {
             var result = new List<Unique>();
@@ -36,10 +35,12 @@ namespace D2TxtImporterLibrary.Model
                 {
                     if (!string.IsNullOrEmpty(propArray[i]) && !propArray[i].StartsWith("*"))
                     {
-                        var prop = new ItemProperty(propArray[i], propArray[i + 1], ToNullableInt(propArray[i + 2]), ToNullableInt(propArray[i + 3]));
+                        var prop = new ItemProperty(propArray[i], propArray[i + 1], Utility.ToNullableInt(propArray[i + 2]), Utility.ToNullableInt(propArray[i + 3]));
                         properties.Add(prop);
                     }
                 }
+
+                properties = properties.OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority ).ToList();
 
                 Equipment eq;
                 var code = values[8];
