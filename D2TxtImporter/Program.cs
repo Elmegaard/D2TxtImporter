@@ -10,7 +10,18 @@ namespace D2TxtImporter
     {
         static void Main(string[] args)
         {
-            var importer = new D2TxtImporterLibrary.Importer(args[0]);
+            try
+            {
+                var dataDir = args[0];
+                var outputDir = args[1];
+
+                var importer = new D2TxtImporterLibrary.Importer(dataDir, outputDir);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                Console.ReadLine();
+            }
         }
     }
 }

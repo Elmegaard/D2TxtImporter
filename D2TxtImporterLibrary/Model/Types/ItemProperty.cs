@@ -49,12 +49,9 @@ namespace D2TxtImporterLibrary.Model
                 }
             }
 
-            // Don't show hidden values
             switch (stat)
             {
-                case "poisonlength":
-                    Min = null;
-                    Max = null;
+                case "item_addskill_tab": // Fetch skill tab from .lst files
                     break;
             }
 

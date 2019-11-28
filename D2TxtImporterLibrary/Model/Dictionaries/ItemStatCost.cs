@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D2TxtImporterLibrary.Model
 {
@@ -277,7 +275,11 @@ namespace D2TxtImporterLibrary.Model
                             valueString = $"+{valueString}";
                             break;
                         case 14:
-                            valueString = lstValue.Replace("%d", valueString);
+                            var skillTab = CharStat.SkillTabs[int.Parse(parameter)];
+                            var className = CharStat.CharStats.Values.First(x => x.StrSkillTab1 == skillTab || x.StrSkillTab2 == skillTab || x.StrSkillTab3 == skillTab).Class;
+
+                            lstValue = Table.Tables[skillTab];
+                            valueString = $"{lstValue.Replace("%d", valueString)} ({className} only)";
                             break;
                         case 15:
                             // TODO: Doesn't work when a skills has fx 13-20 range of levels. Value is 0 then.

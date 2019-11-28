@@ -16,9 +16,37 @@ namespace D2TxtImporterLibrary.Model
 
         public static Dictionary<string, CharStat> CharStats;
 
+        public static Dictionary<int, string> SkillTabs;
+
         public static void Import(string excelFolder)
         {
             CharStats = new Dictionary<string, CharStat>();
+
+            // Because the skill tabs doesn't match the .lst file..
+            SkillTabs = new Dictionary<int, string>
+            {
+                {0, "StrSklTabItem3" },
+                {1, "StrSklTabItem2" },
+                {2, "StrSklTabItem1" },
+                {3, "StrSklTabItem15" },
+                {4, "StrSklTabItem14" },
+                {5, "StrSklTabItem13" },
+                {6, "StrSklTabItem9" },
+                {7, "StrSklTabItem8" },
+                {8, "StrSklTabItem7" },
+                {9, "StrSklTabItem6" },
+                {10, "StrSklTabItem5" },
+                {11, "StrSklTabItem4" },
+                {12, "StrSklTabItem12" },
+                {13, "StrSklTabItem11" },
+                {14, "StrSklTabItem10" },
+                {15, "StrSklTabItem16" },
+                {16, "StrSklTabItem17" },
+                {17, "StrSklTabItem18" },
+                {18, "StrSklTabItem19" },
+                {19, "StrSklTabItem20" },
+                {20, "StrSklTabItem21" }
+            };
 
             var lines = Importer.ReadCsvFile(excelFolder + "/CharStats.txt");
 

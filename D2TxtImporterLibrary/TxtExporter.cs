@@ -65,6 +65,16 @@ namespace D2TxtImporterLibrary
                     sb.AppendLine("Durability: " + unique.Equipment.Durability);
                 }
 
+                if (unique.Equipment.EquipmentType == EquipmentType.Armor)
+                {
+                    var armor = unique.Equipment as Armor;
+
+                    if (!string.IsNullOrEmpty(armor.DamageString))
+                    {
+                        sb.AppendLine(armor.DamageStringPrefix + ": " + armor.DamageString);
+                    }
+                }
+
                 foreach (var prop in unique.Properties)
                 {
                     sb.AppendLine(prop.PropertyString);

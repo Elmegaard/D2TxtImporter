@@ -128,6 +128,7 @@ namespace D2TxtImporterLibrary.Model
             }
             else if (unique.Equipment.EquipmentType == EquipmentType.Armor)
             {
+                // Calculate armor
                 var armor = unique.Equipment as Armor;
 
                 int minAc = armor.MaxAc;
@@ -147,7 +148,6 @@ namespace D2TxtImporterLibrary.Model
                             break;
                     }
                 }
-                // var defense  = item.MaximumDefenseMinimum === item.MaximumDefenseMaximum ? item.MaximumDefenseMinimum :`${Math.min(item.MaximumDefenseMinimum, item.MaximumDefenseMaximum)}-${Math.max(item.MaximumDefenseMinimum, item.MaximumDefenseMaximum)}`;
 
                 if (minAc == maxAc)
                 {
@@ -156,6 +156,33 @@ namespace D2TxtImporterLibrary.Model
                 else
                 {
                     armor.ArmorString = $"{minAc}-{maxAc}";
+                }
+
+                // Handle smite damage
+                if (armor.MinDamage.HasValue && armor.MinDamage.Value > 0)
+                {
+                    switch (armor.Type)
+                    {
+                        case "shie":
+                        case "ashd": // pala shield
+                            armor.DamageStringPrefix = "Smite Damage";
+                            break;
+                        case "boot":
+                            armor.DamageStringPrefix = "Kick Damage";
+                            break;
+                        default:
+                            armor.DamageStringPrefix = "Unhandled Damage Prefix";
+                            break;
+                    }
+
+                    if (armor.MinDamage.Value == armor.MaxDamage.Value)
+                    {
+                        armor.DamageString = $"{armor.MinDamage.Value}";
+                    }
+                    else
+                    {
+                        armor.DamageString = $"{armor.MinDamage.Value} to {armor.MaxDamage.Value}";
+                    }
                 }
             }
 

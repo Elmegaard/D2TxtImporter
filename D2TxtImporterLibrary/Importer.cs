@@ -9,15 +9,37 @@ namespace D2TxtImporterLibrary
 {
     public class Importer
     {
-        private string _diabloPath;
+        private string _dataDir;
+        private string _outputPath;
         private string _excelPath;
         private string _tablePath;
 
-        public Importer(string diabloPath)
+        public Importer(string dataDir, string outputDir)
         {
-            _diabloPath = diabloPath.Trim('/', '\\');
-            _excelPath = (diabloPath + @"/Data/Global/Excel").Trim('/', '\\');
-            _tablePath = (diabloPath + @"/Data/local/lng/eng").Trim('/', '\\');
+            if (!Directory.Exists(dataDir))
+            {
+                throw new Exception($"Could not find data directory at '{dataDir}'");
+            }
+
+            if (!Directory.Exists(outputDir))
+            {
+                throw new Exception($"Could not find output directory at '{outputDir}'");
+            }
+
+            _dataDir = dataDir.Trim('/', '\\');
+            _outputPath = outputDir.Trim('/', '\\');
+            _excelPath = (_dataDir + @"/Global/Excel").Trim('/', '\\');
+            _tablePath = (_dataDir + @"/local/lng/eng").Trim('/', '\\');
+
+            if (!Directory.Exists(_excelPath))
+            {
+                throw new Exception($"Could not find excel directory at '{_excelPath}'");
+            }
+
+            if (!Directory.Exists(_tablePath))
+            {
+                throw new Exception($"Could not find table directory at '{_tablePath}'");
+            }
 
             Model.Table.Import(_tablePath);
             Model.ItemStatCost.Import(_excelPath);
@@ -28,15 +50,15 @@ namespace D2TxtImporterLibrary
             Model.Skill.Import(_excelPath);
             Model.CharStat.Import(_excelPath);
             Model.MonStat.Import(_excelPath);
+            Model.Misc.Import(_excelPath);
 
-            var miscItems = Model.Misc.Import(_excelPath);
             var uniques = Model.Unique.Import(_excelPath);
             var runewords = Model.Runeword.Import(_excelPath);
             var cubeRecipes = Model.CubeRecipe.Import(_excelPath);
 
-            TxtExporter.Uniques(_diabloPath + "/uniques.txt", uniques);
-            TxtExporter.Runewords(_diabloPath + "/runewords.txt", runewords);
-            TxtExporter.CubeRecipes(_diabloPath + "/cube_recipes.txt", cubeRecipes);
+            TxtExporter.Uniques(_outputPath + "/uniques.txt", uniques);
+            TxtExporter.Runewords(_outputPath + "/runewords.txt", runewords);
+            TxtExporter.CubeRecipes(_outputPath + "/cube_recipes.txt", cubeRecipes);
         }
 
         public static List<string> ReadCsvFile(string path)

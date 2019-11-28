@@ -16,9 +16,8 @@ namespace D2TxtImporterLibrary.Model
 
         public static Dictionary<string, Misc> MiscItems;
 
-        public static List<Misc> Import(string excelFolder)
+        public static void Import(string excelFolder)
         {
-            var result = new List<Misc>();
             MiscItems = new Dictionary<string, Misc>();
 
             var lines = Importer.ReadCsvFile(excelFolder + "/Misc.txt");
@@ -40,11 +39,8 @@ namespace D2TxtImporterLibrary.Model
                     Type = values[32]
                 };
 
-                result.Add(misc);
                 MiscItems[misc.Code] = misc;
             }
-
-            return result;
         }
 
         public override string ToString()
