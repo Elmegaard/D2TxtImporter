@@ -41,7 +41,15 @@ namespace D2TxtImporterLibrary.Model
         {
             if (Tables.ContainsKey(key))
             {
-                return Tables[key];
+                var value = Tables[key];
+
+                // Fix class skills
+                if (key == "ModStr3a")
+                {
+                    value = value.Replace("Amazon", "%d");
+                }
+
+                return value;
             }
             return null;
         }

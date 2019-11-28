@@ -27,6 +27,8 @@ namespace D2TxtImporterLibrary.Model
 
                 EffectProperties[effect.Code] = effect;
             }
+
+            EffectProperties["eledam"] = new EffectProperty {Code = "eledam", Stat = "" };
         }
 
         public override string ToString()

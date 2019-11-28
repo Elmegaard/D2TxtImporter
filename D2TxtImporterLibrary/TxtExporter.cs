@@ -26,25 +26,23 @@ namespace D2TxtImporterLibrary
                             switch (wep.Type)
                             {
                                 case DamageTypeEnum.Normal:
-                                    sb.AppendLine("Damage: " + wep.MinDamage + " to " + wep.MaxDamage);
+                                    sb.AppendLine("Damage: " + wep.DamageString);
                                     break;
                                 case DamageTypeEnum.OneHanded:
-                                    sb.AppendLine("One-Hand Damage: " + wep.MinDamage + " to " + wep.MaxDamage);
+                                    sb.AppendLine("One-Hand Damage: " + wep.DamageString);
                                     break;
                                 case DamageTypeEnum.TwoHanded:
-                                    sb.AppendLine("Two-Hand Damage: " + wep.MinDamage + " to " + wep.MaxDamage);
+                                    sb.AppendLine("Two-Hand Damage: " + wep.DamageString);
                                     break;
                                 case DamageTypeEnum.Thrown:
-                                    sb.AppendLine("Thrown Damage: " + wep.MinDamage + " to " + wep.MaxDamage);
+                                    sb.AppendLine("Thrown Damage: " + wep.DamageString);
                                     break;
                             }
                         }
                         break;
                     case EquipmentType.Armor:
                         var armor = (Armor)unique.Equipment;
-
-                        sb.AppendLine("Defense: " + armor.MinAc + "-" + armor.MaxAc);
-
+                        sb.AppendLine("Defense: " + armor.ArmorString);
                         break;
                     case EquipmentType.Jewelery:
                         break;
@@ -60,6 +58,11 @@ namespace D2TxtImporterLibrary
                 if (unique.Equipment.RequiredDexterity > 0)
                 {
                     sb.AppendLine("Required Dexterity: " + unique.Equipment.RequiredDexterity);
+                }
+
+                if (unique.Equipment.Durability != 0)
+                {
+                    sb.AppendLine("Durability: " + unique.Equipment.Durability);
                 }
 
                 foreach (var prop in unique.Properties)

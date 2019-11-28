@@ -8,6 +8,7 @@ namespace D2TxtImporterLibrary.Model
 
         public static Dictionary<string, Weapon> Weapons;
 
+
         public static void Import(string excelFolder)
         {
             Weapons = new Dictionary<string, Weapon>();
@@ -54,7 +55,8 @@ namespace D2TxtImporterLibrary.Model
                     Code = values[3],
                     EquipmentType = EquipmentType.Weapon,
                     RequiredStrength = !string.IsNullOrEmpty(values[23]) ? int.Parse(values[23]) : 0,
-                    RequiredDexterity = !string.IsNullOrEmpty(values[24]) ? int.Parse(values[24]) : 0
+                    RequiredDexterity = !string.IsNullOrEmpty(values[24]) ? int.Parse(values[24]) : 0,
+                    Durability = values[26] == "1" ? 0 : int.Parse(values[25])
                 };
 
                 Weapons[weapon.Code] = weapon;

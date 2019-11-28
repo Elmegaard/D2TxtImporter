@@ -7,6 +7,7 @@
         public string Code { get; set; }
         public int RequiredStrength { get; set; }
         public int RequiredDexterity { get; set; }
+        public int Durability { get; set; }
     }
 
     public enum EquipmentType

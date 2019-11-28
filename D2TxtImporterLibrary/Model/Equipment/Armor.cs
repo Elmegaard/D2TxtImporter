@@ -13,6 +13,7 @@ namespace D2TxtImporterLibrary.Model
         public string Type { get; set; }
 
         public static Dictionary<string, Armor> Armors;
+        public string ArmorString { get; set; }
 
         public static void Import(string excelFolder)
         {
@@ -36,7 +37,8 @@ namespace D2TxtImporterLibrary.Model
                     MaxAc = int.Parse(values[6]),
                     RequiredStrength = int.Parse(values[9]),
                     Type = values[48],
-                    EquipmentType = EquipmentType.Armor
+                    EquipmentType = EquipmentType.Armor,
+                    Durability = int.Parse(values[11])
                 };
 
                 Armors[armor.Code] = armor;
@@ -47,7 +49,5 @@ namespace D2TxtImporterLibrary.Model
         {
             return Name;
         }
-
-
     }
 }

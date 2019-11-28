@@ -29,18 +29,7 @@ namespace D2TxtImporterLibrary.Model
                 var propArray = values.Skip(21).ToArray();
                 propArray = propArray.Take(propArray.Count() - 1).ToArray();
 
-                var properties = new List<ItemProperty>();
-
-                for (int i = 0; i < propArray.Count(); i += 4)
-                {
-                    if (!string.IsNullOrEmpty(propArray[i]) && !propArray[i].StartsWith("*"))
-                    {
-                        var prop = new ItemProperty(propArray[i], propArray[i + 1], Utility.ToNullableInt(propArray[i + 2]), Utility.ToNullableInt(propArray[i + 3]));
-                        properties.Add(prop);
-                    }
-                }
-
-                properties = properties.OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority ).ToList();
+                var properties = ItemProperty.GetProperties(propArray);
 
                 Equipment eq;
                 var code = values[8];
@@ -77,10 +66,112 @@ namespace D2TxtImporterLibrary.Model
                     Equipment = eq
                 };
 
+                AddDamageArmorString(unique);
+
                 result.Add(unique);
             }
 
             return result;
+        }
+
+        private static void AddDamageArmorString(Unique unique)
+        {
+            if (unique.Equipment.EquipmentType == EquipmentType.Weapon)
+            {
+                var weapon = unique.Equipment as Weapon;
+
+                foreach (var damageType in weapon.DamageTypes)
+                {
+                    int minDam1 = damageType.MinDamage;
+                    int minDam2 = damageType.MinDamage;
+                    int maxDam1 = damageType.MaxDamage;
+                    int maxDam2 = damageType.MaxDamage;
+
+                    foreach (var property in unique.Properties.OrderBy(x => x.Property.Code))
+                    {
+                        switch (property.Property.Code)
+                        {
+                            case "dmg%":
+                                minDam1 = (int)(property.Min / 100f * damageType.MinDamage + damageType.MinDamage);
+                                minDam2 = (int)(property.Max / 100f * damageType.MinDamage + damageType.MinDamage);
+
+                                maxDam1 = (int)(property.Min / 100f * damageType.MaxDamage + damageType.MaxDamage);
+                                maxDam2 = (int)(property.Max / 100f * damageType.MaxDamage + damageType.MaxDamage);
+                                break;
+                            case "dmg-norm":
+                                minDam1 += property.Min.Value;
+                                minDam2 += property.Min.Value;
+
+                                maxDam1 += property.Max.Value;
+                                maxDam2 += property.Max.Value;
+                                break;
+                            case "dmg-min":
+                                minDam1 += property.Min.Value;
+                                minDam2 += property.Max.Value;
+                                break;
+                            case "dmg-max":
+                                maxDam1 += property.Min.Value;
+                                maxDam2 += property.Max.Value;
+                                break;
+                        }
+                    }
+
+                    if (minDam1 == minDam2)
+                    {
+                        damageType.DamageString = $"{minDam1} to {maxDam1}";
+                    }
+                    else
+                    {
+                        damageType.DamageString = $"({minDam1}-{minDam2}) to ({maxDam1}-{maxDam2})";
+                    }
+                }
+            }
+            else if (unique.Equipment.EquipmentType == EquipmentType.Armor)
+            {
+                var armor = unique.Equipment as Armor;
+
+                int minAc = armor.MaxAc;
+                int maxAc = armor.MaxAc;
+
+                foreach (var property in unique.Properties.OrderByDescending(x => x.Property.Code))
+                {
+                    switch (property.Property.Code)
+                    {
+                        case "ac%":
+                            minAc = (int)Math.Floor(((minAc + 1) * (100f + property.Min) / 100f).Value);
+                            maxAc = (int)Math.Floor(((maxAc + 1) * (100f + property.Max) / 100f).Value);
+                            break;
+                        case "ac":
+                            minAc += property.Min.Value;
+                            maxAc += property.Max.Value;
+                            break;
+                    }
+                }
+                // var defense  = item.MaximumDefenseMinimum === item.MaximumDefenseMaximum ? item.MaximumDefenseMinimum :`${Math.min(item.MaximumDefenseMinimum, item.MaximumDefenseMaximum)}-${Math.max(item.MaximumDefenseMinimum, item.MaximumDefenseMaximum)}`;
+
+                if (minAc == maxAc)
+                {
+                    armor.ArmorString = $"{maxAc}";
+                }
+                else
+                {
+                    armor.ArmorString = $"{minAc}-{maxAc}";
+                }
+            }
+
+            // Handle max durability
+            var dur = unique.Properties.FirstOrDefault(x => x.Property.Code == "dur");
+            if (dur != null)
+            {
+                unique.Equipment.Durability += dur.Min.Value;
+                unique.Properties.Remove(dur);
+            }
+
+            // Handle indestructible items durability
+            if (unique.Properties.Any(x => x.Property.Code == "indestruct"))
+            {
+                unique.Equipment.Durability = 0;
+            }
         }
     }
 }

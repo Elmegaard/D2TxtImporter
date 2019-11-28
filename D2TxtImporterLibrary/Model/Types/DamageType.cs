@@ -11,6 +11,7 @@ namespace D2TxtImporterLibrary.Model
         public DamageTypeEnum Type { get; set; }
         public int MinDamage { get; set; }
         public int MaxDamage { get; set; }
+        public string DamageString { get; set; }
 
         public override string ToString()
         {

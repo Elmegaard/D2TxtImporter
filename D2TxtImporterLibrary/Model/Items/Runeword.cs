@@ -29,18 +29,7 @@ namespace D2TxtImporterLibrary.Model
                 var propArray = values.Skip(20).ToArray();
                 propArray = propArray.Take(propArray.Count() - 1).ToArray();
 
-                var properties = new List<ItemProperty>();
-
-                for (int i = 0; i < propArray.Count(); i += 4)
-                {
-                    if (!string.IsNullOrEmpty(propArray[i]) && !propArray[i].StartsWith("*"))
-                    {
-                        var prop = new ItemProperty(propArray[i], propArray[i + 1], Utility.ToNullableInt(propArray[i + 2]), Utility.ToNullableInt(propArray[i + 3]));
-                        properties.Add(prop);
-                    }
-                }
-
-                properties = properties.OrderBy(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority ).ToList();
+                var properties = ItemProperty.GetProperties(propArray);
 
                 // Add the runes
                 var runeArray = values.Skip(14).ToArray();
