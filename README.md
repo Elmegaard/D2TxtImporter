@@ -1,5 +1,13 @@
 # D2TxtImporter
 
+# Guide
+## Client Application
+- Excel Directory: Absolute path to your .txt files
+- Table Directory: Absolute path to your .tbl files
+- Output Directory: The directory you want your output to go to
+## Console Application
+.\D2TxtImporter.console.exe "<Absolute path to your .txt files>" "<Absolute path to your .tbl files>" "< The Directory you want your output to go to>"
+
 # Credits
 - .tbl import functionality: https://github.com/kambala-decapitator/QTblEditor
 - Ascended1962 (Creator of Diablo 2 Enriched): General help with the project
