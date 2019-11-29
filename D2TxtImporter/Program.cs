@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D2TxtImporter
 {
@@ -12,10 +8,11 @@ namespace D2TxtImporter
         {
             try
             {
-                var dataDir = args[0];
-                var outputDir = args[1];
+                var excelPath = args[0];
+                var tablePath = args[1];
+                var outputDir = args[2];
 
-                var importer = new D2TxtImporterLibrary.Importer(dataDir, outputDir);
+                var importer = new D2TxtImporterLibrary.Importer(excelPath, tablePath, outputDir);
             }
             catch (Exception e)
             {

@@ -2,45 +2,37 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D2TxtImporterLibrary
 {
     public class Importer
     {
-        private string _dataDir;
         private string _outputPath;
         private string _excelPath;
         private string _tablePath;
 
-        public Importer(string dataDir, string outputDir)
+        public Importer(string excelPath, string tablePath, string outputDir)
         {
-            if (!Directory.Exists(dataDir))
-            {
-                throw new Exception($"Could not find data directory at '{dataDir}'");
-            }
-
+            
             if (!Directory.Exists(outputDir))
             {
                 throw new Exception($"Could not find output directory at '{outputDir}'");
             }
 
-            _dataDir = dataDir.Trim('/', '\\');
-            _outputPath = outputDir.Trim('/', '\\');
-            _excelPath = (_dataDir + @"/Global/Excel").Trim('/', '\\');
-            _tablePath = (_dataDir + @"/local/lng/eng").Trim('/', '\\');
-
-            if (!Directory.Exists(_excelPath))
+            if (!Directory.Exists(excelPath))
             {
                 throw new Exception($"Could not find excel directory at '{_excelPath}'");
             }
 
-            if (!Directory.Exists(_tablePath))
+            if (!Directory.Exists(tablePath))
             {
                 throw new Exception($"Could not find table directory at '{_tablePath}'");
             }
 
+            _outputPath = outputDir.Trim('/', '\\');
+            _excelPath = excelPath.Trim('/', '\\');
+            _tablePath = tablePath.Trim('/', '\\');
+           
             Model.Table.ImportFromTbl(_tablePath);
             Model.ItemStatCost.Import(_excelPath);
             Model.EffectProperty.Import(_excelPath);
@@ -65,6 +57,5 @@ namespace D2TxtImporterLibrary
         {
             return File.ReadAllLines(path).Skip(1).ToList();
         }
-
-           }
+    }
 }

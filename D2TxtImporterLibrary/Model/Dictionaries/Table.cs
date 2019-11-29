@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace D2TxtImporterLibrary.Model
 {
@@ -101,6 +100,5 @@ namespace D2TxtImporterLibrary.Model
                 Tables[skill.Key] = skill.Value;
             }
         }
-
     }
 }
