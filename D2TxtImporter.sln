@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2TxtImporterLibrary", "D2TxtImporterLibrary\D2TxtImporterLibrary.csproj", "{556687F6-B22F-460C-B2C8-0389256AB685}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2TxtImporter.console", "D2TxtImporter.console\D2TxtImporter.console.csproj", "{035C47B5-37BE-4C6A-9173-BB5FA5084891}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2TxtImporter", "D2TxtImporter\D2TxtImporter.csproj", "{035C47B5-37BE-4C6A-9173-BB5FA5084891}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2TxtImporter.lib", "D2TxtImporter.lib\D2TxtImporter.lib.csproj", "{556687F6-B22F-460C-B2C8-0389256AB685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2TxtImporter.client", "D2TxtImporter.client\D2TxtImporter.client.csproj", "{254C4430-AA6E-4D2A-B7AF-49781A943ED2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{556687F6-B22F-460C-B2C8-0389256AB685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{556687F6-B22F-460C-B2C8-0389256AB685}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{556687F6-B22F-460C-B2C8-0389256AB685}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{556687F6-B22F-460C-B2C8-0389256AB685}.Release|Any CPU.Build.0 = Release|Any CPU
 		{035C47B5-37BE-4C6A-9173-BB5FA5084891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{035C47B5-37BE-4C6A-9173-BB5FA5084891}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{035C47B5-37BE-4C6A-9173-BB5FA5084891}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{035C47B5-37BE-4C6A-9173-BB5FA5084891}.Release|Any CPU.Build.0 = Release|Any CPU
+		{556687F6-B22F-460C-B2C8-0389256AB685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{556687F6-B22F-460C-B2C8-0389256AB685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{556687F6-B22F-460C-B2C8-0389256AB685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{556687F6-B22F-460C-B2C8-0389256AB685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{254C4430-AA6E-4D2A-B7AF-49781A943ED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{254C4430-AA6E-4D2A-B7AF-49781A943ED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{254C4430-AA6E-4D2A-B7AF-49781A943ED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{254C4430-AA6E-4D2A-B7AF-49781A943ED2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {930BF378-9718-4B99-B49E-188909D1628E}
+		SolutionGuid = {9C837CBA-51BD-4758-AEC8-99EBD1F62162}
 	EndGlobalSection
 EndGlobal
