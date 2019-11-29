@@ -41,7 +41,7 @@ namespace D2TxtImporterLibrary
                 throw new Exception($"Could not find table directory at '{_tablePath}'");
             }
 
-            Model.Table.Import(_tablePath);
+            Model.Table.ImportFromTbl(_tablePath);
             Model.ItemStatCost.Import(_excelPath);
             Model.EffectProperty.Import(_excelPath);
             Model.ItemType.Import(_excelPath);
@@ -66,22 +66,5 @@ namespace D2TxtImporterLibrary
             return File.ReadAllLines(path).Skip(1).ToList();
         }
 
-        // TODO
-        public static List<string> ReadTablesFile(string path)
-        {
-            var result = new List<string>();
-
-            using (var bs = new FileStream(path, FileMode.Open))
-            {
-                while (bs.CanRead)
-                {
-                    var b = bs.ReadByte();
-
-                }
-
-            }
-
-            return result;
-        }
-    }
+           }
 }
