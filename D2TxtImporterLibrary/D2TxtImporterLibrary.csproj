@@ -44,6 +44,7 @@
     <Compile Include="Importer.cs" />
     <Compile Include="Model\Dictionaries\CharStats.cs" />
     <Compile Include="Model\Dictionaries\MonStat.cs" />
+    <Compile Include="Model\TableProcessor.cs" />
     <Compile Include="Model\Equipment\Armor.cs" />
     <Compile Include="Model\Items\CupeRecipe.cs" />
     <Compile Include="Model\Types\DamageType.cs" />
