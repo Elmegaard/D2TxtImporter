@@ -125,6 +125,8 @@ namespace D2TxtImporter.lib.Model
                     recipe.CubeRecipeDescription = $"{tempDescr}= {recipe.Output}";
                 }
 
+                recipe.CubeRecipeDescription = System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(recipe.CubeRecipeDescription);
+
                 result.Add(recipe);
             }
 
@@ -306,7 +308,7 @@ namespace D2TxtImporter.lib.Model
                 if (parameter.StartsWith("qty="))
                 {
                     var quantity = parameter.Replace("qty=", "");
-                    result = result.Replace(result, $"{quantity}x {result}");
+                    result = result.Replace(result, $"{quantity} {result}");
                     continue;
                 }
                 else if (parameter.StartsWith("sock="))
