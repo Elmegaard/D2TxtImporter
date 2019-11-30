@@ -7,8 +7,8 @@
     <ProjectGuid>{556687F6-B22F-460C-B2C8-0389256AB685}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>D2TxtImporterLibrary</RootNamespace>
-    <AssemblyName>D2TxtImporterLibrary</AssemblyName>
+    <RootNamespace>D2TxtImporter.lib</RootNamespace>
+    <AssemblyName>D2TxtImporter.lib</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

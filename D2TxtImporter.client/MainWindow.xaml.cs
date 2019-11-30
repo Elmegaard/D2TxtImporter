@@ -88,7 +88,7 @@ namespace D2TxtImporter.client
         {
             try
             {
-                _mainViewModel.Importer.ExportTxt();
+                _mainViewModel.Importer.Export();
             }
             catch (Exception ex)
             {

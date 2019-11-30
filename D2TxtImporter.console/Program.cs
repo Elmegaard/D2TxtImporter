@@ -16,7 +16,7 @@ namespace D2TxtImporter_console
 
                 importer.LoadData();
                 importer.ImportModel();
-                importer.ExportTxt();
+                importer.Export();
             }
             catch (Exception e)
             {

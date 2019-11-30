@@ -7,7 +7,26 @@ namespace D2TxtImporter_lib
 {
     public class TxtExporter
     {
-        public static void Uniques(string destination, List<Unique> uniques)
+        public static void ExportTxt(string outputPath, List<Unique> uniques, List<Runeword> runewords, List<CubeRecipe> cubeRecipes)
+        {
+            if (!Directory.Exists(outputPath))
+            {
+                throw new System.Exception("Could not find output directory");
+            }
+
+            var txtOutputDirectory = outputPath + "/txt";
+
+            if (!Directory.Exists(txtOutputDirectory))
+            {
+                Directory.CreateDirectory(txtOutputDirectory);
+            }
+
+            Uniques(txtOutputDirectory + "/uniques.txt", uniques);
+            Runewords(txtOutputDirectory + "/runewords.txt", runewords);
+            CubeRecipes(txtOutputDirectory + "/cube_recipes.txt", cubeRecipes);
+        }
+
+        private static void Uniques(string destination, List<Unique> uniques)
         {
             StringBuilder sb = new StringBuilder();
             foreach (var unique in uniques)
@@ -84,7 +103,7 @@ namespace D2TxtImporter_lib
             File.WriteAllText(destination, sb.ToString());
         }
 
-        public static void Runewords(string destination, List<Runeword> runewords)
+        private static void Runewords(string destination, List<Runeword> runewords)
         {
             StringBuilder sb = new StringBuilder();
             foreach (var runeword in runewords)
@@ -122,7 +141,7 @@ namespace D2TxtImporter_lib
             File.WriteAllText(destination, sb.ToString());
         }
 
-        public static void CubeRecipes(string destination, List<CubeRecipe> cubeRecipes)
+        private static void CubeRecipes(string destination, List<CubeRecipe> cubeRecipes)
         {
             StringBuilder sb = new StringBuilder();
             foreach (var recipe in cubeRecipes)

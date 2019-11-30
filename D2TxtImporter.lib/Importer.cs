@@ -59,11 +59,9 @@ namespace D2TxtImporter_lib
             CubeRecipes = Model.CubeRecipe.Import(_excelPath);
         }
 
-        public void ExportTxt()
+        public void Export()
         {
-            TxtExporter.Uniques(_outputPath + "/uniques.txt", Uniques);
-            TxtExporter.Runewords(_outputPath + "/runewords.txt", Runewords);
-            TxtExporter.CubeRecipes(_outputPath + "/cube_recipes.txt", CubeRecipes);
+            TxtExporter.ExportTxt(_outputPath, Uniques, Runewords, CubeRecipes);
         }
 
         public static List<string> ReadCsvFile(string path)
