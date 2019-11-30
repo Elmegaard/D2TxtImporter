@@ -1,9 +1,9 @@
-﻿using D2TxtImporter_lib.Model;
+﻿using D2TxtImporter.lib.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace D2TxtImporter_lib
+namespace D2TxtImporter.lib
 {
     public class TxtExporter
     {
@@ -144,9 +144,21 @@ namespace D2TxtImporter_lib
         private static void CubeRecipes(string destination, List<CubeRecipe> cubeRecipes)
         {
             StringBuilder sb = new StringBuilder();
+
+
             foreach (var recipe in cubeRecipes)
             {
-                sb.AppendLine(recipe.Description);
+                //sb.AppendLine(recipe.Description);
+                //continue;
+
+                var result = "";
+                foreach (var input in recipe.InputList)
+                {
+                    result += $"{input} + ";
+                }
+                result = result.Substring(0, result.LastIndexOf('+'));
+
+                sb.AppendLine($"{result}= {recipe.Output}");
             }
 
             File.WriteAllText(destination, sb.ToString());

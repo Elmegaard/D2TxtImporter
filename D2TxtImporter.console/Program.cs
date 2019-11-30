@@ -12,7 +12,7 @@ namespace D2TxtImporter_console
                 var tablePath = args[1];
                 var outputDir = args[2];
 
-                var importer = new D2TxtImporter_lib.Importer(excelPath, tablePath, outputDir);
+                var importer = new D2TxtImporter.lib.Importer(excelPath, tablePath, outputDir);
 
                 importer.LoadData();
                 importer.ImportModel();

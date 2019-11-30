@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace D2TxtImporter_lib.Model
+namespace D2TxtImporter.lib.Model
 {
     public class Misc
     {
@@ -13,6 +13,7 @@ namespace D2TxtImporter_lib.Model
         public int RequiredLevel { get; set; }
         public string Code { get; set; }
         public string Type { get; set; }
+        public string Type2 { get; set; }
 
         public static Dictionary<string, Misc> MiscItems;
 
@@ -36,7 +37,8 @@ namespace D2TxtImporter_lib.Model
                     ItemLevel = int.Parse(values[5]),
                     RequiredLevel = int.Parse(values[6]),
                     Code = values[13],
-                    Type = values[32]
+                    Type = values[32],
+                    Type2 = values[33]
                 };
 
                 MiscItems[misc.Code] = misc;

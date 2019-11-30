@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace D2TxtImporter_lib.Model
+namespace D2TxtImporter.lib.Model
 {
     // Code taken from: https://github.com/kambala-decapitator/QTblEditor
     public class TableProcessor

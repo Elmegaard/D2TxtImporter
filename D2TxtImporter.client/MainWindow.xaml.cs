@@ -71,7 +71,7 @@ namespace D2TxtImporter.client
                 Properties.Settings.Default.Save();
 
                 // Import data
-                _mainViewModel.Importer = new D2TxtImporter_lib.Importer(_mainViewModel.ExcelPath, _mainViewModel.TablePath, _mainViewModel.OutputPath);
+                _mainViewModel.Importer = new D2TxtImporter.lib.Importer(_mainViewModel.ExcelPath, _mainViewModel.TablePath, _mainViewModel.OutputPath);
                 _mainViewModel.Importer.LoadData();
                 _mainViewModel.Importer.ImportModel();
 
@@ -79,7 +79,7 @@ namespace D2TxtImporter.client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace);
             }
 
         }
@@ -92,7 +92,7 @@ namespace D2TxtImporter.client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace);
             }
         }
     }

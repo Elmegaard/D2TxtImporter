@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace D2TxtImporter_lib
+namespace D2TxtImporter.lib
 {
     public class Importer
     {
@@ -41,6 +41,8 @@ namespace D2TxtImporter_lib
         public void LoadData()
         {
             Model.Table.ImportFromTbl(_tablePath);
+            Model.MagicPrefix.Import(_excelPath);
+            Model.MagicSuffix.Import(_excelPath);
             Model.ItemStatCost.Import(_excelPath);
             Model.EffectProperty.Import(_excelPath);
             Model.ItemType.Import(_excelPath);

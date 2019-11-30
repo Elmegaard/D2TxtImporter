@@ -1,4 +1,4 @@
-﻿namespace D2TxtImporter_lib.Model
+﻿namespace D2TxtImporter.lib.Model
 {
     public class Equipment
     {

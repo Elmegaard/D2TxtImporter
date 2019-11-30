@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace D2TxtImporter_lib.Model
+namespace D2TxtImporter.lib.Model
 {
     public class DamageType
     {

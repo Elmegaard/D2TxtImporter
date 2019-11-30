@@ -5,12 +5,12 @@ namespace D2TxtImporter.client
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private D2TxtImporter_lib.Importer _importer;
+        private D2TxtImporter.lib.Importer _importer;
         private string excelPath;
         private string tablePath;
         private string outputPath;
 
-        public D2TxtImporter_lib.Importer Importer
+        public D2TxtImporter.lib.Importer Importer
         {
             get => _importer;
             set

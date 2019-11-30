@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace D2TxtImporter_lib.Model
+namespace D2TxtImporter.lib.Model
 {
     public class Weapon : Equipment
     {
@@ -31,21 +32,49 @@ namespace D2TxtImporter_lib.Model
 
                 if (!isTwoHanded)
                 {
-                    damageTypes.Add(new DamageType { Type = DamageTypeEnum.Normal, MinDamage = int.Parse(values[10]), MaxDamage = int.Parse(values[11]) });
+                    try
+                    {
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.Normal, MinDamage = int.Parse(values[10]), MaxDamage = int.Parse(values[11]) });
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Could not get min or max damage for weapon: '{values[0]}'");
+                    }
                 }
                 else if (isOneOrTwoHanded)
                 {
-                    damageTypes.Add(new DamageType { Type = DamageTypeEnum.OneHanded, MinDamage = int.Parse(values[10]), MaxDamage = int.Parse(values[11]) });
+                    try
+                    {
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.OneHanded, MinDamage = int.Parse(values[10]), MaxDamage = int.Parse(values[11]) });
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Could not get min or max damage for weapon: '{values[0]}'");
+                    }
                 }
 
                 if (isTwoHanded)
                 {
-                    damageTypes.Add(new DamageType { Type = DamageTypeEnum.TwoHanded, MinDamage = int.Parse(values[14]), MaxDamage = int.Parse(values[15]) });
+                    try
+                    {
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.TwoHanded, MinDamage = int.Parse(values[14]), MaxDamage = int.Parse(values[15]) });
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Could not get min or max damage for weapon: '{values[0]}'");
+                    }
                 }
 
                 if (isThrown)
                 {
-                    damageTypes.Add(new DamageType { Type = DamageTypeEnum.Thrown, MinDamage = int.Parse(values[16]), MaxDamage = int.Parse(values[17]) });
+                    try
+                    {
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.Thrown, MinDamage = int.Parse(values[16]), MaxDamage = int.Parse(values[17]) });
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Could not get min or max damage for weapon: '{values[0]}'");
+                    }
                 }
 
                 var weapon = new Weapon
