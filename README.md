@@ -1,7 +1,7 @@
 # D2TxtImporter
 
 # Guide
-To function correctly you need the following .tbl files (they can be named however you like):
+To function correctly you need the following .tbl files (they can be named however you like, as long as they have the .tbl extension):
 - d2data.mpq
   - string.tbl
 - patch_d2.mpq
