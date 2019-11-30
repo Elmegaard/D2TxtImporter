@@ -10,6 +10,7 @@ namespace D2TxtImporter.lib.Model
     {
         public string Type { get; set; }
         public Equipment Equipment { get; set; }
+        public bool DamageArmorEnhanced { get; set; }
 
         public static List<Unique> Import(string excelFolder)
         {
@@ -63,7 +64,8 @@ namespace D2TxtImporter.lib.Model
                     Code = values[8],
                     Type = values[9],
                     Properties = properties,
-                    Equipment = eq
+                    Equipment = eq,
+                    DamageArmorEnhanced = false
                 };
 
                 AddDamageArmorString(unique);
@@ -97,6 +99,8 @@ namespace D2TxtImporter.lib.Model
 
                                 maxDam1 = (int)(property.Min / 100f * damageType.MaxDamage + damageType.MaxDamage);
                                 maxDam2 = (int)(property.Max / 100f * damageType.MaxDamage + damageType.MaxDamage);
+
+                                unique.DamageArmorEnhanced = true;
                                 break;
                             case "dmg-norm":
                                 minDam1 += property.Min.Value;
@@ -104,14 +108,17 @@ namespace D2TxtImporter.lib.Model
 
                                 maxDam1 += property.Max.Value;
                                 maxDam2 += property.Max.Value;
+                                unique.DamageArmorEnhanced = true;
                                 break;
                             case "dmg-min":
                                 minDam1 += property.Min.Value;
                                 minDam2 += property.Max.Value;
+                                unique.DamageArmorEnhanced = true;
                                 break;
                             case "dmg-max":
                                 maxDam1 += property.Min.Value;
                                 maxDam2 += property.Max.Value;
+                                unique.DamageArmorEnhanced = true;
                                 break;
                         }
                     }
@@ -141,10 +148,12 @@ namespace D2TxtImporter.lib.Model
                         case "ac%":
                             minAc = (int)Math.Floor(((minAc + 1) * (100f + property.Min) / 100f).Value);
                             maxAc = (int)Math.Floor(((maxAc + 1) * (100f + property.Max) / 100f).Value);
+                            unique.DamageArmorEnhanced = true;
                             break;
                         case "ac":
                             minAc += property.Min.Value;
                             maxAc += property.Max.Value;
+                            unique.DamageArmorEnhanced = true;
                             break;
                     }
                 }
