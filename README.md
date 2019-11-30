@@ -1,5 +1,5 @@
 # D2TxtImporter
-This program is used to process all the .txt files of your mod a generate documentation for it.
+This program is used to process all the .txt files of your mod and generate documentation for it.
 
 # Guide
 To function correctly you need the following .tbl files (they can be named however you like, as long as they have the .tbl extension):
