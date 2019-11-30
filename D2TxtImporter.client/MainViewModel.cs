@@ -50,6 +50,18 @@ namespace D2TxtImporter.client
             }
         }
 
+        public bool CubeRecipeUseDescription
+        {
+            get
+            {
+                return D2TxtImporter.lib.Model.CubeRecipe.UseDescription;
+            }
+            set
+            {
+                D2TxtImporter.lib.Model.CubeRecipe.UseDescription = value;
+            }
+        }
+
         public bool ExportEnabled => Importer != null && Importer.CubeRecipes != null && Importer.Runewords != null && Importer.Uniques != null;
         public bool ImportEnabled => Directory.Exists(ExcelPath) && Directory.Exists(TablePath) && Directory.Exists(OutputPath);
 

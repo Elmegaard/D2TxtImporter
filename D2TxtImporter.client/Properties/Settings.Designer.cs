@@ -58,5 +58,17 @@ namespace D2TxtImporter.client.Properties {
                 this["OutputPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CubeRecipeUseDescription {
+            get {
+                return ((bool)(this["CubeRecipeUseDescription"]));
+            }
+            set {
+                this["CubeRecipeUseDescription"] = value;
+            }
+        }
     }
 }

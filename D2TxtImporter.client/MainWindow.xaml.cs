@@ -21,6 +21,7 @@ namespace D2TxtImporter.client
             _mainViewModel.ExcelPath = Properties.Settings.Default.ExcelPath;
             _mainViewModel.TablePath = Properties.Settings.Default.TablePath;
             _mainViewModel.OutputPath = Properties.Settings.Default.OutputPath;
+            _mainViewModel.CubeRecipeUseDescription = Properties.Settings.Default.CubeRecipeUseDescription;
         }
 
         private void BrowseExcel(object sender, RoutedEventArgs e)
@@ -68,6 +69,7 @@ namespace D2TxtImporter.client
                 Properties.Settings.Default.ExcelPath = _mainViewModel.ExcelPath;
                 Properties.Settings.Default.TablePath = _mainViewModel.TablePath;
                 Properties.Settings.Default.OutputPath = _mainViewModel.OutputPath;
+                Properties.Settings.Default.CubeRecipeUseDescription = _mainViewModel.CubeRecipeUseDescription;
                 Properties.Settings.Default.Save();
 
                 // Import data
@@ -76,6 +78,10 @@ namespace D2TxtImporter.client
                 _mainViewModel.Importer.ImportModel();
 
                 _mainViewModel.OnPropertyChange(nameof(_mainViewModel.ExportEnabled));
+
+
+                // Temporary Export, should be moved to its own button at some point
+                _mainViewModel.Importer.Export();
             }
             catch (Exception ex)
             {

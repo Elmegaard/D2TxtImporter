@@ -9,10 +9,12 @@ namespace D2TxtImporter.lib.Model
 {
     public class CubeRecipe
     {
+        public static bool UseDescription { get; set; }
         public string Description { get; set; }
         public string Item { get; set; }
         public List<string> InputList { get; set; }
         public string Output { get; set; }
+        public string CubeRecipeDescription { get; set; }
 
         public static List<CubeRecipe> Import(string excelFolder)
         {
@@ -28,63 +30,68 @@ namespace D2TxtImporter.lib.Model
                     continue;
                 }
 
-                // Params
-                var paramArray = values.Skip(21).ToList().Take(25).ToList();
-                var modifiers = new List<CubeMod>();
-                for (int i = 0; i < paramArray.Count; i += 5)
+                var recipe = new CubeRecipe();
+
+                if (!UseDescription)
                 {
-                    if (!string.IsNullOrEmpty(paramArray[i]))
+                    // Params
+                    var paramArray = values.Skip(21).ToList().Take(25).ToList();
+                    var modifiers = new List<CubeMod>();
+                    for (int i = 0; i < paramArray.Count; i += 5)
                     {
-                        modifiers.Add(new CubeMod
+                        if (!string.IsNullOrEmpty(paramArray[i]))
                         {
-                            Mod = paramArray[i],
-                            ModChance = paramArray[i + 1],
-                            ModParam = paramArray[i + 2],
-                            ModMin = paramArray[i + 3],
-                            ModMax = paramArray[i + 4],
-                        });
+                            modifiers.Add(new CubeMod
+                            {
+                                Mod = paramArray[i],
+                                ModChance = paramArray[i + 1],
+                                ModParam = paramArray[i + 2],
+                                ModMin = paramArray[i + 3],
+                                ModMax = paramArray[i + 4],
+                            });
+                        }
                     }
-                }
 
-                // Input
-                var numInputs = int.Parse(values[9]);
-                var inputArray = values.Skip(10).ToList();
-                inputArray = inputArray.Take(numInputs).ToList();
-                inputArray.RemoveAll(x => string.IsNullOrEmpty(x));
+                    // Input
+                    var numInputs = int.Parse(values[9]);
+                    var inputArray = values.Skip(10).ToList();
+                    inputArray = inputArray.Take(numInputs).ToList();
+                    inputArray.RemoveAll(x => string.IsNullOrEmpty(x));
 
-                var recipe = new CubeRecipe(inputArray.ToArray(), values[17]);
+                    recipe = new CubeRecipe(inputArray.ToArray(), values[17]);
 
-                if (recipe.Output.Contains("usetype"))
-                {
-                    var type = inputArray[0].Replace("\"", "").Split(',')[0];
-                    if (ItemType.ItemTypes.Keys.Contains(type))
+                    if (recipe.Output.Contains("usetype"))
                     {
-                        recipe.Output = recipe.Output.Replace("usetype", ItemType.ItemTypes[type].Name);
-                    }
-                    else
-                    {
-                        if (type == "any")
+                        var type = inputArray[0].Replace("\"", "").Split(',')[0];
+                        if (ItemType.ItemTypes.Keys.Contains(type))
                         {
-                            recipe.Output = recipe.Output.Replace("usetype", "item");
+                            recipe.Output = recipe.Output.Replace("usetype", ItemType.ItemTypes[type].Name);
                         }
                         else
                         {
-                            recipe.Output = recipe.Output.Replace("usetype", recipe.InputList[0]);
+                            if (type == "any")
+                            {
+                                recipe.Output = recipe.Output.Replace("usetype", "item");
+                            }
+                            else
+                            {
+                                recipe.Output = recipe.Output.Replace("usetype", recipe.InputList[0]);
+                            }
                         }
                     }
-                }
 
-                if (recipe.Output.Contains("useitem"))
-                {
-                    var item = inputArray[0].Replace("\"", "").Split(',')[0];
-                    if (ItemType.ItemTypes.Keys.Contains(item))
+                    if (recipe.Output.Contains("useitem"))
                     {
-                        recipe.Output = recipe.Output.Replace("useitem", ItemType.ItemTypes[item].Name);
-                    }
+                        var item = inputArray[0].Replace("\"", "").Split(',')[0];
+                        if (ItemType.ItemTypes.Keys.Contains(item))
+                        {
+                            recipe.Output = recipe.Output.Replace("useitem", ItemType.ItemTypes[item].Name);
+                        }
 
-                    if (modifiers.Count > 0 && modifiers[0].Mod == "sock")
-                    {
-                        recipe.Output = $"Socketed {recipe.Output}";
+                        if (modifiers.Count > 0 && modifiers[0].Mod == "sock")
+                        {
+                            recipe.Output = $"Socketed {recipe.Output}";
+                        }
                     }
                 }
 
@@ -102,6 +109,22 @@ namespace D2TxtImporter.lib.Model
 
                 recipe.Description = descr;
 
+                if (UseDescription)
+                {
+                    recipe.CubeRecipeDescription = descr;
+                }
+                else
+                {
+                    var tempDescr = "";
+                    foreach (var input in recipe.InputList)
+                    {
+                        tempDescr += $"{input} + ";
+                    }
+                    tempDescr = tempDescr.Substring(0, tempDescr.LastIndexOf('+'));
+
+                    recipe.CubeRecipeDescription = $"{tempDescr}= {recipe.Output}";
+                }
+
                 result.Add(recipe);
             }
 
@@ -112,6 +135,11 @@ namespace D2TxtImporter.lib.Model
         public override string ToString()
         {
             return Description;
+        }
+
+        public CubeRecipe()
+        {
+
         }
 
         public CubeRecipe(string[] inputArray, string output)

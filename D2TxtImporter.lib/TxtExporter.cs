@@ -148,17 +148,7 @@ namespace D2TxtImporter.lib
 
             foreach (var recipe in cubeRecipes)
             {
-                //sb.AppendLine(recipe.Description);
-                //continue;
-
-                var result = "";
-                foreach (var input in recipe.InputList)
-                {
-                    result += $"{input} + ";
-                }
-                result = result.Substring(0, result.LastIndexOf('+'));
-
-                sb.AppendLine($"{result}= {recipe.Output}");
+                sb.AppendLine(recipe.CubeRecipeDescription);
             }
 
             File.WriteAllText(destination, sb.ToString());
