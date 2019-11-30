@@ -14,6 +14,7 @@ To function correctly you need the following .tbl files (they can be named howev
 - Table Directory: Absolute path to your .tbl files
 - Output Directory: The directory you want your output to go to
 ## Console Application
+Mainly used for debugging, not really updated.
 .\D2TxtImporter.console.exe "<Absolute path to your .txt files>" "<Absolute path to your .tbl files>" "< The Directory you want your output to go to>"
 
 # Credits
