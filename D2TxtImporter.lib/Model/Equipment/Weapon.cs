@@ -9,7 +9,6 @@ namespace D2TxtImporter.lib.Model
 
         public static Dictionary<string, Weapon> Weapons;
 
-
         public static void Import(string excelFolder)
         {
             Weapons = new Dictionary<string, Weapon>();
@@ -36,7 +35,7 @@ namespace D2TxtImporter.lib.Model
                     {
                         damageTypes.Add(new DamageType { Type = DamageTypeEnum.Normal, MinDamage = int.Parse(values[10]), MaxDamage = int.Parse(values[11]) });
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         throw new Exception($"Could not get min or max damage for weapon: '{values[0]}'");
                     }
@@ -47,7 +46,7 @@ namespace D2TxtImporter.lib.Model
                     {
                         damageTypes.Add(new DamageType { Type = DamageTypeEnum.OneHanded, MinDamage = int.Parse(values[10]), MaxDamage = int.Parse(values[11]) });
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         throw new Exception($"Could not get min or max damage for weapon: '{values[0]}'");
                     }
@@ -59,7 +58,7 @@ namespace D2TxtImporter.lib.Model
                     {
                         damageTypes.Add(new DamageType { Type = DamageTypeEnum.TwoHanded, MinDamage = int.Parse(values[14]), MaxDamage = int.Parse(values[15]) });
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         throw new Exception($"Could not get min or max damage for weapon: '{values[0]}'");
                     }
@@ -71,7 +70,7 @@ namespace D2TxtImporter.lib.Model
                     {
                         damageTypes.Add(new DamageType { Type = DamageTypeEnum.Thrown, MinDamage = int.Parse(values[16]), MaxDamage = int.Parse(values[17]) });
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         throw new Exception($"Could not get min or max damage for weapon: '{values[0]}'");
                     }
