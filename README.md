@@ -23,8 +23,8 @@ Mainly used for debugging, not really updated.
 - Rework hard coded values (enhanced damage, skill tree names, etc.)
 - Add support for all DescFunc from ItemStatCosts.txt, I do not have text files that use all of them and can't really test it all with vanilla .txt files
 - Cleanup the mess of a code this entire project is..
-- Add more output formats sql, json, html, etc?
 - Add better exception handling so the exceptions actually makes sense
+- Add better searching on web part
 
 # Credits
 - .tbl import functionality: https://github.com/kambala-decapitator/QTblEditor
