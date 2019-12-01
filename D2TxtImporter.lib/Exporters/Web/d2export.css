@@ -15,14 +15,31 @@
     color: #ef4f4f;
 }
 
+.runes span {
+    padding: 0px 5px 0px 5px;
+}
+
+.runeword-types span {
+    padding: 0px 5px 0px 5px;
+}
+
 body {
     background: black;
+}
+
+a:hover{
+    color: #5a5a5a;
+}
+
+.nav-link.active{
+    background-color: #4a4a4a6e;
 }
 
 .page {
     width: 960px;
     margin: 0 auto;
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .items-content {
@@ -42,8 +59,8 @@ body {
     font-weight: 100;
     font-size: 18px;
     margin: 10px;
-    border-bottom: #8c8c8c5c solid 1px;
-    border-top: #8c8c8c5c solid 1px;
+    border-bottom: #8c8c8c2e solid 1px;
+    border-top: #8c8c8c2e solid 1px;
 }
 
 .item-table {
@@ -75,5 +92,5 @@ body {
 }
 
 label, td, th, a, .page-item, .dataTables_info, span, a.page-link, .sr-only {
-    color: white;
+    color: #afafaf;
 }

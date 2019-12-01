@@ -3,6 +3,8 @@ var Runewords = {};
 var CubeRecipes = {};
 
 function RenderUniques() {
+    ClearTable();
+
     Uniques.forEach(el => {
         var $item = $("<div>");
         $item.addClass("item");
@@ -141,6 +143,99 @@ function RenderUniques() {
     });
 }
 
+function RenderRunewords() {
+    ClearTable();
+
+    Runewords.forEach(el => {
+        var $item = $("<div>");
+        $item.addClass("item");
+
+        // Name
+        var $spanName = $("<span>");
+        $spanName.text(el.Name);
+        $spanName.addClass("unique-text");
+        $item.append($spanName);
+        $item.append($("<br>"));
+
+        // Runes
+        $divRunes = $("<div>");
+        $divRunes.addClass("runes");
+        el.Runes.forEach(rune => {
+            var $spanRune = $("<span>").text(rune.Name);
+            $divRunes.append($spanRune);
+        });
+        $item.append($divRunes);
+
+        // Types
+        $divTypes = $("<div>");
+        $divTypes.addClass("runeword-types");
+        el.Types.forEach(type => {
+            var $spanType = $("<span>").text(type.Name);
+            $divTypes.append($spanType);
+        });
+        $item.append($divTypes);
+
+        // Required Level
+        if (el.RequiredLevel > 0) {
+            var $req = $("<span>");
+            $req.addClass("requirement");
+            $req.text("Required Level: " + el.RequiredLevel);
+            $item.append($req);
+            $item.append($("<br>"));
+        }
+
+        // Add properties
+        el.Properties.forEach(prop => {
+            $propSpan = $("<span>");
+            $propSpan.addClass("enhanced");
+            $propSpan.text(prop.PropertyString);
+
+            $item.append($propSpan);
+            $item.append($("<br>"));
+        });
+
+        var $tr = $("<tr>");
+        var $td = $("<td>");
+
+        $td.append($item);
+        $tr.append($td);
+        $("#tbody").append($tr);
+    });
+}
+
+function RenderCubeRecipes() {
+    ClearTable();
+
+    CubeRecipes.forEach(el => {
+        var $item = $("<div>");
+        $item.addClass("item");
+
+        // Name
+        var $spanName = $("<span>");
+        $spanName.text(el.Output);
+        $spanName.addClass("unique-text");
+        $item.append($spanName);
+        $item.append($("<br>"));
+
+        // Description
+        $recipeSpan = $("<span>");
+        $recipeSpan.text(el.CubeRecipeDescription);
+        $item.append($recipeSpan);
+        $item.append($("<br>"));
+
+        var $tr = $("<tr>");
+        var $td = $("<td>");
+
+        $td.append($item);
+        $tr.append($td);
+        $("#tbody").append($tr);
+    });
+}
+
+function ClearTable() {
+    $("#tbody").html("");
+}
+
 function GetUniques() {
     var json = "<UNIQUES_JSON>";
     Uniques = JSON.parse(json);
@@ -156,11 +251,27 @@ function GetCubeRecipes() {
     CubeRecipes = JSON.parse(json);
 }
 
-
 GetUniques();
 GetRunewords();
 GetCubeRecipes();
 
 $('document').ready(function () {
     RenderUniques();
+
+    $(".nav .nav-link").on("click", function () {
+        $(".nav").find(".active").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    $("#nav-uniques").click(function () {
+        RenderUniques();
+    });
+
+    $("#nav-runewords").click(function () {
+        RenderRunewords();
+    });
+
+    $("#nav-cuberecipes").click(function () {
+        RenderCubeRecipes();
+    });
 });
