@@ -72,6 +72,9 @@
     <Compile Include="Exporters\TxtExporter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Exporters\Web\avqest.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Exporters\Web\css\bootstrap-grid.css.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -142,9 +145,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Exporters\Web\js\bootstrap.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Exporters\Web\js\jput.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Exporters\Web\js\jquery-3.4.1.min.js">

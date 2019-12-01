@@ -50,15 +50,15 @@ namespace D2TxtImporter.lib
                 File.Copy(newPath, newPath.Replace(webPath, webOutputDirectory), true);
             }
 
-            var uniqueJson = File.ReadAllText($"{jsonPath}/uniques.json");
-            var runewordJson = File.ReadAllText($"{jsonPath}/runewords.json");
-            var cubeRecipeJson = File.ReadAllText($"{jsonPath}/cube_recipes.json");
+            var uniqueJson = File.ReadAllText($"{jsonPath}/uniques.json", Encoding.UTF8);
+            var runewordJson = File.ReadAllText($"{jsonPath}/runewords.json", Encoding.UTF8);
+            var cubeRecipeJson = File.ReadAllText($"{jsonPath}/cube_recipes.json", Encoding.UTF8);
 
             var jsFile = $"{webOutputDirectory}/d2export.js";
-            var js = File.ReadAllText(jsFile);
+            var js = File.ReadAllText(jsFile, Encoding.UTF8);
 
             js = js.Replace("\"<UNIQUES_JSON>\"", JsonConvert.ToString(uniqueJson)).Replace("\"<RUNEWORDS_JSON>\"", JsonConvert.ToString(runewordJson)).Replace("\"<CUBE_RECIPES_JSON>\"", JsonConvert.ToString(cubeRecipeJson));
-            File.WriteAllText(jsFile, js);
+            File.WriteAllText(jsFile, js, Encoding.UTF8);
         }
 
         static void DirSearch(string sDir)

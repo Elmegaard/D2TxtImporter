@@ -1,4 +1,10 @@
-﻿.unique-text
+﻿@font-face
+{
+    font-family: Diablo;
+    src: url("avqest.ttf");
+}
+
+.unique-text
 {
     color : #c7b790ed;
 }
@@ -9,4 +15,18 @@
 
 .requirement{
     color: #ef4f4f;
+}
+
+.item{
+    background : rgba(1, 1, 1, 0.8) !important;
+    text-align: center;
+    line-height: 17.3pt;
+    font-family: Diablo;
+    font-weight: 100;
+    font-size : 18px;
+}
+
+label, td, th, a, .page-item, .dataTables_info, span, a.page-link, .sr-only
+{
+    color : white;
 }

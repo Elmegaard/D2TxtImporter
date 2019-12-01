@@ -28,20 +28,20 @@ namespace D2TxtImporter.lib
 
         private static void Uniques(string destination, List<Unique> uniques)
         {
-            var json = JsonConvert.SerializeObject(uniques);
-            File.WriteAllText(destination, json);
+            var json = JsonConvert.SerializeObject(uniques, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii}).Replace("\\ufffd", "'");
+            File.WriteAllText(destination, json, System.Text.Encoding.UTF8);
         }
 
         private static void Runewords(string destination, List<Runeword> runewords)
         {
-            var json = JsonConvert.SerializeObject(runewords);
-            File.WriteAllText(destination, json);
+            var json = JsonConvert.SerializeObject(runewords, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii }).Replace("\\ufffd", "'");
+            File.WriteAllText(destination, json, System.Text.Encoding.UTF8);
         }
 
         private static void CubeRecipes(string destination, List<CubeRecipe> cubeRecipes)
         {
-            var json = JsonConvert.SerializeObject(cubeRecipes);
-            File.WriteAllText(destination, json);
+            var json = JsonConvert.SerializeObject(cubeRecipes, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii }).Replace("\\ufffd", "'");
+            File.WriteAllText(destination, json, System.Text.Encoding.UTF8);
         }
     }
 }

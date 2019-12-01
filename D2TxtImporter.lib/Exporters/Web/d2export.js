@@ -1,25 +1,25 @@
-﻿var Uniques = {};
+var Uniques = {};
 var Runewords = {};
 var CubeRecipes = {};
 
 function RenderUniques() {
     Uniques.forEach(el => {
-        var $tr = $("<tr>");
-        var $td = $("<td>");
+        var $item = $("<div>");
+        $item.addClass("item");
 
         // Name
         var $spanName = $("<span>");
         $spanName.text(el.Name);
         $spanName.addClass("unique-text");
-        $td.append($spanName);
-        $td.append($("<br>"));
+        $item.append($spanName);
+        $item.append($("<br>"));
 
         // Type
         var $spanType = $("<span>");
         $spanType.text(el.Type);
         $spanType.addClass("unique-text");
-        $td.append($spanType);
-        $td.append($("<br>"));
+        $item.append($spanType);
+        $item.append($("<br>"));
 
         // Damage Armor
         var $divDamage = $("<div>");
@@ -76,15 +76,15 @@ function RenderUniques() {
             case 2: // Jewelery
                 break;
         }
-        $td.append($divDamage);
+        $item.append($divDamage);
 
         // Required Level
         if (el.RequiredLevel > 0) {
             var $req = $("<span>");
             $req.addClass("requirement");
             $req.text("Required Level: " + el.RequiredLevel);
-            $td.append($req);
-            $td.append($("<br>"));
+            $item.append($req);
+            $item.append($("<br>"));
         }
 
         // Required Strength
@@ -92,8 +92,8 @@ function RenderUniques() {
             var $req = $("<span>");
             $req.addClass("requirement");
             $req.text("Required Strength: " + el.Equipment.RequiredStrength);
-            $td.append($req);
-            $td.append($("<br>"));
+            $item.append($req);
+            $item.append($("<br>"));
         }
 
         // Required Dexterity
@@ -101,24 +101,24 @@ function RenderUniques() {
             var $req = $("<span>");
             $req.addClass("requirement");
             $req.text("Required Dexterity: " + el.Equipment.RequiredDexterity);
-            $td.append($req);
-            $td.append($("<br>"));
+            $item.append($req);
+            $item.append($("<br>"));
         }
 
         // Durability
         if (el.Equipment.Durability != 0) {
             var $req = $("<span>");
             $req.text("Durability: " + el.Equipment.Durability);
-            $td.append($req);
-            $td.append($("<br>"));
+            $item.append($req);
+            $item.append($("<br>"));
         }
 
         // Add armor damage (smite damage, kick damage)
         if (el.Equipment.EquipmentType == 0) // Armor type
         {
             if (el.Equipment.DamageString) {
-                $td.append($("<span>").text(el.Equipment.DamageStringPrefix + ": " + el.Equipment.DamageString));
-                $td.append($("<br>"));
+                $item.append($("<span>").text(el.Equipment.DamageStringPrefix + ": " + el.Equipment.DamageString));
+                $item.append($("<br>"));
             }
         }
 
@@ -128,12 +128,16 @@ function RenderUniques() {
             $propSpan.addClass("enhanced");
             $propSpan.text(prop.PropertyString);
 
-            $td.append($propSpan);
-            $td.append($("<br>"));
+            $item.append($propSpan);
+            $item.append($("<br>"));
         });
 
+        var $tr = $("<tr>");
+        var $td = $("<td>");
+
+        $td.append($item);
         $tr.append($td);
-        $("#tbody-unique").append($tr);
+        $("#tbody").append($tr);
     });
 }
 
