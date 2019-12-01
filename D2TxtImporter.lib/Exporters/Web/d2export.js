@@ -1,6 +1,11 @@
 var Uniques = {};
+var AllUniques = {};
+
 var Runewords = {};
+var AllRunewords = {};
+
 var CubeRecipes = {};
+var AllCubeRecipes = {};
 
 function RenderUniques() {
     ClearTable();
@@ -239,21 +244,89 @@ function ClearTable() {
 function GetUniques() {
     var json = "<UNIQUES_JSON>";
     Uniques = JSON.parse(json);
+    AllUniques = JSON.parse(json);
 }
 
 function GetRunewords() {
     var json = "<RUNEWORDS_JSON>";
     Runewords = JSON.parse(json);
+    AllRunewords = JSON.parse(json);
 }
 
 function GetCubeRecipes() {
     var json = "<CUBE_RECIPES_JSON>";
     CubeRecipes = JSON.parse(json);
+    AllCubeRecipes = JSON.parse(json);
 }
 
 GetUniques();
 GetRunewords();
 GetCubeRecipes();
+
+function Search() {
+    var text = $("#searchField")[0].value;
+    var activeField = $(".nav-link.active")[0].id;
+
+    if (text.length < 3) {
+        Uniques = AllUniques.slice(0);
+        Runewords = AllRunewords.slice(0);
+        CubeRecipes = AllCubeRecipes.slice(0);
+    } else {
+        if (activeField === "nav-uniques") {
+            Uniques = [];
+            AllUniques.forEach(el => {
+                if (el.Name.toLowerCase().includes(text.toLowerCase())) {
+                    Uniques.push(el);
+                } else if (el.Type.toLowerCase().includes(text.toLowerCase())) {
+                    Uniques.push(el);
+                }
+
+                el.Properties.forEach(prop => {
+                    if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
+                        Uniques.push(el);
+                    }
+                });
+            });
+        } else if (activeField === "nav-runewords") {
+            Runewords = [];
+            AllRunewords.forEach(el => {
+                if (el.Name.toLowerCase().includes(text.toLowerCase())) {
+                    Runewords.push(el);
+                }
+
+                el.Types.forEach(type => {
+                    if (type.Name.toLowerCase().includes(text.toLowerCase())) {
+                        Runewords.push(el);
+                    }
+                });
+
+                el.Properties.forEach(prop => {
+                    if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
+                        Runewords.push(el);
+                    }
+                });
+            });
+        } else if (activeField === "nav-cuberecipes") {
+            CubeRecipes = [];
+            AllCubeRecipes.forEach(el => {
+                if (el.CubeRecipeDescription.toLowerCase().includes(text.toLowerCase())) {
+                    CubeRecipes.push(el);
+                }
+            });
+        }
+    }
+    RenderActive(activeField);
+}
+
+function RenderActive(activeField) {
+    if (activeField === "nav-uniques") {
+        RenderUniques();
+    } else if (activeField === "nav-runewords") {
+        RenderRunewords();
+    } else if (activeField === "nav-cuberecipes") {
+        RenderCubeRecipes();
+    }
+}
 
 $('document').ready(function () {
     RenderUniques();
@@ -264,14 +337,21 @@ $('document').ready(function () {
     });
 
     $("#nav-uniques").click(function () {
-        RenderUniques();
+        $("#searchField")[0].value = "";
+        Search();
     });
 
     $("#nav-runewords").click(function () {
-        RenderRunewords();
+        $("#searchField")[0].value = "";
+        Search();
     });
 
     $("#nav-cuberecipes").click(function () {
-        RenderCubeRecipes();
+        $("#searchField")[0].value = "";
+        Search();
+    });
+
+    $("#searchField").on('change paste input', function () {
+        Search();
     });
 });
