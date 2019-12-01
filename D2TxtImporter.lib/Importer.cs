@@ -64,6 +64,8 @@ namespace D2TxtImporter.lib
         public void Export()
         {
             TxtExporter.ExportTxt(_outputPath, Uniques, Runewords, CubeRecipes);
+            JsonExporter.ExportJson(_outputPath, Uniques, Runewords, CubeRecipes);
+            WebExporter.ExportWeb(_outputPath);
         }
 
         public static List<string> ReadCsvFile(string path)
