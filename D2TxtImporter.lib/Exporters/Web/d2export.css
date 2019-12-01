@@ -1,32 +1,79 @@
-﻿@font-face
-{
+﻿@font-face {
     font-family: Diablo;
     src: url("avqest.ttf");
 }
 
-.unique-text
-{
-    color : #c7b790ed;
+.unique-text {
+    color: #c7b790ed;
 }
 
 .enhanced {
-    color: #6f5df7!important;
+    color: #6f5df7;
 }
 
-.requirement{
+.requirement {
     color: #ef4f4f;
 }
 
-.item{
-    background : rgba(1, 1, 1, 0.8) !important;
+body {
+    background: black;
+}
+
+.page {
+    width: 960px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.items-content {
+    border: 5px solid #1c1c1c;
+    background-color: #101010;
+    border-radius: 30px 30px 30px 30px;
+    -moz-border-radius: 30px 30px 30px 30px;
+    -webkit-border-radius: 30px 30px 30px 30px;
+    width: 100%;
+}
+
+.item {
+    background: rgba(1, 1, 1, 0);
     text-align: center;
     line-height: 17.3pt;
     font-family: Diablo;
     font-weight: 100;
-    font-size : 18px;
+    font-size: 18px;
+    margin: 10px;
+    border-bottom: #8c8c8c5c solid 1px;
+    border-top: #8c8c8c5c solid 1px;
 }
 
-label, td, th, a, .page-item, .dataTables_info, span, a.page-link, .sr-only
-{
-    color : white;
+.item-table {
+    margin: 0 auto;
+}
+
+.header {
+    font-family: Diablo;
+    font-size: 20px;
+    width: 960px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.search {
+    font-family: Diablo;
+    font-size: 15.4px;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 0.05em solid #5a5a5a;
+    height: auto;
+    width: auto;
+    margin: 5px;
+}
+
+label, td, th, a, .page-item, .dataTables_info, span, a.page-link, .sr-only {
+    color: white;
 }

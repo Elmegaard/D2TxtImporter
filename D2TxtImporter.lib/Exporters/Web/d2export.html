@@ -12,27 +12,38 @@
 </head>
 
 <body>
-  <div class="header">
-    <ul class="nav">
+  <div>
+    <ul class="nav nav-fill navbar-dark bg-dark">
       <li class="nav-item">
-        <a class="nav-link active" href="#">Uniques</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Runewords</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Cube Recipes</a>
-      </li>
+        <ul class="nav nav-fill navbar-dark bg-dark header">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Uniques</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Runewords</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Cube Recipes</a>
+          </li>
+          <li>
+            <input class="form-control form-control-sm search" type="text" placeholder="Search" aria-label="Search" />
+          </li>
+        </ul>
     </ul>
   </div>
 
-  <div class="content">
-    <table class="item">
-      <tbody id="tbody">
-      </tbody>
-    </table>
+  <div class="page">
+    <div class="content">
+      <div class="row">
+        <div class="col-sm-12 items-content">
+          <table class="item-table">
+            <tbody id="tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
-</table>
 
 </html>
