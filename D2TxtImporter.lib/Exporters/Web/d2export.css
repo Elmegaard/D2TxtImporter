@@ -27,19 +27,20 @@ body {
     background: black;
 }
 
-a:hover{
+a:hover {
     color: #5a5a5a;
 }
 
-.nav-link.active{
+.nav-link.active {
     background-color: #4a4a4a6e;
 }
 
-.page {
+.content {
     width: 960px;
     margin: 0 auto;
     margin-top: 10px;
     margin-bottom: 10px;
+    padding-top: 50px;
 }
 
 .items-content {
@@ -93,4 +94,24 @@ a:hover{
 
 label, td, th, a, .page-item, .dataTables_info, span, a.page-link, .sr-only {
     color: #afafaf;
+}
+
+/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+.sticky+.content {
+    padding-top: 60px;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 }
