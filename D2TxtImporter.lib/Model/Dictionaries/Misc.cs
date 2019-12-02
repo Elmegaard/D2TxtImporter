@@ -12,7 +12,7 @@ namespace D2TxtImporter.lib.Model
         public int ItemLevel { get; set; }
         public int RequiredLevel { get; set; }
         public string Code { get; set; }
-        public string Type { get; set; }
+        public ItemType Type { get; set; }
         public string Type2 { get; set; }
 
         public static Dictionary<string, Misc> MiscItems;
@@ -37,7 +37,7 @@ namespace D2TxtImporter.lib.Model
                     ItemLevel = int.Parse(values[5]),
                     RequiredLevel = int.Parse(values[6]),
                     Code = values[13],
-                    Type = values[32],
+                    Type = ItemType.ItemTypes[values[32]],
                     Type2 = values[33]
                 };
 

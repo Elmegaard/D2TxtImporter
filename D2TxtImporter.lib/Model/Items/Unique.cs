@@ -77,7 +77,7 @@ namespace D2TxtImporter.lib.Model
                 result.Add(unique);
             }
 
-            return result;
+            return result.OrderBy(x => x.RequiredLevel).ToList();
         }
 
         private static void AddDamageArmorString(Unique unique)
@@ -174,7 +174,7 @@ namespace D2TxtImporter.lib.Model
                 // Handle smite damage
                 if (armor.MinDamage.HasValue && armor.MinDamage.Value > 0)
                 {
-                    switch (armor.Type)
+                    switch (armor.Type.Equiv1)
                     {
                         case "shie":
                         case "ashd": // pala shield

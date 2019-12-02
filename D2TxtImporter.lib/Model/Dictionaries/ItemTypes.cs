@@ -11,6 +11,8 @@ namespace D2TxtImporter.lib.Model
         public string Name { get; set; }
         public string Code { get; set; }
         public string Class { get; set; }
+        public string Equiv2 { get; set; }
+        public string Equiv1 { get; set; }
 
         public static Dictionary<string, ItemType> ItemTypes;
 
@@ -32,6 +34,8 @@ namespace D2TxtImporter.lib.Model
                 {
                     Name = values[0],
                     Code = values[1],
+                    Equiv1 = values[2],
+                    Equiv2 = values[3],
                     Class = values[27]
                 };
 

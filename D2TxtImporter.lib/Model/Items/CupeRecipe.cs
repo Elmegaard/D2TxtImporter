@@ -186,9 +186,9 @@ namespace D2TxtImporter.lib.Model
             {
                 return Misc.MiscItems[item].Name;
             }
-            else if (Misc.MiscItems.Values.Any(x => x.Type == item))
+            else if (Misc.MiscItems.Values.Any(x => x.Type.Code == item))
             {
-                return Misc.MiscItems.Values.First(x => x.Type == item).Name;
+                return Misc.MiscItems.Values.First(x => x.Type.Code == item).Name;
             }
             else if (Misc.MiscItems.Values.Any(x => x.Type2 == item))
             {

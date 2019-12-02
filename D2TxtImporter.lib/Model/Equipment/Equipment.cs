@@ -11,8 +11,8 @@ namespace D2TxtImporter.lib.Model
         public int RequiredDexterity { get; set; }
         public int Durability { get; set; }
         public int ItemLevel { get; set; }
-        public string Type { get; set; }
-        public string TypeName { get { return ItemType.ItemTypes[Type].Name; } }
+        public ItemType Type { get; set; }
+        public string RequiredClass => string.IsNullOrEmpty(Type.Equiv2) ? "" : ItemType.ItemTypes[Type.Equiv2].Name.Replace(" Item", "");
     }
 
     public enum EquipmentType

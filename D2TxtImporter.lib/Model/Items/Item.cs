@@ -15,8 +15,6 @@ namespace D2TxtImporter.lib.Model
         public string Code { get; set; }
         public List<ItemProperty> Properties { get; set; }
 
- 
-
         public override string ToString()
         {
             return Name;

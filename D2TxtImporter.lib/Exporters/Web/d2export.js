@@ -112,6 +112,15 @@ function RenderUniques() {
             $item.append($("<br>"));
         }
 
+        // Required Class
+        if (el.Equipment.RequiredClass !== "") {
+            var $req = $("<span>");
+            $req.addClass("requirement");
+            $req.text(el.Equipment.RequiredClass + " Only");
+            $item.append($req);
+            $item.append($("<br>"));
+        }
+
         // Durability
         if (el.Equipment.Durability != 0) {
             var $req = $("<span>");
@@ -247,8 +256,8 @@ var RuneWordsSearchItems = {};
 function GetUniqueSearch() {
     var types = [];
     AllUniques.forEach(el => {
-        if (!types.includes(el.Equipment.TypeName)) {
-            types.push(el.Equipment.TypeName);
+        if (!types.includes(el.Equipment.Type.Name)) {
+            types.push(el.Equipment.Type.Name);
         }
     });
     types.sort();
@@ -347,8 +356,8 @@ function Search() {
         var searchedUniques = [];
         var typeSearch = $("#search-unique-type").val();
         AllUniques.forEach(el => {
-            if (typeSearch.toLowerCase() === "any" || el.Equipment.TypeName === typeSearch) {
-                if (text.length > 2) {
+            if (typeSearch.toLowerCase() === "any" || el.Equipment.Type.Name === typeSearch) {
+                if (text.length > 1) {
                     if (el.Name.toLowerCase().includes(text.toLowerCase())) {
                         if (!searchedUniques.some(e => e.Name === el.Name)) {
                             searchedUniques.push(el);
@@ -374,47 +383,52 @@ function Search() {
             }
         });
 
-        if (searchedUniques.length !== Uniques.length){
+        if (!CompareItems(Uniques, searchedUniques)){
             Uniques = searchedUniques;
             change = true;
         }
     } else if (activeField === "nav-runewords") {
-        Runewords = [];
+        var serachedRunewords = [];
         change = true;
         var typeSearch = $("#search-runeword-type").val();
         AllRunewords.forEach(el => {
             if (typeSearch.toLowerCase() === "any" || el.Types.some(e => e.Name === typeSearch)) {
-                if (text.length > 2) {
+                if (text.length > 1) {
                     if (el.Name.toLowerCase().includes(text.toLowerCase())) {
-                        if (!Runewords.some(e => e.Name === el.Name)) {
-                            Runewords.push(el);
+                        if (!serachedRunewords.some(e => e.Name === el.Name)) {
+                            serachedRunewords.push(el);
                         }
                     }
 
                     el.Types.forEach(type => {
                         if (type.Name.toLowerCase().includes(text.toLowerCase())) {
-                            if (!Runewords.some(e => e.Name === el.Name)) {
-                                Runewords.push(el);
+                            if (!serachedRunewords.some(e => e.Name === el.Name)) {
+                                serachedRunewords.push(el);
                             }
                         }
                     });
 
                     el.Properties.forEach(prop => {
                         if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                            if (!Runewords.some(e => e.Name === el.Name)) {
-                                Runewords.push(el);
+                            if (!serachedRunewords.some(e => e.Name === el.Name)) {
+                                serachedRunewords.push(el);
                             }
                         }
                     });
                 } else {
-                    if (!Runewords.some(e => e.Name === el.Name)) {
-                        Runewords.push(el);
+                    if (!serachedRunewords.some(e => e.Name === el.Name)) {
+                        serachedRunewords.push(el);
                     }
                 }
             }
         });
+
+        if (!CompareItems(Runewords, serachedRunewords)){
+            Runewords = serachedRunewords;
+            change = true;
+        }
     } else if (activeField === "nav-cuberecipes") {
-        chage = true;
+        change = true;
         CubeRecipes = [];
         AllCubeRecipes.forEach(el => {
             if (el.CubeRecipeDescription.toLowerCase().includes(text.toLowerCase())) {
@@ -426,6 +440,16 @@ function Search() {
     if (change) {
         RenderActive();
     }
+}
+
+function CompareItems(arr1, arr2) {
+    if(arr1.length !== arr2.length)
+        return false;
+    for(var i = arr1.length; i--;) {
+        if(arr1[i].Name !== arr2[i].Name)
+            return false;
+    }
+    return true;
 }
 
 function RenderActive() {

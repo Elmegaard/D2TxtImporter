@@ -39,7 +39,7 @@ namespace D2TxtImporter.lib.Model
                     MinAc = int.Parse(values[5]),
                     MaxAc = int.Parse(values[6]),
                     RequiredStrength = int.Parse(values[9]),
-                    Type = values[48],
+                    Type = ItemType.ItemTypes[values[48]],
                     EquipmentType = EquipmentType.Armor,
                     Durability = int.Parse(values[11]),
                     MinDamage = Utility.ToNullableInt(values[63]),

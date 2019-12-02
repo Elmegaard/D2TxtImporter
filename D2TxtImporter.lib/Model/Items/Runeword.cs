@@ -77,7 +77,7 @@ namespace D2TxtImporter.lib.Model
                 }
             }
 
-            return result;
+            return result.OrderBy(x => x.RequiredLevel).ToList();
         }
     }
 }
