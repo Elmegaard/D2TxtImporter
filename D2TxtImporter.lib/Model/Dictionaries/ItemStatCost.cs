@@ -121,7 +121,7 @@ namespace D2TxtImporter.lib.Model
             sockets.DescriptionValue = 3; // Use value as is
         }
 
-        public string PropertyString(int? value, int? value2, string parameter)
+        public string PropertyString(int? value, int? value2, string parameter, int itemLevel)
         {
             string lstValue;
             var valueString = GetValueString(value, value2);
@@ -282,9 +282,17 @@ namespace D2TxtImporter.lib.Model
                             valueString = $"{lstValue.Replace("%d", valueString)} ({className} only)";
                             break;
                         case 15:
-                            // TODO: Doesn't work when a skills has fx 13-20 range of levels. Value is 0 then.
+                            valueString = value2.Value.ToString();
+
+                            if (value2.Value == 0)
+                            {
+                                val1 = Math.Min(20, Math.Ceiling(itemLevel / 3.9));
+                                valueString = GetValueString(val1, 20);
+                            }
+
+                            // TODO: This is calculated as (min ilvl it can drop as / 3.9 (rounded up) to same but max it can drop as).
                             valueString = lstValue.Replace("%d%", value.Value.ToString())
-                                                     .Replace("%d", value2.Value.ToString())
+                                                     .Replace("%d", valueString)
                                                      .Replace("%s", Skill.GetSkill(parameter).SkillDesc);
 
                             if (value2.Value == 0)

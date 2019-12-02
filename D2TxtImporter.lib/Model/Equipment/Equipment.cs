@@ -8,6 +8,7 @@
         public int RequiredStrength { get; set; }
         public int RequiredDexterity { get; set; }
         public int Durability { get; set; }
+        public int ItemLevel { get; set; }
     }
 
     public enum EquipmentType

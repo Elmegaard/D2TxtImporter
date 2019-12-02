@@ -44,7 +44,8 @@ namespace D2TxtImporter.lib.Model
                     EquipmentType = EquipmentType.Armor,
                     Durability = int.Parse(values[11]),
                     MinDamage = Utility.ToNullableInt(values[63]),
-                    MaxDamage = Utility.ToNullableInt(values[64])
+                    MaxDamage = Utility.ToNullableInt(values[64]),
+                    ItemLevel = int.Parse(values[13])
                 };
 
                 Armors[armor.Code] = armor;

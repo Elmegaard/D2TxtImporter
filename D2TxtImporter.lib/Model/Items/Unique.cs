@@ -26,11 +26,6 @@ namespace D2TxtImporter.lib.Model
                     continue;
                 }
 
-                // Add the properties (there are 12)
-                var propArray = values.Skip(21).ToArray();
-                propArray = propArray.Take(propArray.Count() - 1).ToArray();
-
-                var properties = ItemProperty.GetProperties(propArray);
 
                 Equipment eq;
                 var code = values[8];
@@ -63,10 +58,18 @@ namespace D2TxtImporter.lib.Model
                     RequiredLevel = int.Parse(values[7]),
                     Code = values[8],
                     Type = values[9],
-                    Properties = properties,
                     Equipment = eq,
                     DamageArmorEnhanced = false
                 };
+
+                // Add the properties (there are 12)
+                var propArray = values.Skip(21).ToArray();
+                propArray = propArray.Take(propArray.Count() - 1).ToArray();
+
+                var properties = ItemProperty.GetProperties(propArray, unique.Equipment.ItemLevel);
+
+                unique.Properties = properties;
+
 
                 AddDamageArmorString(unique);
 

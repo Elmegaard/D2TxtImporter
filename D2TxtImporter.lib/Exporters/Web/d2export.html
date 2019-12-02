@@ -13,7 +13,7 @@
 
 <body>
   <div>
-    <ul class="nav nav-fill navbar-dark bg-dark" id="navbar">
+    <ul class="nav nav-fill navbar-dark bg-dark header" id="navbar">
       <li class="nav-item">
         <ul class="nav nav-fill navbar-dark bg-dark header">
           <li class="nav-item">
@@ -25,11 +25,22 @@
           <li class="nav-item">
             <a class="nav-link" id="nav-cuberecipes" href="#">Cube Recipes</a>
           </li>
-          <li>
-            <input id="searchField" class="form-control form-control-sm search" type="text" placeholder="Search"
-              aria-label="Search" />
-          </li>
         </ul>
+      </li>
+    </ul>
+    <ul class="nav nav-fill navbar-dark bg-dark search-bar">
+      <li class="nav-item">
+        <!-- Search Bar Runewords -->
+        <ul class="nav nav-fill navbar-dark bg-dark" style="display: none;" id="search-runeword">
+          <li class="nav-item">
+            <select class="form-control search-input-change" id="search-runeword-type"></select>
+          </li>
+      </li>
+    </ul>
+    <li class="nav-item nav-item-right">
+      <input id="searchField" class="form-control form-control-sm search search-input-change" type="text"
+        placeholder="Search" aria-label="Search">
+    </li>
     </ul>
   </div>
 

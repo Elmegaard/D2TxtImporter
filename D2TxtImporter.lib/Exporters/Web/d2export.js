@@ -241,6 +241,56 @@ function ClearTable() {
     $("#tbody").html("");
 }
 
+var UniqueSearchItems = {};
+var RuneWordsSearchItems = {};
+
+function GetUniqueSearch() {
+
+}
+
+function GetRunewordsSearch() {
+    var types = ["Any"];
+    AllRunewords.forEach(el => {
+        el.Types.forEach(type => {
+            if (!types.includes(type.Name)) {
+                types.push(type.Name);
+            }
+        });
+    });
+
+    RuneWordsSearchItems = { "types": types };
+}
+
+function HideSearchBars() {
+    $("#search-runeword").css("display", "none");
+    $("#search-unique").css("display", "none");
+    $("#search-cuberecipes").css("display", "none");
+}
+
+function GenerateSearchBarUniques() {
+    HideSearchBars();
+    var searchBar = $("#search-bar")[0];
+}
+
+function GenerateSearchBarRunewords() {
+    HideSearchBars();
+    var searchBar = $("#search-runeword");
+    searchBar.css("display", "flex");
+
+    var typeDropdown = $("#search-runeword-type");
+    RuneWordsSearchItems.types.forEach(type => {
+        var typeOption = $("<option>");
+        typeOption.text(type);
+        typeOption.val(type);
+        typeDropdown.append(typeOption);
+    });
+}
+
+function GenerateSearchBarCubeRecipes() {
+    HideSearchBars();
+    var searchBar = $("#search-bar")[0];
+}
+
 function GetUniques() {
     var json = "<UNIQUES_JSON>";
     Uniques = JSON.parse(json);
@@ -251,6 +301,8 @@ function GetRunewords() {
     var json = "<RUNEWORDS_JSON>";
     Runewords = JSON.parse(json);
     AllRunewords = JSON.parse(json);
+
+    GetRunewordsSearch();
 }
 
 function GetCubeRecipes() {
@@ -267,58 +319,76 @@ function Search() {
     var text = $("#searchField")[0].value;
     var activeField = $(".nav-link.active")[0].id;
 
-    if (text.length < 3) {
-        Uniques = AllUniques.slice(0);
-        Runewords = AllRunewords.slice(0);
-        CubeRecipes = AllCubeRecipes.slice(0);
-    } else {
-        if (activeField === "nav-uniques") {
-            Uniques = [];
-            AllUniques.forEach(el => {
-                if (el.Name.toLowerCase().includes(text.toLowerCase())) {
-                    Uniques.push(el);
-                } else if (el.Type.toLowerCase().includes(text.toLowerCase())) {
+    var change = false;
+
+    change = true;
+
+    if (activeField === "nav-uniques") {
+        Uniques = [];
+        AllUniques.forEach(el => {
+            if (el.Name.toLowerCase().includes(text.toLowerCase())) {
+                Uniques.push(el);
+            } else if (el.Type.toLowerCase().includes(text.toLowerCase())) {
+                Uniques.push(el);
+            }
+
+            el.Properties.forEach(prop => {
+                if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
                     Uniques.push(el);
                 }
-
-                el.Properties.forEach(prop => {
-                    if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                        Uniques.push(el);
-                    }
-                });
             });
-        } else if (activeField === "nav-runewords") {
-            Runewords = [];
-            AllRunewords.forEach(el => {
-                if (el.Name.toLowerCase().includes(text.toLowerCase())) {
-                    Runewords.push(el);
-                }
+        });
+    } else if (activeField === "nav-runewords") {
+        Runewords = [];
+        var typeSearch = $("#search-runeword-type").val();
+        AllRunewords.forEach(el => {
+            if (typeSearch.toLowerCase() === "any" || el.Types.some(e => e.Name === typeSearch)) {
+                if (text.length > 0) {
+                    if (el.Name.toLowerCase().includes(text.toLowerCase())) {
+                        if (!Runewords.some(e => e.Name === el.Name)) {
+                            Runewords.push(el);
+                        }
+                    }
 
-                el.Types.forEach(type => {
-                    if (type.Name.toLowerCase().includes(text.toLowerCase())) {
+                    el.Types.forEach(type => {
+                        if (type.Name.toLowerCase().includes(text.toLowerCase())) {
+                            if (!Runewords.some(e => e.Name === el.Name)) {
+                                Runewords.push(el);
+                            }
+                        }
+                    });
+
+                    el.Properties.forEach(prop => {
+                        if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
+                            if (!Runewords.some(e => e.Name === el.Name)) {
+                                Runewords.push(el);
+                            }
+                        }
+                    });
+                } else {
+                    if (!Runewords.some(e => e.Name === el.Name)) {
                         Runewords.push(el);
                     }
-                });
-
-                el.Properties.forEach(prop => {
-                    if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                        Runewords.push(el);
-                    }
-                });
-            });
-        } else if (activeField === "nav-cuberecipes") {
-            CubeRecipes = [];
-            AllCubeRecipes.forEach(el => {
-                if (el.CubeRecipeDescription.toLowerCase().includes(text.toLowerCase())) {
-                    CubeRecipes.push(el);
                 }
-            });
-        }
+            }
+        });
+    } else if (activeField === "nav-cuberecipes") {
+        CubeRecipes = [];
+        AllCubeRecipes.forEach(el => {
+            if (el.CubeRecipeDescription.toLowerCase().includes(text.toLowerCase())) {
+                CubeRecipes.push(el);
+            }
+        });
     }
-    RenderActive(activeField);
+
+    if (change) {
+        RenderActive();
+    }
 }
 
-function RenderActive(activeField) {
+function RenderActive() {
+    var activeField = $(".nav-link.active")[0].id;
+
     if (activeField === "nav-uniques") {
         RenderUniques();
     } else if (activeField === "nav-runewords") {
@@ -326,22 +396,18 @@ function RenderActive(activeField) {
     } else if (activeField === "nav-cuberecipes") {
         RenderCubeRecipes();
     }
+
 }
 
-var navbar;
-var strickt;
-
-// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-function scrollNavBar() {
-    if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky")
-    } else {
-        navbar.classList.remove("sticky");
-    }
+function UpdateOnSearchChange() {
+    $(".search-input-change").on('change paste input', function () {
+        Search();
+    });
 }
 
 $('document').ready(function () {
-    Search();
+    GenerateSearchBarUniques();
+    RenderActive();
 
     $(".nav .nav-link").on("click", function () {
         $(".nav").find(".active").removeClass("active");
@@ -350,26 +416,21 @@ $('document').ready(function () {
 
     $("#nav-uniques").click(function () {
         $("#searchField")[0].value = "";
-        Search();
+        GenerateSearchBarUniques();
+        RenderActive();
     });
 
     $("#nav-runewords").click(function () {
         $("#searchField")[0].value = "";
-        Search();
+        GenerateSearchBarRunewords();
+        RenderActive();
     });
 
     $("#nav-cuberecipes").click(function () {
         $("#searchField")[0].value = "";
-        Search();
+        GenerateSearchBarCubeRecipes();
+        RenderActive();
     });
 
-    $("#searchField").on('change paste input', function () {
-        Search();
-    });
-
-    // Get the navbar
-    navbar = $("#navbar")[0];
-    // Get the offset position of the navbar
-    sticky = navbar.offsetTop;
-    window.onscroll = function () { scrollNavBar() };
+    UpdateOnSearchChange();
 });

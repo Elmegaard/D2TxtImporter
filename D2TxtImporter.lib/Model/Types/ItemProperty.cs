@@ -12,7 +12,7 @@ namespace D2TxtImporter.lib.Model
         public ItemStatCost ItemStatCost { get; set; }
         public string PropertyString { get; set; }
 
-        public ItemProperty(string property, string parameter, int? min, int? max)
+        public ItemProperty(string property, string parameter, int? min, int? max, int itemLevel = 0)
         {
             Property = EffectProperty.EffectProperties[property];
             Parameter = parameter;
@@ -62,10 +62,10 @@ namespace D2TxtImporter.lib.Model
             }
 
             ItemStatCost = ItemStatCost.ItemStatCosts[stat];
-            PropertyString = ItemStatCost.PropertyString(Min, Max, Parameter);
+            PropertyString = ItemStatCost.PropertyString(Min, Max, Parameter, itemLevel);
         }
 
-        public static List<ItemProperty> GetProperties(string[] properties)
+        public static List<ItemProperty> GetProperties(string[] properties, int itemLevel = 0)
         {
             var result = new List<ItemProperty>();
 
@@ -73,7 +73,7 @@ namespace D2TxtImporter.lib.Model
             {
                 if (!string.IsNullOrEmpty(properties[i]) && !properties[i].StartsWith("*"))
                 {
-                    var prop = new ItemProperty(properties[i], properties[i + 1], Utility.ToNullableInt(properties[i + 2]), Utility.ToNullableInt(properties[i + 3]));
+                    var prop = new ItemProperty(properties[i], properties[i + 1], Utility.ToNullableInt(properties[i + 2]), Utility.ToNullableInt(properties[i + 3]), itemLevel);
                     result.Add(prop);
                 }
             }
