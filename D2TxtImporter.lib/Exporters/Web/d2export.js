@@ -245,11 +245,20 @@ var UniqueSearchItems = {};
 var RuneWordsSearchItems = {};
 
 function GetUniqueSearch() {
+    var types = [];
+    AllUniques.forEach(el => {
+        if (!types.includes(el.Equipment.TypeName)) {
+            types.push(el.Equipment.TypeName);
+        }
+    });
+    types.sort();
+    types.unshift("Any");
 
+    UniqueSearchItems = { "types": types };
 }
 
 function GetRunewordsSearch() {
-    var types = ["Any"];
+    var types = [];
     AllRunewords.forEach(el => {
         el.Types.forEach(type => {
             if (!types.includes(type.Name)) {
@@ -257,6 +266,8 @@ function GetRunewordsSearch() {
             }
         });
     });
+    types.sort();
+    types.unshift("Any");
 
     RuneWordsSearchItems = { "types": types };
 }
@@ -269,7 +280,16 @@ function HideSearchBars() {
 
 function GenerateSearchBarUniques() {
     HideSearchBars();
-    var searchBar = $("#search-bar")[0];
+    var searchBar = $("#search-unique");
+    searchBar.css("display", "flex");
+
+    var typeDropdown = $("#search-unique-type");
+    UniqueSearchItems.types.forEach(type => {
+        var typeOption = $("<option>");
+        typeOption.text(type);
+        typeOption.val(type);
+        typeDropdown.append(typeOption);
+    });
 }
 
 function GenerateSearchBarRunewords() {
@@ -295,6 +315,8 @@ function GetUniques() {
     var json = "<UNIQUES_JSON>";
     Uniques = JSON.parse(json);
     AllUniques = JSON.parse(json);
+
+    GetUniqueSearch();
 }
 
 function GetRunewords() {
@@ -321,29 +343,48 @@ function Search() {
 
     var change = false;
 
-    change = true;
-
     if (activeField === "nav-uniques") {
-        Uniques = [];
+        var searchedUniques = [];
+        var typeSearch = $("#search-unique-type").val();
         AllUniques.forEach(el => {
-            if (el.Name.toLowerCase().includes(text.toLowerCase())) {
-                Uniques.push(el);
-            } else if (el.Type.toLowerCase().includes(text.toLowerCase())) {
-                Uniques.push(el);
-            }
+            if (typeSearch.toLowerCase() === "any" || el.Equipment.TypeName === typeSearch) {
+                if (text.length > 2) {
+                    if (el.Name.toLowerCase().includes(text.toLowerCase())) {
+                        if (!searchedUniques.some(e => e.Name === el.Name)) {
+                            searchedUniques.push(el);
+                        }
+                    } else if (el.Type.toLowerCase().includes(text.toLowerCase())) {
+                        if (!searchedUniques.some(e => e.Name === el.Name)) {
+                            searchedUniques.push(el);
+                        }
+                    }
 
-            el.Properties.forEach(prop => {
-                if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                    Uniques.push(el);
+                    el.Properties.forEach(prop => {
+                        if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
+                            if (!searchedUniques.some(e => e.Name === el.Name)) {
+                                searchedUniques.push(el);
+                            }
+                        }
+                    });
+                } else {
+                    if (!searchedUniques.some(e => e.Name === el.Name)) {
+                        searchedUniques.push(el);
+                    }
                 }
-            });
+            }
         });
+
+        if (searchedUniques.length !== Uniques.length){
+            Uniques = searchedUniques;
+            change = true;
+        }
     } else if (activeField === "nav-runewords") {
         Runewords = [];
+        change = true;
         var typeSearch = $("#search-runeword-type").val();
         AllRunewords.forEach(el => {
             if (typeSearch.toLowerCase() === "any" || el.Types.some(e => e.Name === typeSearch)) {
-                if (text.length > 0) {
+                if (text.length > 2) {
                     if (el.Name.toLowerCase().includes(text.toLowerCase())) {
                         if (!Runewords.some(e => e.Name === el.Name)) {
                             Runewords.push(el);
@@ -373,6 +414,7 @@ function Search() {
             }
         });
     } else if (activeField === "nav-cuberecipes") {
+        chage = true;
         CubeRecipes = [];
         AllCubeRecipes.forEach(el => {
             if (el.CubeRecipeDescription.toLowerCase().includes(text.toLowerCase())) {

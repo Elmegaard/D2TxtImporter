@@ -85,7 +85,8 @@ namespace D2TxtImporter.lib.Model
                     RequiredStrength = !string.IsNullOrEmpty(values[23]) ? int.Parse(values[23]) : 0,
                     RequiredDexterity = !string.IsNullOrEmpty(values[24]) ? int.Parse(values[24]) : 0,
                     Durability = values[26] == "1" ? 0 : int.Parse(values[25]),
-                    ItemLevel = int.Parse(values[28])
+                    ItemLevel = int.Parse(values[28]),
+                    Type = values[1]
                 };
 
                 Weapons[weapon.Code] = weapon;

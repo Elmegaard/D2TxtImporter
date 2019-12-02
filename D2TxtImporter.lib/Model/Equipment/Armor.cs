@@ -10,7 +10,6 @@ namespace D2TxtImporter.lib.Model
     {
         public int MinAc { get; set; }
         public int MaxAc { get; set; }
-        public string Type { get; set; }
         public int? MinDamage { get; set; }
         public int? MaxDamage { get; set; }
         public string DamageString { get; set; }
@@ -45,7 +44,7 @@ namespace D2TxtImporter.lib.Model
                     Durability = int.Parse(values[11]),
                     MinDamage = Utility.ToNullableInt(values[63]),
                     MaxDamage = Utility.ToNullableInt(values[64]),
-                    ItemLevel = int.Parse(values[13])
+                    ItemLevel = int.Parse(values[13]),
                 };
 
                 Armors[armor.Code] = armor;
