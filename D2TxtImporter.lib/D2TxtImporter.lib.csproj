@@ -51,6 +51,8 @@
     <Compile Include="Model\Dictionaries\MagicPrefix.cs" />
     <Compile Include="Model\Dictionaries\MagicSuffix.cs" />
     <Compile Include="Model\Dictionaries\MonStat.cs" />
+    <Compile Include="Model\Items\Set.cs" />
+    <Compile Include="Model\Items\SetItem.cs" />
     <Compile Include="Model\TableProcessor.cs" />
     <Compile Include="Model\Equipment\Armor.cs" />
     <Compile Include="Model\Items\CupeRecipe.cs" />

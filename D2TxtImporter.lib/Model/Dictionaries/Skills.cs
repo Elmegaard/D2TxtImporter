@@ -34,13 +34,15 @@ namespace D2TxtImporter.lib.Model
                     continue;
                 }
 
+                var reqLevel = Utility.ToNullableInt(values[152]);
+
                 var skill = new Skill
                 {
                     Name = values[0],
                     Id = Utility.ToNullableInt(values[1]),
                     CharClass = values[2],
                     SkillDesc = values[3],
-                    RequiredLevel = int.Parse(values[152])
+                    RequiredLevel = reqLevel.HasValue ? reqLevel.Value : 1
                 };
 
                 IdSkillDictionary[skill.Id] = skill;

@@ -14,6 +14,8 @@ namespace D2TxtImporter.lib.Model
         public int RequiredLevel { get; set; }
         public string Code { get; set; }
         public List<ItemProperty> Properties { get; set; }
+        public bool DamageArmorEnhanced { get; set; }
+        public Equipment Equipment { get; set; }
 
         public override string ToString()
         {

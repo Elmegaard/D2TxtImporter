@@ -7,7 +7,7 @@ namespace D2TxtImporter.lib
 {
     public class JsonExporter
     {
-        public static void ExportJson(string outputPath, List<Unique> uniques, List<Runeword> runewords, List<CubeRecipe> cubeRecipes)
+        public static void ExportJson(string outputPath, List<Unique> uniques, List<Runeword> runewords, List<CubeRecipe> cubeRecipes, List<Set> sets)
         {
             if (!Directory.Exists(outputPath))
             {
@@ -24,11 +24,12 @@ namespace D2TxtImporter.lib
             Uniques(txtOutputDirectory + "/uniques.json", uniques);
             Runewords(txtOutputDirectory + "/runewords.json", runewords);
             CubeRecipes(txtOutputDirectory + "/cube_recipes.json", cubeRecipes);
+            Sets(txtOutputDirectory + "/sets.json", sets);
         }
 
         private static void Uniques(string destination, List<Unique> uniques)
         {
-            var json = JsonConvert.SerializeObject(uniques, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii}).Replace("\\ufffd", "'");
+            var json = JsonConvert.SerializeObject(uniques, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii }).Replace("\\ufffd", "'");
             File.WriteAllText(destination, json, System.Text.Encoding.UTF8);
         }
 
@@ -41,6 +42,12 @@ namespace D2TxtImporter.lib
         private static void CubeRecipes(string destination, List<CubeRecipe> cubeRecipes)
         {
             var json = JsonConvert.SerializeObject(cubeRecipes, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii }).Replace("\\ufffd", "'");
+            File.WriteAllText(destination, json, System.Text.Encoding.UTF8);
+        }
+
+        private static void Sets(string destination, List<Set> sets)
+        {
+            var json = JsonConvert.SerializeObject(sets, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeNonAscii }).Replace("\\ufffd", "'");
             File.WriteAllText(destination, json, System.Text.Encoding.UTF8);
         }
     }

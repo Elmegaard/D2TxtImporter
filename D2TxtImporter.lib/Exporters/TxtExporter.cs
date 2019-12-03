@@ -7,7 +7,7 @@ namespace D2TxtImporter.lib
 {
     public class TxtExporter
     {
-        public static void ExportTxt(string outputPath, List<Unique> uniques, List<Runeword> runewords, List<CubeRecipe> cubeRecipes)
+        public static void ExportTxt(string outputPath, List<Unique> uniques, List<Runeword> runewords, List<CubeRecipe> cubeRecipes, List<Set> sets)
         {
             if (!Directory.Exists(outputPath))
             {

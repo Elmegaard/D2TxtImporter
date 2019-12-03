@@ -11,13 +11,15 @@ namespace D2TxtImporter.lib.Model
         public int? Max { get; set; }
         public ItemStatCost ItemStatCost { get; set; }
         public string PropertyString { get; set; }
+        public int Index { get; set; }
 
-        public ItemProperty(string property, string parameter, int? min, int? max, int itemLevel = 0)
+        public ItemProperty(string property, string parameter, int? min, int? max, int index, int itemLevel = 0)
         {
-            Property = EffectProperty.EffectProperties[property];
+            Property = EffectProperty.EffectProperties[property.ToLower()];
             Parameter = parameter;
             Min = min;
             Max = max;
+            Index = index;
 
             var stat = Property.Stat;
 
@@ -73,7 +75,7 @@ namespace D2TxtImporter.lib.Model
             {
                 if (!string.IsNullOrEmpty(properties[i]) && !properties[i].StartsWith("*"))
                 {
-                    var prop = new ItemProperty(properties[i], properties[i + 1], Utility.ToNullableInt(properties[i + 2]), Utility.ToNullableInt(properties[i + 3]), itemLevel);
+                    var prop = new ItemProperty(properties[i], properties[i + 1], Utility.ToNullableInt(properties[i + 2]), Utility.ToNullableInt(properties[i + 3]), i / 4, itemLevel);
                     result.Add(prop);
                 }
             }
@@ -106,7 +108,7 @@ namespace D2TxtImporter.lib.Model
 
                             damagePropertyName = damagePropertyName.First().ToString().ToUpper() + damagePropertyName.Substring(1);
 
-                            var newProp = new ItemProperty("eledam", damagePropertyName, minDam.Min, maxDam.Max);
+                            var newProp = new ItemProperty("eledam", damagePropertyName, minDam.Min, maxDam.Max, minDam.Index);
 
                             toRemove.Add(minDam);
                             toRemove.Add(maxDam);
@@ -140,8 +142,6 @@ namespace D2TxtImporter.lib.Model
                     }
                 }
             }
-
-            result = result.OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
 
             return result;
         }

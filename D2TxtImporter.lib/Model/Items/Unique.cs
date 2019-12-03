@@ -9,8 +9,6 @@ namespace D2TxtImporter.lib.Model
     public class Unique : Item
     {
         public string Type { get; set; }
-        public Equipment Equipment { get; set; }
-        public bool DamageArmorEnhanced { get; set; }
 
         public static List<Unique> Import(string excelFolder)
         {
@@ -26,6 +24,16 @@ namespace D2TxtImporter.lib.Model
                     continue;
                 }
 
+                var unique = new Unique
+                {
+                    Name = values[0],
+                    Enabled = values[2] == "1",
+                    ItemLevel = int.Parse(values[6]),
+                    RequiredLevel = int.Parse(values[7]),
+                    Code = values[8],
+                    Type = values[9],
+                    DamageArmorEnhanced = false
+                };
 
                 Equipment eq;
                 var code = values[8];
@@ -40,6 +48,11 @@ namespace D2TxtImporter.lib.Model
                 }
                 else
                 {
+                    if (!Misc.MiscItems.ContainsKey(code))
+                    {
+                        throw new Exception($"Could not find code '{code}' in Misc.txt for unique '{unique.Name}'");
+                    }
+
                     var misc = Misc.MiscItems[code];
 
                     eq = new Equipment
@@ -51,23 +64,12 @@ namespace D2TxtImporter.lib.Model
                     };
                 }
 
-                var unique = new Unique
-                {
-                    Name = values[0],
-                    Enabled = values[2] == "1",
-                    ItemLevel = int.Parse(values[6]),
-                    RequiredLevel = int.Parse(values[7]),
-                    Code = values[8],
-                    Type = values[9],
-                    Equipment = eq,
-                    DamageArmorEnhanced = false
-                };
+                unique.Equipment = eq;
 
-                // Add the properties (there are 12)
                 var propArray = values.Skip(21).ToArray();
                 propArray = propArray.Take(propArray.Count() - 1).ToArray();
 
-                var properties = ItemProperty.GetProperties(propArray, unique.ItemLevel);
+                var properties = ItemProperty.GetProperties(propArray, unique.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
 
                 unique.Properties = properties;
 
@@ -80,7 +82,7 @@ namespace D2TxtImporter.lib.Model
             return result.OrderBy(x => x.RequiredLevel).ToList();
         }
 
-        private static void AddDamageArmorString(Unique unique)
+        public static void AddDamageArmorString(Item unique)
         {
             if (unique.Equipment.EquipmentType == EquipmentType.Weapon)
             {

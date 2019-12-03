@@ -14,6 +14,7 @@ namespace D2TxtImporter.lib
         public List<Model.Unique> Uniques { get; set; }
         public List<Model.Runeword> Runewords { get; set; }
         public List<Model.CubeRecipe> CubeRecipes { get; set; }
+        public List<Model.Set> Sets { get; set; }
 
         public Importer(string excelPath, string tablePath, string outputDir)
         {
@@ -52,6 +53,7 @@ namespace D2TxtImporter.lib
             Model.CharStat.Import(_excelPath);
             Model.MonStat.Import(_excelPath);
             Model.Misc.Import(_excelPath);
+            Model.SetItem.Import(_excelPath);
         }
 
         public void ImportModel()
@@ -59,12 +61,13 @@ namespace D2TxtImporter.lib
             Uniques = Model.Unique.Import(_excelPath);
             Runewords = Model.Runeword.Import(_excelPath);
             CubeRecipes = Model.CubeRecipe.Import(_excelPath);
+            Sets = Model.Set.Import(_excelPath);
         }
 
         public void Export()
         {
-            TxtExporter.ExportTxt(_outputPath, Uniques, Runewords, CubeRecipes);
-            JsonExporter.ExportJson(_outputPath, Uniques, Runewords, CubeRecipes);
+            TxtExporter.ExportTxt(_outputPath, Uniques, Runewords, CubeRecipes, Sets);
+            JsonExporter.ExportJson(_outputPath, Uniques, Runewords, CubeRecipes, Sets);
             WebExporter.ExportWeb(_outputPath);
         }
 

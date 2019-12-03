@@ -29,7 +29,7 @@ namespace D2TxtImporter.lib.Model
                 var propArray = values.Skip(20).ToArray();
                 propArray = propArray.Take(propArray.Count() - 1).ToArray();
 
-                var properties = ItemProperty.GetProperties(propArray);
+                var properties = ItemProperty.GetProperties(propArray).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
 
                 // Add the runes
                 var runeArray = values.Skip(14).ToArray();
