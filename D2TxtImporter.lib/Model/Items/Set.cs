@@ -46,7 +46,7 @@ namespace D2TxtImporter.lib.Model
                 var propArray = values.Skip(4).ToArray();
                 propArray = propArray.Take(36).ToArray();
                 var properties = ItemProperty.GetProperties(propArray, set.Level).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
-                set.PartialProperties = properties;
+                set.PartialProperties = properties.OrderBy(x => x.Index).ToList();
 
                 propArray = values.Skip(40).ToArray();
                 propArray = propArray.Take(propArray.Length - 1).ToArray();

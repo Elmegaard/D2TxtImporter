@@ -11,7 +11,9 @@ namespace D2TxtImporter.lib.Model
         public string Type { get; set; }
         public string Set { get; set; }
         public List<ItemProperty> SetProperties { get; set; }
+        public List<string> SetPropertiesString { get; set; }
         public static List<SetItem> SetItems { get; set; }
+        public int AddFunc { get; set; }
 
         public static void Import(string excelFolder)
         {
@@ -27,6 +29,8 @@ namespace D2TxtImporter.lib.Model
                     continue;
                 }
 
+                var addFunc = Utility.ToNullableInt(values[16]);
+
                 var setItem = new SetItem
                 {
                     Name = values[0],
@@ -36,7 +40,8 @@ namespace D2TxtImporter.lib.Model
                     RequiredLevel = int.Parse(values[6]),
                     Code = values[2],
                     Type = values[3],
-                    DamageArmorEnhanced = false
+                    DamageArmorEnhanced = false,
+                    AddFunc = addFunc.HasValue ? addFunc.Value : 0
                 };
 
                 Equipment eq;
@@ -82,6 +87,37 @@ namespace D2TxtImporter.lib.Model
 
                 SetItems.Add(setItem);
             }
+
+            foreach (var setItem in SetItems)
+            {
+                SetPartialPropertyString(setItem);
+            }
+        }
+
+        private static void SetPartialPropertyString(SetItem setItem)
+        {
+            setItem.SetPropertiesString = new List<string>();
+
+            foreach (var prop in setItem.SetProperties)
+            {
+                switch (setItem.AddFunc)
+                {
+                    case 0:
+                        setItem.Properties.Add(prop);
+                        break;
+                    case 1:
+                        var setItems = SetItem.SetItems.Where(x => x.Set == setItem.Set && x.Name != setItem.Name).ToList();
+                        var index = (int)Math.Floor(prop.Index / 2f);
+
+                        setItem.SetPropertiesString.Add($"{prop.PropertyString} ({setItems[index].Name})");
+                        break;
+                    case 2:
+                        setItem.SetPropertiesString.Add($"{prop.PropertyString} ({Math.Floor(prop.Index / 2f) + 2} Items)");
+                        break;
+                }
+            }
+
+
         }
     }
 }

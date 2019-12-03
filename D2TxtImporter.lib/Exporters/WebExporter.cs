@@ -53,11 +53,12 @@ namespace D2TxtImporter.lib
             var uniqueJson = File.ReadAllText($"{jsonPath}/uniques.json", Encoding.UTF8);
             var runewordJson = File.ReadAllText($"{jsonPath}/runewords.json", Encoding.UTF8);
             var cubeRecipeJson = File.ReadAllText($"{jsonPath}/cube_recipes.json", Encoding.UTF8);
+            var setsJson = File.ReadAllText($"{jsonPath}/sets.json", Encoding.UTF8);
 
             var jsFile = $"{webOutputDirectory}/d2export.js";
             var js = File.ReadAllText(jsFile, Encoding.UTF8);
 
-            js = js.Replace("\"<UNIQUES_JSON>\"", JsonConvert.ToString(uniqueJson)).Replace("\"<RUNEWORDS_JSON>\"", JsonConvert.ToString(runewordJson)).Replace("\"<CUBE_RECIPES_JSON>\"", JsonConvert.ToString(cubeRecipeJson));
+            js = js.Replace("\"<UNIQUES_JSON>\"", JsonConvert.ToString(uniqueJson)).Replace("\"<RUNEWORDS_JSON>\"", JsonConvert.ToString(runewordJson)).Replace("\"<CUBE_RECIPES_JSON>\"", JsonConvert.ToString(cubeRecipeJson)).Replace("\"<SETS_JSON>\"", JsonConvert.ToString(setsJson));
             File.WriteAllText(jsFile, js, Encoding.UTF8);
         }
 

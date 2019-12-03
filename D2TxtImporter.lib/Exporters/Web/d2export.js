@@ -7,146 +7,155 @@ var AllRunewords = {};
 var CubeRecipes = {};
 var AllCubeRecipes = {};
 
+var Sets = {};
+var AllSets = {};
+
+function GetUniqueItemDiv(el) {
+    var $item = $("<div>");
+    $item.addClass("item");
+
+    // Name
+    var $spanName = $("<span>");
+    $spanName.text(el.Name);
+    $spanName.addClass("unique-text");
+    $item.append($spanName);
+    $item.append($("<br>"));
+
+    // Type
+    var $spanType = $("<span>");
+    $spanType.text(el.Type);
+    $spanType.addClass("unique-text");
+    $item.append($spanType);
+    $item.append($("<br>"));
+
+    // Damage Armor
+    var $divDamage = $("<div>");
+    switch (el.Equipment.EquipmentType) {
+        case 0: // Armor
+            $divDamage.append($("<span>").text("Armor: "));
+            $spanArmor = $("<span>");
+            $spanArmor.text(el.Equipment.ArmorString);
+            if (el.DamageArmorEnhanced) {
+                $spanArmor.addClass("enhanced");
+            }
+            $divDamage.append($spanArmor);
+            $divDamage.append($("<br>"));
+            break;
+        case 1: // Weapon
+            el.Equipment.DamageTypes.forEach(wep => {
+                $spanDamageString = $("<span>");
+                $spanDamageNumbers = $("<span>");
+                switch (wep.Type) {
+                    case 0: // OneHanded
+                        $spanDamageString.text("One-Hand Damage: ");
+                        $spanDamageNumbers.text(wep.DamageString);
+                        if (el.DamageArmorEnhanced) {
+                            $spanDamageNumbers.addClass("enhanced");
+                        }
+                        break;
+                    case 1: // TwoHanded
+                        $spanDamageString.text("Two-Hand Damage: ");
+                        $spanDamageNumbers.text(wep.DamageString);
+                        if (el.DamageArmorEnhanced) {
+                            $spanDamageNumbers.addClass("enhanced");
+                        }
+                        break;
+                    case 2: // Thrown
+                        $spanDamageString.text("Thrown Damage: ");
+                        $spanDamageNumbers.text(wep.DamageString);
+                        if (el.DamageArmorEnhanced) {
+                            $spanDamageNumbers.addClass("enhanced");
+                        }
+                        break;
+                    case 3: // Normal
+                        $spanDamageString.text("Damage: ");
+                        $spanDamageNumbers.text(wep.DamageString);
+                        if (el.DamageArmorEnhanced) {
+                            $spanDamageNumbers.addClass("enhanced");
+                        }
+                        break;
+                }
+                $divDamage.append($spanDamageString);
+                $divDamage.append($spanDamageNumbers);
+                $divDamage.append($("<br>"));
+            });
+            break;
+        case 2: // Jewelery
+            break;
+    }
+    $item.append($divDamage);
+
+    // Required Level
+    if (el.RequiredLevel > 0) {
+        var $req = $("<span>");
+        $req.addClass("requirement");
+        $req.text("Required Level: " + el.RequiredLevel);
+        $item.append($req);
+        $item.append($("<br>"));
+    }
+
+    // Required Strength
+    if (el.Equipment.RequiredStrength > 0) {
+        var $req = $("<span>");
+        $req.addClass("requirement");
+        $req.text("Required Strength: " + el.Equipment.RequiredStrength);
+        $item.append($req);
+        $item.append($("<br>"));
+    }
+
+    // Required Dexterity
+    if (el.Equipment.RequiredDexterity > 0) {
+        var $req = $("<span>");
+        $req.addClass("requirement");
+        $req.text("Required Dexterity: " + el.Equipment.RequiredDexterity);
+        $item.append($req);
+        $item.append($("<br>"));
+    }
+
+    // Required Class
+    if (el.Equipment.RequiredClass !== "") {
+        var $req = $("<span>");
+        $req.addClass("requirement");
+        $req.text(el.Equipment.RequiredClass + " Only");
+        $item.append($req);
+        $item.append($("<br>"));
+    }
+
+    // Durability
+    if (el.Equipment.Durability != 0) {
+        var $req = $("<span>");
+        $req.text("Durability: " + el.Equipment.Durability);
+        $item.append($req);
+        $item.append($("<br>"));
+    }
+
+    // Add armor damage (smite damage, kick damage)
+    if (el.Equipment.EquipmentType == 0) // Armor type
+    {
+        if (el.Equipment.DamageString) {
+            $item.append($("<span>").text(el.Equipment.DamageStringPrefix + ": " + el.Equipment.DamageString));
+            $item.append($("<br>"));
+        }
+    }
+
+    // Add properties
+    el.Properties.forEach(prop => {
+        $propSpan = $("<span>");
+        $propSpan.addClass("enhanced");
+        $propSpan.text(prop.PropertyString);
+
+        $item.append($propSpan);
+        $item.append($("<br>"));
+    });
+
+    return $item;
+}
+
 function RenderUniques() {
     ClearTable();
 
     Uniques.forEach(el => {
-        var $item = $("<div>");
-        $item.addClass("item");
-
-        // Name
-        var $spanName = $("<span>");
-        $spanName.text(el.Name);
-        $spanName.addClass("unique-text");
-        $item.append($spanName);
-        $item.append($("<br>"));
-
-        // Type
-        var $spanType = $("<span>");
-        $spanType.text(el.Type);
-        $spanType.addClass("unique-text");
-        $item.append($spanType);
-        $item.append($("<br>"));
-
-        // Damage Armor
-        var $divDamage = $("<div>");
-        switch (el.Equipment.EquipmentType) {
-            case 0: // Armor
-                $divDamage.append($("<span>").text("Armor: "));
-                $spanArmor = $("<span>");
-                $spanArmor.text(el.Equipment.ArmorString);
-                if (el.DamageArmorEnhanced) {
-                    $spanArmor.addClass("enhanced");
-                }
-                $divDamage.append($spanArmor);
-                $divDamage.append($("<br>"));
-                break;
-            case 1: // Weapon
-                el.Equipment.DamageTypes.forEach(wep => {
-                    $spanDamageString = $("<span>");
-                    $spanDamageNumbers = $("<span>");
-                    switch (wep.Type) {
-                        case 0: // OneHanded
-                            $spanDamageString.text("One-Hand Damage: ");
-                            $spanDamageNumbers.text(wep.DamageString);
-                            if (el.DamageArmorEnhanced) {
-                                $spanDamageNumbers.addClass("enhanced");
-                            }
-                            break;
-                        case 1: // TwoHanded
-                            $spanDamageString.text("Two-Hand Damage: ");
-                            $spanDamageNumbers.text(wep.DamageString);
-                            if (el.DamageArmorEnhanced) {
-                                $spanDamageNumbers.addClass("enhanced");
-                            }
-                            break;
-                        case 2: // Thrown
-                            $spanDamageString.text("Thrown Damage: ");
-                            $spanDamageNumbers.text(wep.DamageString);
-                            if (el.DamageArmorEnhanced) {
-                                $spanDamageNumbers.addClass("enhanced");
-                            }
-                            break;
-                        case 3: // Normal
-                            $spanDamageString.text("Damage: ");
-                            $spanDamageNumbers.text(wep.DamageString);
-                            if (el.DamageArmorEnhanced) {
-                                $spanDamageNumbers.addClass("enhanced");
-                            }
-                            break;
-                    }
-                    $divDamage.append($spanDamageString);
-                    $divDamage.append($spanDamageNumbers);
-                    $divDamage.append($("<br>"));
-                });
-                break;
-            case 2: // Jewelery
-                break;
-        }
-        $item.append($divDamage);
-
-        // Required Level
-        if (el.RequiredLevel > 0) {
-            var $req = $("<span>");
-            $req.addClass("requirement");
-            $req.text("Required Level: " + el.RequiredLevel);
-            $item.append($req);
-            $item.append($("<br>"));
-        }
-
-        // Required Strength
-        if (el.Equipment.RequiredStrength > 0) {
-            var $req = $("<span>");
-            $req.addClass("requirement");
-            $req.text("Required Strength: " + el.Equipment.RequiredStrength);
-            $item.append($req);
-            $item.append($("<br>"));
-        }
-
-        // Required Dexterity
-        if (el.Equipment.RequiredDexterity > 0) {
-            var $req = $("<span>");
-            $req.addClass("requirement");
-            $req.text("Required Dexterity: " + el.Equipment.RequiredDexterity);
-            $item.append($req);
-            $item.append($("<br>"));
-        }
-
-        // Required Class
-        if (el.Equipment.RequiredClass !== "") {
-            var $req = $("<span>");
-            $req.addClass("requirement");
-            $req.text(el.Equipment.RequiredClass + " Only");
-            $item.append($req);
-            $item.append($("<br>"));
-        }
-
-        // Durability
-        if (el.Equipment.Durability != 0) {
-            var $req = $("<span>");
-            $req.text("Durability: " + el.Equipment.Durability);
-            $item.append($req);
-            $item.append($("<br>"));
-        }
-
-        // Add armor damage (smite damage, kick damage)
-        if (el.Equipment.EquipmentType == 0) // Armor type
-        {
-            if (el.Equipment.DamageString) {
-                $item.append($("<span>").text(el.Equipment.DamageStringPrefix + ": " + el.Equipment.DamageString));
-                $item.append($("<br>"));
-            }
-        }
-
-        // Add properties
-        el.Properties.forEach(prop => {
-            $propSpan = $("<span>");
-            $propSpan.addClass("enhanced");
-            $propSpan.text(prop.PropertyString);
-
-            $item.append($propSpan);
-            $item.append($("<br>"));
-        });
+        var $item = GetUniqueItemDiv(el);
 
         var $tr = $("<tr>");
         var $td = $("<td>");
@@ -246,6 +255,76 @@ function RenderCubeRecipes() {
     });
 }
 
+function RenderSets() {
+    ClearTable();
+
+    for (var i = 0; i < Sets.length; i++) {
+        var set = Sets[i];
+
+        var $item = $("<div>");
+        $item.addClass("item");
+
+        // Name
+        var $spanName = $("<span>");
+        $spanName.text(set.Name);
+        $spanName.addClass("set-text");
+        $item.append($spanName);
+        $item.append($("<br>"));
+
+        // Partial Properties
+        for (var j = 0; j < set.PartialProperties.length; j++) {
+            var prop = set.PartialProperties[j];
+
+            $propSpan = $("<span>");
+            $propSpan.addClass("set-text");
+            $propSpan.text(prop.PropertyString + " (" + Math.floor(prop.Index / 2 + 2) + " Items)");
+
+            $item.append($propSpan);
+            $item.append($("<br>"));
+        }
+
+        // Full Properties
+        for (var j = 0; j < set.FullProperties.length; j++) {
+            var prop = set.FullProperties[j];
+
+            $propSpan = $("<span>");
+            $propSpan.addClass("set-text");
+            $propSpan.text(prop.PropertyString + " (Full Set)");
+
+            $item.append($propSpan);
+            $item.append($("<br>"));
+        }
+
+        $item.append($("<br>"));
+
+        // Set Items
+        for (var j = 0; j < set.SetItems.length; j++) {
+            var el = set.SetItems[j];
+
+            var uniqueItemDiv = GetUniqueItemDiv(el);
+            $item.append(uniqueItemDiv.children());
+            for (var k = 0; k < el.SetPropertiesString.length; k++) {
+                var propString = el.SetPropertiesString[k];
+
+                var propSpan = $("<span>");
+                propSpan.addClass("set-text");
+                propSpan.text(propString);
+                $item.append(propSpan);
+                $item.append($("<br>"));
+            }
+
+            $item.append($("<br>"));
+        }
+
+        var $tr = $("<tr>");
+        var $td = $("<td>");
+
+        $td.append($item);
+        $tr.append($td);
+        $("#tbody").append($tr);
+    }
+}
+
 function ClearTable() {
     $("#tbody").html("");
 }
@@ -285,6 +364,7 @@ function HideSearchBars() {
     $("#search-runeword").css("display", "none");
     $("#search-unique").css("display", "none");
     $("#search-cuberecipes").css("display", "none");
+    $("#search-sets").css("display", "none");
 }
 
 function GenerateSearchBarUniques() {
@@ -317,7 +397,12 @@ function GenerateSearchBarRunewords() {
 
 function GenerateSearchBarCubeRecipes() {
     HideSearchBars();
-    var searchBar = $("#search-bar")[0];
+}
+
+function GenerateSearchBarSets() {
+    HideSearchBars();
+    var searchBar = $("#search-sets");
+    searchBar.css("display", "flex");
 }
 
 function GetUniques() {
@@ -342,9 +427,16 @@ function GetCubeRecipes() {
     AllCubeRecipes = JSON.parse(json);
 }
 
+function GetSets() {
+    var json = "<SETS_JSON>";
+    Sets = JSON.parse(json);
+    AllSets = JSON.parse(json);
+}
+
 GetUniques();
 GetRunewords();
 GetCubeRecipes();
+GetSets();
 
 function Search() {
     var text = $("#searchField")[0].value;
@@ -383,7 +475,7 @@ function Search() {
             }
         });
 
-        if (!CompareItems(Uniques, searchedUniques)){
+        if (!CompareItems(Uniques, searchedUniques)) {
             Uniques = searchedUniques;
             change = true;
         }
@@ -423,7 +515,7 @@ function Search() {
             }
         });
 
-        if (!CompareItems(Runewords, serachedRunewords)){
+        if (!CompareItems(Runewords, serachedRunewords)) {
             Runewords = serachedRunewords;
             change = true;
         }
@@ -443,10 +535,10 @@ function Search() {
 }
 
 function CompareItems(arr1, arr2) {
-    if(arr1.length !== arr2.length)
+    if (arr1.length !== arr2.length)
         return false;
-    for(var i = arr1.length; i--;) {
-        if(arr1[i].Name !== arr2[i].Name)
+    for (var i = arr1.length; i--;) {
+        if (arr1[i].Name !== arr2[i].Name)
             return false;
     }
     return true;
@@ -461,6 +553,8 @@ function RenderActive() {
         RenderRunewords();
     } else if (activeField === "nav-cuberecipes") {
         RenderCubeRecipes();
+    } else if (activeField === "nav-sets") {
+        RenderSets();
     }
 
 }
@@ -495,6 +589,12 @@ $('document').ready(function () {
     $("#nav-cuberecipes").click(function () {
         $("#searchField")[0].value = "";
         GenerateSearchBarCubeRecipes();
+        RenderActive();
+    });
+
+    $("#nav-sets").click(function () {
+        $("#searchField")[0].value = "";
+        GenerateSearchBarSets();
         RenderActive();
     });
 
