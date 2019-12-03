@@ -283,22 +283,19 @@ namespace D2TxtImporter.lib.Model
                             break;
                         case 15:
                             valueString = value2.Value.ToString();
+                            var skill = Skill.GetSkill(parameter);
 
                             if (value2.Value == 0)
                             {
-                                val1 = Math.Min(20, Math.Ceiling(itemLevel / 3.9));
-                                valueString = GetValueString(val1, 20);
+                                val1 = Math.Min(Math.Ceiling((itemLevel - (skill.RequiredLevel - 1)) / 3.9), 20);
+                                val2 = Math.Min(Math.Round((99 - (skill.RequiredLevel - 1)) / 3.9), 20);
+
+                                valueString = GetValueString(val1, val2);
                             }
 
-                            // TODO: This is calculated as (min ilvl it can drop as / 3.9 (rounded up) to same but max it can drop as).
                             valueString = lstValue.Replace("%d%", value.Value.ToString())
                                                      .Replace("%d", valueString)
-                                                     .Replace("%s", Skill.GetSkill(parameter).SkillDesc);
-
-                            if (value2.Value == 0)
-                            {
-                                valueString += " - TODO: Why is this showing 0 for ranges?";
-                            }
+                                                     .Replace("%s", skill.SkillDesc);
                             break;
                         case 16:
                             valueString = lstValue.Replace("%d", valueString)

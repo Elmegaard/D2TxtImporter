@@ -67,7 +67,7 @@ namespace D2TxtImporter.lib.Model
                 var propArray = values.Skip(21).ToArray();
                 propArray = propArray.Take(propArray.Count() - 1).ToArray();
 
-                var properties = ItemProperty.GetProperties(propArray, unique.Equipment.ItemLevel);
+                var properties = ItemProperty.GetProperties(propArray, unique.ItemLevel);
 
                 unique.Properties = properties;
 

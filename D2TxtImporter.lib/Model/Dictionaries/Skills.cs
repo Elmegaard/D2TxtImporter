@@ -12,6 +12,7 @@ namespace D2TxtImporter.lib.Model
         public int? Id { get; set; }
         public string CharClass { get; set; }
         public string SkillDesc { get; set; }
+        public int RequiredLevel { get; set; }
 
         private static Dictionary<int?, Skill> IdSkillDictionary;
         private static Dictionary<string, Skill> NameSkillDictionary;
@@ -38,7 +39,8 @@ namespace D2TxtImporter.lib.Model
                     Name = values[0],
                     Id = Utility.ToNullableInt(values[1]),
                     CharClass = values[2],
-                    SkillDesc = values[3]
+                    SkillDesc = values[3],
+                    RequiredLevel = int.Parse(values[152])
                 };
 
                 IdSkillDictionary[skill.Id] = skill;
