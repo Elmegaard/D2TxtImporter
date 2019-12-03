@@ -335,6 +335,7 @@ function ClearTable() {
 }
 
 var UniqueSearchItems = {};
+var SetsSearchItems = {};
 var RuneWordsSearchItems = {};
 
 function GetUniqueSearch() {
@@ -363,6 +364,20 @@ function GetRunewordsSearch() {
     types.unshift("Any");
 
     RuneWordsSearchItems = { "types": types };
+}
+
+function GetSetsSearch() {
+    var sets = [];
+    for (var i = 0; i < AllSets.length; i++) {
+        el = AllSets[i];
+        if (!sets.includes(el.Name)) {
+            sets.push(el.Name);
+        }
+    }
+    sets.sort();
+    sets.unshift("Any");
+
+    SetsSearchItems = { "sets": sets };
 }
 
 function HideSearchBars() {
@@ -408,6 +423,16 @@ function GenerateSearchBarSets() {
     HideSearchBars();
     var searchBar = $("#search-sets");
     searchBar.css("display", "flex");
+
+    var setDropdown = $("#search-set-name");
+    for (var i = 0; i < SetsSearchItems.sets.length; i++) {
+        var set = SetsSearchItems.sets[i];
+
+        var setOption = $("<option>");
+        setOption.text(set);
+        setOption.val(set);
+        setDropdown.append(setOption);
+    }
 }
 
 function GetUniques() {
@@ -436,6 +461,8 @@ function GetSets() {
     var json = "<SETS_JSON>";
     Sets = JSON.parse(json);
     AllSets = JSON.parse(json);
+
+    GetSetsSearch();
 }
 
 GetUniques();
@@ -485,43 +512,43 @@ function Search() {
             change = true;
         }
     } else if (activeField === "nav-runewords") {
-        var serachedRunewords = [];
+        var searchedRunewords = [];
         change = true;
         var typeSearch = $("#search-runeword-type").val();
         AllRunewords.forEach(el => {
             if (typeSearch.toLowerCase() === "any" || el.Types.some(e => e.Name === typeSearch)) {
                 if (text.length > 1) {
                     if (el.Name.toLowerCase().includes(text.toLowerCase())) {
-                        if (!serachedRunewords.some(e => e.Name === el.Name)) {
-                            serachedRunewords.push(el);
+                        if (!searchedRunewords.some(e => e.Name === el.Name)) {
+                            searchedRunewords.push(el);
                         }
                     }
 
                     el.Types.forEach(type => {
                         if (type.Name.toLowerCase().includes(text.toLowerCase())) {
-                            if (!serachedRunewords.some(e => e.Name === el.Name)) {
-                                serachedRunewords.push(el);
+                            if (!searchedRunewords.some(e => e.Name === el.Name)) {
+                                searchedRunewords.push(el);
                             }
                         }
                     });
 
                     el.Properties.forEach(prop => {
                         if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                            if (!serachedRunewords.some(e => e.Name === el.Name)) {
-                                serachedRunewords.push(el);
+                            if (!searchedRunewords.some(e => e.Name === el.Name)) {
+                                searchedRunewords.push(el);
                             }
                         }
                     });
                 } else {
-                    if (!serachedRunewords.some(e => e.Name === el.Name)) {
-                        serachedRunewords.push(el);
+                    if (!searchedRunewords.some(e => e.Name === el.Name)) {
+                        searchedRunewords.push(el);
                     }
                 }
             }
         });
 
-        if (!CompareItems(Runewords, serachedRunewords)) {
-            Runewords = serachedRunewords;
+        if (!CompareItems(Runewords, searchedRunewords)) {
+            Runewords = searchedRunewords;
             change = true;
         }
     } else if (activeField === "nav-cuberecipes") {
@@ -532,6 +559,61 @@ function Search() {
                 CubeRecipes.push(el);
             }
         });
+    } else if (activeField === "nav-sets") {
+        var searchedSets = [];
+        var nameSearch = $("#search-set-name").val();
+        for (var i = 0; i < AllSets.length; i++) {
+            var el = AllSets[i];
+            if (nameSearch.toLowerCase() === "any" || el.Name === nameSearch) {
+                if (text.length > 1) {
+                    if (el.Name.toLowerCase().includes(text.toLowerCase())) {
+                        if (!searchedSets.some(e => e.Name === el.Name)) {
+                            searchedSets.push(el);
+                        }
+                    }
+
+                    for (var j = 0; j < el.PartialProperties.length; j++) {
+                        var property = el.PartialProperties[j];
+                        if (property.PropertyString.toLowerCase().includes(text.toLowerCase())) {
+                            if (!searchedSets.some(e => e.Name === el.Name)) {
+                                searchedSets.push(el);
+                            }
+                        }
+                    }
+
+                    for (var j = 0; j < el.FullProperties.length; j++) {
+                        var property = el.FullProperties[j];
+                        if (property.PropertyString.toLowerCase().includes(text.toLowerCase())) {
+                            if (!searchedSets.some(e => e.Name === el.Name)) {
+                                searchedSets.push(el);
+                            }
+                        }
+                    }
+
+                    for (var j = 0; j < el.SetItems.length; j++) {
+                        var setItem = el.SetItems[j];
+                        if (setItem.Name.toLowerCase().includes(text.toLowerCase())) {
+                            if (!searchedSets.some(e => e.Name === el.Name)) {
+                                searchedSets.push(el);
+                            }
+
+                            if (setItem.Type.toLowerCase().includes(text.toLowerCase())) {
+                                if (!searchedSets.some(e => e.Name === el.Name)) {
+                                    searchedSets.push(el);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (!searchedSets.some(e => e.Name === el.Name)) {
+                        searchedSets.push(el);
+                    }
+                }
+            }
+        }
+
+        Sets = searchedSets;
+        change = true;
     }
 
     if (change) {
