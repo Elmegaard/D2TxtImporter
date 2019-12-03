@@ -13,23 +13,25 @@ var AllSets = {};
 function GetUniqueItemDiv(el) {
     var $item = $("<div>");
     $item.addClass("item");
+    $item.addClass("row");
 
     // Name
     var $spanName = $("<span>");
     $spanName.text(el.Name);
     $spanName.addClass("unique-text");
+    $spanName.addClass("col-sm-12");
     $item.append($spanName);
-    $item.append($("<br>"));
 
     // Type
     var $spanType = $("<span>");
     $spanType.text(el.Type);
     $spanType.addClass("unique-text");
+    $spanType.addClass("col-sm-12");
     $item.append($spanType);
-    $item.append($("<br>"));
 
     // Damage Armor
     var $divDamage = $("<div>");
+    $divDamage.addClass("col-sm-12");
     switch (el.Equipment.EquipmentType) {
         case 0: // Armor
             $divDamage.append($("<span>").text("Armor: "));
@@ -39,7 +41,6 @@ function GetUniqueItemDiv(el) {
                 $spanArmor.addClass("enhanced");
             }
             $divDamage.append($spanArmor);
-            $divDamage.append($("<br>"));
             break;
         case 1: // Weapon
             el.Equipment.DamageTypes.forEach(wep => {
@@ -77,7 +78,6 @@ function GetUniqueItemDiv(el) {
                 }
                 $divDamage.append($spanDamageString);
                 $divDamage.append($spanDamageNumbers);
-                $divDamage.append($("<br>"));
             });
             break;
         case 2: // Jewelery
@@ -88,64 +88,66 @@ function GetUniqueItemDiv(el) {
     // Required Level
     if (el.RequiredLevel > 0) {
         var $req = $("<span>");
+        $req.addClass("col-sm-12");
         $req.addClass("requirement");
         $req.text("Required Level: " + el.RequiredLevel);
         $item.append($req);
-        $item.append($("<br>"));
     }
 
     // Required Strength
     if (el.Equipment.RequiredStrength > 0) {
         var $req = $("<span>");
         $req.addClass("requirement");
+        $req.addClass("col-sm-12");
         $req.text("Required Strength: " + el.Equipment.RequiredStrength);
         $item.append($req);
-        $item.append($("<br>"));
     }
 
     // Required Dexterity
     if (el.Equipment.RequiredDexterity > 0) {
         var $req = $("<span>");
+        $req.addClass("col-sm-12");
         $req.addClass("requirement");
         $req.text("Required Dexterity: " + el.Equipment.RequiredDexterity);
         $item.append($req);
-        $item.append($("<br>"));
     }
 
     // Required Class
     if (el.Equipment.RequiredClass !== "") {
         var $req = $("<span>");
+        $req.addClass("col-sm-12");
         $req.addClass("requirement");
         $req.text(el.Equipment.RequiredClass + " Only");
         $item.append($req);
-        $item.append($("<br>"));
     }
 
     // Durability
     if (el.Equipment.Durability != 0) {
         var $req = $("<span>");
+        $req.addClass("col-sm-12");
         $req.text("Durability: " + el.Equipment.Durability);
         $item.append($req);
-        $item.append($("<br>"));
     }
 
     // Add armor damage (smite damage, kick damage)
     if (el.Equipment.EquipmentType == 0) // Armor type
     {
         if (el.Equipment.DamageString) {
-            $item.append($("<span>").text(el.Equipment.DamageStringPrefix + ": " + el.Equipment.DamageString));
-            $item.append($("<br>"));
+            var $dmgSpan = $("<span>");
+            $dmgSpan.addClass("col-sm-12");
+            $dmgSpan.text(el.Equipment.DamageStringPrefix + ": " + el.Equipment.DamageString);
+            $item.append($dmgSpan);
         }
     }
 
     // Add properties
     el.Properties.forEach(prop => {
         $propSpan = $("<span>");
+        $propSpan.addClass("col-sm-12");
         $propSpan.addClass("enhanced");
         $propSpan.text(prop.PropertyString);
 
         $item.append($propSpan);
-        $item.append($("<br>"));
     });
 
     return $item;
@@ -263,13 +265,17 @@ function RenderSets() {
 
         var $item = $("<div>");
         $item.addClass("item");
+        $item.addClass("row");
 
         // Name
         var $spanName = $("<span>");
         $spanName.text(set.Name);
         $spanName.addClass("set-text");
+        $spanName.addClass("set-header");
+        $spanName.addClass("col-sm-12");
         $item.append($spanName);
-        $item.append($("<br>"));
+
+        $item.append($("<div>").addClass("col-sm-12").append($("<br>"))); // Extra line
 
         // Partial Properties
         for (var j = 0; j < set.PartialProperties.length; j++) {
@@ -277,10 +283,10 @@ function RenderSets() {
 
             $propSpan = $("<span>");
             $propSpan.addClass("set-text");
+            $propSpan.addClass("col-sm-12");
             $propSpan.text(prop.PropertyString + " (" + Math.floor(prop.Index / 2 + 2) + " Items)");
 
             $item.append($propSpan);
-            $item.append($("<br>"));
         }
 
         // Full Properties
@@ -289,13 +295,13 @@ function RenderSets() {
 
             $propSpan = $("<span>");
             $propSpan.addClass("set-text");
+            $propSpan.addClass("col-sm-12");
             $propSpan.text(prop.PropertyString + " (Full Set)");
 
             $item.append($propSpan);
-            $item.append($("<br>"));
         }
 
-        $item.append($("<br>"));
+        $item.append($("<div>").addClass("col-sm-12").append($("<br>"))); // Extra line
 
         // Set Items
         for (var j = 0; j < set.SetItems.length; j++) {
@@ -308,12 +314,11 @@ function RenderSets() {
 
                 var propSpan = $("<span>");
                 propSpan.addClass("set-text");
+                propSpan.addClass("col-sm-12");
                 propSpan.text(propString);
                 $item.append(propSpan);
-                $item.append($("<br>"));
             }
-
-            $item.append($("<br>"));
+            $item.append($("<div>").addClass("col-sm-12").append($("<br>"))); // Extra line
         }
 
         var $tr = $("<tr>");

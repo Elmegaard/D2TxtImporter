@@ -76,7 +76,10 @@ namespace D2TxtImporter.lib.Model
                 if (!string.IsNullOrEmpty(properties[i]) && !properties[i].StartsWith("*"))
                 {
                     var prop = new ItemProperty(properties[i], properties[i + 1], Utility.ToNullableInt(properties[i + 2]), Utility.ToNullableInt(properties[i + 3]), i / 4, itemLevel);
-                    result.Add(prop);
+                    if (prop.Property.Code.ToLower() != "state") // Don't add states (auras)
+                    {
+                        result.Add(prop);
+                    }
                 }
             }
 
@@ -131,17 +134,24 @@ namespace D2TxtImporter.lib.Model
                 result.AddRange(toAdd);
             }
 
+            // Sometimes there is cold length with min/max damage
+            lenDamage = result.Where(x => x.Property.Stat.Contains("length"));
+            if (lenDamage.Count() > 0)
+            {
+                result.RemoveAll(x => lenDamage.Any(y => y == x && y.Property.Code == "cold-len"));
+            }
+
             // Min damage sometimes contain both elements, weird.
             if (minDamage.Count() > 0 && maxDamage.Count() == 0)
-            {
-                foreach (var minDam in minDamage)
                 {
-                    if (minDam.Min != minDam.Max)
+                    foreach (var minDam in minDamage)
                     {
-                        minDam.PropertyString = minDam.PropertyString.Replace("+", "Adds ").Replace("Minimum ", "");
+                        if (minDam.Min != minDam.Max)
+                        {
+                            minDam.PropertyString = minDam.PropertyString.Replace("+", "Adds ").Replace("Minimum ", "");
+                        }
                     }
                 }
-            }
 
             return result;
         }
