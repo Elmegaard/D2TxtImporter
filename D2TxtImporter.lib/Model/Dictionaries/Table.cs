@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 
 namespace D2TxtImporter.lib.Model
 {
     public class Table
     {
+        [JsonIgnore]
         public static Dictionary<string, string> Tables;
 
         public static void ImportFromTxt(string tableFolder)

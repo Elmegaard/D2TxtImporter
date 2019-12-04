@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,24 +8,55 @@ namespace D2TxtImporter.lib.Model
 {
     public class ItemStatCost
     {
+        [JsonIgnore]
         public string Stat { get; set; }
+
+        [JsonIgnore]
         public int Id { get; set; }
+
+        [JsonIgnore]
         public int? Op { get; set; }
+
+        [JsonIgnore]
         public int? OpParam { get; set; }
+
+        [JsonIgnore]
         public int? DescriptionPriority { get; set; }
+
+        [JsonIgnore]
         public int? DescriptionFunction { get; set; }
+
+        [JsonIgnore]
         public int? DescriptionValue { get; set; }
+
+        [JsonIgnore]
         public string DescriptonStringPositive { get; set; }
+
+        [JsonIgnore]
         public string DescriptionStringNegative { get; set; }
+
+        [JsonIgnore]
         public string DescriptionString2 { get; set; }
+
+        [JsonIgnore]
         public int? GroupDescription { get; set; }
+
+        [JsonIgnore]
         public int? GroupDescriptionFunction { get; set; }
+
+        [JsonIgnore]
         public int? GroupDescriptionValue { get; set; }
+
+        [JsonIgnore]
         public string GroupDescriptonStringPositive { get; set; }
+
+        [JsonIgnore]
         public string GroupDescriptionStringNegative { get; set; }
+
+        [JsonIgnore]
         public string GroupDescriptionString2 { get; set; }
 
-
+        [JsonIgnore]
         public static Dictionary<string, ItemStatCost> ItemStatCosts;
 
         public static void Import(string excelFolder)

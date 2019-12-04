@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace D2TxtImporter.lib.Model
 {
     public class EffectProperty
     {
+        [JsonIgnore]
         public string Code { get; set; }
+
+        [JsonIgnore]
         public string Stat { get; set; }
 
+        [JsonIgnore]
         public static Dictionary<string, EffectProperty> EffectProperties;
 
         public static void Import(string excelFolder)

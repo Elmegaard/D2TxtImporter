@@ -1,4 +1,5 @@
 ﻿using D2TxtImporter.lib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,11 @@ namespace D2TxtImporter.lib.Model
     public class MagicSuffix
     {
         public string Name { get; set; }
+
+        [JsonIgnore]
         public int Index { get; set; }
 
+        [JsonIgnore]
         public static Dictionary<int, MagicSuffix> MagicSuffixes;
 
         public static void Import(string excelFolder)

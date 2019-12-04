@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace D2TxtImporter.lib.Model
@@ -7,6 +8,7 @@ namespace D2TxtImporter.lib.Model
     {
         public List<DamageType> DamageTypes { get; set; }
 
+        [JsonIgnore]
         public static Dictionary<string, Weapon> Weapons;
 
         public static void Import(string excelFolder)

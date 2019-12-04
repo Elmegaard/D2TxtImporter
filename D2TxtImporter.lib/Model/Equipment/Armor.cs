@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,18 @@ namespace D2TxtImporter.lib.Model
 {
     class Armor : Equipment
     {
+        [JsonIgnore]
         public int MinAc { get; set; }
+        [JsonIgnore]
         public int MaxAc { get; set; }
+        [JsonIgnore]
         public int? MinDamage { get; set; }
+        [JsonIgnore]
         public int? MaxDamage { get; set; }
         public string DamageString { get; set; }
         public string DamageStringPrefix { get; set; }
 
+        [JsonIgnore]
         public static Dictionary<string, Armor> Armors;
         public string ArmorString { get; set; }
 

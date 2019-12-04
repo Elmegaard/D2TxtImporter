@@ -82,12 +82,13 @@ namespace D2TxtImporter.client
 
                 // Temporary Export, should be moved to its own button at some point
                 _mainViewModel.Importer.Export();
+
+                MessageBox.Show("Success!");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace);
             }
-
         }
 
         private void ExportData(object sender, RoutedEventArgs e)

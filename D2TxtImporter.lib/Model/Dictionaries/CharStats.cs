@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +9,21 @@ namespace D2TxtImporter.lib.Model
 {
     public class CharStat
     {
+        [JsonIgnore]
         public string Class { get; set; }
+        [JsonIgnore]
         public string StrAllSkills { get; set; }
+        [JsonIgnore]
         public string StrSkillTab1 { get; set; }
+        [JsonIgnore]
         public string StrSkillTab2 { get; set; }
+        [JsonIgnore]
         public string StrSkillTab3 { get; set; }
 
+        [JsonIgnore]
         public static Dictionary<string, CharStat> CharStats;
 
+        [JsonIgnore]
         public static Dictionary<int, string> SkillTabs;
 
         public static void Import(string excelFolder)

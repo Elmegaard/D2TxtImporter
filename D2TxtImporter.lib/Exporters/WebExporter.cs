@@ -61,24 +61,5 @@ namespace D2TxtImporter.lib
             js = js.Replace("\"<UNIQUES_JSON>\"", JsonConvert.ToString(uniqueJson)).Replace("\"<RUNEWORDS_JSON>\"", JsonConvert.ToString(runewordJson)).Replace("\"<CUBE_RECIPES_JSON>\"", JsonConvert.ToString(cubeRecipeJson)).Replace("\"<SETS_JSON>\"", JsonConvert.ToString(setsJson));
             File.WriteAllText(jsFile, js, Encoding.UTF8);
         }
-
-        static void DirSearch(string sDir)
-        {
-            try
-            {
-                foreach (string d in Directory.GetDirectories(sDir))
-                {
-                    foreach (string f in Directory.GetFiles(d))
-                    {
-                        Console.WriteLine(f);
-                    }
-                    DirSearch(d);
-                }
-            }
-            catch (System.Exception excpt)
-            {
-                Console.WriteLine(excpt.Message);
-            }
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace D2TxtImporter.lib.Model
 {
@@ -6,6 +7,7 @@ namespace D2TxtImporter.lib.Model
     {
         public EquipmentType EquipmentType { get; set; }
         public string Name { get; set; }
+        [JsonIgnore]
         public string Code { get; set; }
         public int RequiredStrength { get; set; }
         public int RequiredDexterity { get; set; }

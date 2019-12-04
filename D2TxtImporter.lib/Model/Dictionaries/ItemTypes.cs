@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,11 +10,18 @@ namespace D2TxtImporter.lib.Model
     public class ItemType
     {
         public string Name { get; set; }
+
+        [JsonIgnore]
         public string Code { get; set; }
         public string Class { get; set; }
+
+        [JsonIgnore]
         public string Equiv2 { get; set; }
+
+        [JsonIgnore]
         public string Equiv1 { get; set; }
 
+        [JsonIgnore]
         public static Dictionary<string, ItemType> ItemTypes;
 
         public static void Import(string excelFolder)
