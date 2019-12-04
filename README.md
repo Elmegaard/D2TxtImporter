@@ -29,6 +29,9 @@ Mainly used for debugging, not really updated.
 - Add better searching on web part
 - Internet Explorer not supported, and I am not doing it either.
 
+# Issues
+If you open an issue, please provide the required .txt and .tbl files so I can debug it. As mentioned above, I only have the vanilla files for 1.13c to test with.
+
 # Credits
 - .tbl import functionality: https://github.com/kambala-decapitator/QTblEditor
 - Ascended1962 (Creator of Diablo 2 Enriched): General help with the project
