@@ -27,6 +27,7 @@ Mainly used for debugging, not really updated.
 - Cleanup the mess of a code this entire project is..
 - Add better exception handling so the exceptions actually makes sense
 - Add better searching on web part
+- Internet Explorer not supported, and I am not doing it either.
 
 # Credits
 - .tbl import functionality: https://github.com/kambala-decapitator/QTblEditor
