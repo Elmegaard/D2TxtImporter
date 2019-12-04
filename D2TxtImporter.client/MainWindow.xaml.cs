@@ -79,7 +79,6 @@ namespace D2TxtImporter.client
 
                 _mainViewModel.OnPropertyChange(nameof(_mainViewModel.ExportEnabled));
 
-
                 // Temporary Export, should be moved to its own button at some point
                 _mainViewModel.Importer.Export();
 
@@ -87,7 +86,8 @@ namespace D2TxtImporter.client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace);
+                var errorDialog = new ErrorDialog(ex.Message + "\n\n" + ex.StackTrace);
+                errorDialog.Show();
             }
         }
 
@@ -99,7 +99,8 @@ namespace D2TxtImporter.client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace);
+                var errorDialog = new ErrorDialog(ex.Message + "\n\n" + ex.StackTrace);
+                errorDialog.Show();
             }
         }
     }

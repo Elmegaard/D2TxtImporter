@@ -1,0 +1,21 @@
+﻿<Window x:Class="D2TxtImporter.client.ErrorDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:D2TxtImporter.client"
+        mc:Ignorable="d"
+        Title="Error" Height="300" Width="500">
+    <Grid>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="An exception occurred" />
+            <TextBox Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" x:Name="ResponseTextBox" />
+            <Button Grid.Row="2" Content="OK" Click="OKButton_Click" />
+        </Grid>
+    </Grid>
+</Window>
