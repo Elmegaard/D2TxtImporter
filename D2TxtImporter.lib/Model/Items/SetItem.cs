@@ -30,21 +30,34 @@ namespace D2TxtImporter.lib.Model
                 }
 
                 var addFunc = Utility.ToNullableInt(values[16]);
+                var name = values[0];
+
+                var itemLevel = Utility.ToNullableInt(values[5]);
+                if (!itemLevel.HasValue)
+                {
+                    throw new Exception($"Could not find item level for '{name}' in SetItems.txt");
+                }
+
+                var requiredLevel = Utility.ToNullableInt(values[6]);
+                if (!requiredLevel.HasValue)
+                {
+                    throw new Exception($"Could not find required level for '{name}' in SetItems.txt");
+                }
 
                 var setItem = new SetItem
                 {
-                    Name = values[0],
+                    Name = name,
                     Set = values[1],
                     Enabled = true,
-                    ItemLevel = int.Parse(values[5]),
-                    RequiredLevel = int.Parse(values[6]),
+                    ItemLevel = itemLevel.Value,
+                    RequiredLevel = requiredLevel.Value,
                     Code = values[2],
                     Type = values[3],
                     DamageArmorEnhanced = false,
                     AddFunc = addFunc.HasValue ? addFunc.Value : 0
                 };
 
-                Equipment eq;
+                Equipment eq = null;
                 if (Armor.Armors.ContainsKey(setItem.Code))
                 {
                     eq = Armor.Armors[setItem.Code];
@@ -53,13 +66,8 @@ namespace D2TxtImporter.lib.Model
                 {
                     eq = Weapon.Weapons[setItem.Code];
                 }
-                else
+                else if (Misc.MiscItems.ContainsKey(setItem.Code))
                 {
-                    if (!Misc.MiscItems.ContainsKey(setItem.Code))
-                    {
-                        throw new Exception($"Could not find code '{setItem.Code}' in Misc.txt for set item '{setItem.Name}'");
-                    }
-
                     var misc = Misc.MiscItems[setItem.Code];
 
                     eq = new Equipment
@@ -69,6 +77,10 @@ namespace D2TxtImporter.lib.Model
                         Name = misc.Name,
                         Type = misc.Type
                     };
+                }
+                else
+                {
+                    throw new Exception($"Could not find code '{setItem.Code}' in Weapons.txt, Armor.txt, or Misc.txt for set item '{setItem.Name}' in SetItems.txt");
                 }
 
                 setItem.Equipment = eq;

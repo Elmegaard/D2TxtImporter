@@ -71,6 +71,12 @@ namespace D2TxtImporter.lib.Model
 
                 return value;
             }
+
+            if (!string.IsNullOrEmpty(key))
+            {
+                throw new System.Exception($"Could not find key '{key}' in any .tbl file");
+            }
+
             return null;
         }
 

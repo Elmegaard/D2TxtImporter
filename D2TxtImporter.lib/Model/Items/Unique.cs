@@ -24,18 +24,32 @@ namespace D2TxtImporter.lib.Model
                     continue;
                 }
 
+                var name = values[0];
+
+                var itemLevel = Utility.ToNullableInt(values[6]);
+                if (!itemLevel.HasValue)
+                {
+                    throw new Exception($"Could not find item level for '{name}' in UniqueItems.txt");
+                }
+
+                var requiredLevel = Utility.ToNullableInt(values[7]);
+                if (!requiredLevel.HasValue)
+                {
+                    throw new Exception($"Could not find required level for '{name}' in UniqueItems.txt");
+                }
+
                 var unique = new Unique
                 {
-                    Name = values[0],
+                    Name = name,
                     Enabled = values[2] == "1",
-                    ItemLevel = int.Parse(values[6]),
-                    RequiredLevel = int.Parse(values[7]),
+                    ItemLevel = itemLevel.Value,
+                    RequiredLevel = requiredLevel.Value,
                     Code = values[8],
                     Type = values[9],
                     DamageArmorEnhanced = false
                 };
 
-                Equipment eq;
+                Equipment eq = null;
                 var code = values[8];
 
                 if (Armor.Armors.ContainsKey(code))
@@ -46,13 +60,8 @@ namespace D2TxtImporter.lib.Model
                 {
                     eq = Weapon.Weapons[code];
                 }
-                else
+                else if (Misc.MiscItems.ContainsKey(code))
                 {
-                    if (!Misc.MiscItems.ContainsKey(code))
-                    {
-                        throw new Exception($"Could not find code '{code}' in Misc.txt for unique '{unique.Name}'");
-                    }
-
                     var misc = Misc.MiscItems[code];
 
                     eq = new Equipment
@@ -63,6 +72,10 @@ namespace D2TxtImporter.lib.Model
                         Type = misc.Type
                     };
                 }
+                else
+                {
+                    throw new Exception($"Could not find code '{code}' in Weapons.txt, Armor.txt, or Misc.txt for set item '{unique.Name}' in UniqueItems.txt");
+                }
 
                 unique.Equipment = eq;
 
@@ -72,7 +85,6 @@ namespace D2TxtImporter.lib.Model
                 var properties = ItemProperty.GetProperties(propArray, unique.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
 
                 unique.Properties = properties;
-
 
                 AddDamageArmorString(unique);
 

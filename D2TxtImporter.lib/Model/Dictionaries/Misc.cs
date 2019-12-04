@@ -31,11 +31,30 @@ namespace D2TxtImporter.lib.Model
                     continue;
                 }
 
+                var name = values[1];
+
+                if (!ItemType.ItemTypes.ContainsKey(values[32]))
+                {
+                    throw new Exception($"Could not find code '{values[32]}' in ItemTypes.txt for Misc.txt item {name}");
+                }
+
+                var itemLevel = Utility.ToNullableInt(values[5]);
+                if (!itemLevel.HasValue)
+                {
+                    throw new Exception($"Could not find item level for '{name}' in Misc.txt");
+                }
+
+                var requiredLevel = Utility.ToNullableInt(values[6]);
+                if (!requiredLevel.HasValue)
+                {
+                    throw new Exception($"Could not find required level for '{name}' in Misc.txt");
+                }
+
                 var misc = new Misc
                 {
                     Name = values[1],
-                    ItemLevel = int.Parse(values[5]),
-                    RequiredLevel = int.Parse(values[6]),
+                    ItemLevel = itemLevel.Value,
+                    RequiredLevel = requiredLevel.Value,
                     Code = values[13],
                     Type = ItemType.ItemTypes[values[32]],
                     Type2 = values[33]

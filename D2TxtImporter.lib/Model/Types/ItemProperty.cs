@@ -15,6 +15,11 @@ namespace D2TxtImporter.lib.Model
 
         public ItemProperty(string property, string parameter, int? min, int? max, int index, int itemLevel = 0)
         {
+            if (!EffectProperty.EffectProperties.ContainsKey(property.ToLower()))
+            {
+                throw new System.Exception($"Could not find property '{property.ToLower()}' in Properties.txt");
+            }
+
             Property = EffectProperty.EffectProperties[property.ToLower()];
             Parameter = parameter;
             Min = min;
@@ -143,15 +148,15 @@ namespace D2TxtImporter.lib.Model
 
             // Min damage sometimes contain both elements, weird.
             if (minDamage.Count() > 0 && maxDamage.Count() == 0)
+            {
+                foreach (var minDam in minDamage)
                 {
-                    foreach (var minDam in minDamage)
+                    if (minDam.Min != minDam.Max)
                     {
-                        if (minDam.Min != minDam.Max)
-                        {
-                            minDam.PropertyString = minDam.PropertyString.Replace("+", "Adds ").Replace("Minimum ", "");
-                        }
+                        minDam.PropertyString = minDam.PropertyString.Replace("+", "Adds ").Replace("Minimum ", "");
                     }
                 }
+            }
 
             return result;
         }

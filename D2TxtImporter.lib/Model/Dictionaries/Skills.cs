@@ -35,6 +35,10 @@ namespace D2TxtImporter.lib.Model
                 }
 
                 var reqLevel = Utility.ToNullableInt(values[152]);
+                if (!reqLevel.HasValue || reqLevel.Value < 1)
+                {
+                    throw new Exception($"Invalid required level for skill '{values[0]}' in Skills.txt, should be an integer value 1 or above");
+                }
 
                 var skill = new Skill
                 {
@@ -42,7 +46,7 @@ namespace D2TxtImporter.lib.Model
                     Id = Utility.ToNullableInt(values[1]),
                     CharClass = values[2],
                     SkillDesc = values[3],
-                    RequiredLevel = reqLevel.HasValue ? reqLevel.Value : 1
+                    RequiredLevel = reqLevel.Value
                 };
 
                 IdSkillDictionary[skill.Id] = skill;
@@ -61,9 +65,13 @@ namespace D2TxtImporter.lib.Model
             {
                 return NameSkillDictionary[skill];
             }
-            else
+            else if (DescSkillDictionary.ContainsKey(skill))
             {
                 return DescSkillDictionary[skill];
+            }
+            else
+            {
+                throw new Exception($"Could not find skill with id, name, or description '{skill}'");
             }
         }
 
