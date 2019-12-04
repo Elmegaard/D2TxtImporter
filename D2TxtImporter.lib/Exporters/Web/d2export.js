@@ -43,7 +43,8 @@ function GetUniqueItemDiv(el) {
             $divDamage.append($spanArmor);
             break;
         case 1: // Weapon
-            el.Equipment.DamageTypes.forEach(wep => {
+            for (var i = 0; i < el.Equipment.DamageTypes.length; i++) {
+                var wep = el.Equipment.DamageTypes[i];
                 $spanDamageString = $("<span>");
                 $spanDamageNumbers = $("<span>");
                 switch (wep.Type) {
@@ -78,7 +79,7 @@ function GetUniqueItemDiv(el) {
                 }
                 $divDamage.append($spanDamageString);
                 $divDamage.append($spanDamageNumbers);
-            });
+            };
             break;
         case 2: // Jewelery
             break;
@@ -141,14 +142,15 @@ function GetUniqueItemDiv(el) {
     }
 
     // Add properties
-    el.Properties.forEach(prop => {
+    for (var i = 0; i < el.Properties.length; i++) {
+        var prop = el.Properties[i];
         $propSpan = $("<span>");
         $propSpan.addClass("col-sm-12");
         $propSpan.addClass("enhanced");
         $propSpan.text(prop.PropertyString);
 
         $item.append($propSpan);
-    });
+    };
 
     return $item;
 }
@@ -156,7 +158,8 @@ function GetUniqueItemDiv(el) {
 function RenderUniques() {
     ClearTable();
 
-    Uniques.forEach(el => {
+    for (var i = 0; i < Uniques.length; i++) {
+        var el = Uniques[i];
         var $item = GetUniqueItemDiv(el);
 
         var $tr = $("<tr>");
@@ -165,13 +168,14 @@ function RenderUniques() {
         $td.append($item);
         $tr.append($td);
         $("#tbody").append($tr);
-    });
+    };
 }
 
 function RenderRunewords() {
     ClearTable();
 
-    Runewords.forEach(el => {
+    for (var i = 0; i < Runewords.length; i++) {
+        var el = Runewords[i];
         var $item = $("<div>");
         $item.addClass("item");
 
@@ -185,19 +189,21 @@ function RenderRunewords() {
         // Runes
         $divRunes = $("<div>");
         $divRunes.addClass("runes");
-        el.Runes.forEach(rune => {
+        for (var j = 0; j < el.Runes.length; j++) {
+            var rune = el.Runes[j];
             var $spanRune = $("<span>").text(rune.Name);
             $divRunes.append($spanRune);
-        });
+        };
         $item.append($divRunes);
 
         // Types
         $divTypes = $("<div>");
         $divTypes.addClass("runeword-types");
-        el.Types.forEach(type => {
+        for (var j = 0; j < el.Types.length; j++) {
+            var type = el.Types[j];
             var $spanType = $("<span>").text(type.Name);
             $divTypes.append($spanType);
-        });
+        };
         $item.append($divTypes);
 
         // Required Level
@@ -210,14 +216,15 @@ function RenderRunewords() {
         }
 
         // Add properties
-        el.Properties.forEach(prop => {
+        for (var j = 0; j < el.Properties.length; j++) {
+            var prop = el.Properties[j];
             $propSpan = $("<span>");
             $propSpan.addClass("enhanced");
             $propSpan.text(prop.PropertyString);
 
             $item.append($propSpan);
             $item.append($("<br>"));
-        });
+        };
 
         var $tr = $("<tr>");
         var $td = $("<td>");
@@ -225,13 +232,14 @@ function RenderRunewords() {
         $td.append($item);
         $tr.append($td);
         $("#tbody").append($tr);
-    });
+    };
 }
 
 function RenderCubeRecipes() {
     ClearTable();
 
-    CubeRecipes.forEach(el => {
+    for (var i = 0; i < CubeRecipes.length; i++) {
+        var el = CubeRecipes[i];
         var $item = $("<div>");
         $item.addClass("item");
 
@@ -254,7 +262,7 @@ function RenderCubeRecipes() {
         $td.append($item);
         $tr.append($td);
         $("#tbody").append($tr);
-    });
+    };
 }
 
 function RenderSets() {
@@ -340,11 +348,12 @@ var RuneWordsSearchItems = {};
 
 function GetUniqueSearch() {
     var types = [];
-    AllUniques.forEach(el => {
-        if (!types.includes(el.Equipment.Type.Name)) {
+    for (var i = 0; i < AllUniques.length; i++) {
+        var el = AllUniques[i];
+        if (!ArrayContainsString(types, el.Equipment.Type.Name)) {
             types.push(el.Equipment.Type.Name);
         }
-    });
+    };
     types.sort();
     types.unshift("Any");
 
@@ -353,13 +362,15 @@ function GetUniqueSearch() {
 
 function GetRunewordsSearch() {
     var types = [];
-    AllRunewords.forEach(el => {
-        el.Types.forEach(type => {
-            if (!types.includes(type.Name)) {
+    for (var i = 0; i < AllRunewords.length; i++) {
+        var el = AllRunewords[i];
+        for (var j = 0; j < el.Types.length; j++) {
+            var type = el.Types[j];
+            if (!ArrayContainsString(types, type.Name)) {
                 types.push(type.Name);
             }
-        });
-    });
+        };
+    };
     types.sort();
     types.unshift("Any");
 
@@ -370,7 +381,7 @@ function GetSetsSearch() {
     var sets = [];
     for (var i = 0; i < AllSets.length; i++) {
         el = AllSets[i];
-        if (!sets.includes(el.Name)) {
+        if (!ArrayContainsString(sets, el.Name)) {
             sets.push(el.Name);
         }
     }
@@ -393,12 +404,13 @@ function GenerateSearchBarUniques() {
     searchBar.css("display", "flex");
 
     var typeDropdown = $("#search-unique-type");
-    UniqueSearchItems.types.forEach(type => {
+    for (var i = 0; i < UniqueSearchItems.types.length; i++) {
+        var type = UniqueSearchItems.types[i];
         var typeOption = $("<option>");
         typeOption.text(type);
         typeOption.val(type);
         typeDropdown.append(typeOption);
-    });
+    };
 }
 
 function GenerateSearchBarRunewords() {
@@ -407,12 +419,13 @@ function GenerateSearchBarRunewords() {
     searchBar.css("display", "flex");
 
     var typeDropdown = $("#search-runeword-type");
-    RuneWordsSearchItems.types.forEach(type => {
+    for (var i = 0; i < RuneWordsSearchItems.types.length; i++) {
+        var type = RuneWordsSearchItems.types[i];
         var typeOption = $("<option>");
         typeOption.text(type);
         typeOption.val(type);
         typeDropdown.append(typeOption);
-    });
+    };
 }
 
 function GenerateSearchBarCubeRecipes() {
@@ -471,6 +484,7 @@ GetCubeRecipes();
 GetSets();
 
 function Search() {
+    AddMissingArrayOptions();
     var text = $("#searchField")[0].value;
     var activeField = $(".nav-link.active")[0].id;
 
@@ -479,33 +493,35 @@ function Search() {
     if (activeField === "nav-uniques") {
         var searchedUniques = [];
         var typeSearch = $("#search-unique-type").val();
-        AllUniques.forEach(el => {
-            if (typeSearch.toLowerCase() === "any" || el.Equipment.Type.Name === typeSearch) {
+        for (var i = 0; i < AllUniques.length; i++) {
+            var el = AllUniques[i];
+            if (typeSearch === null || typeSearch.toLowerCase() === "any" || el.Equipment.Type.Name === typeSearch) {
                 if (text.length > 1) {
-                    if (el.Name.toLowerCase().includes(text.toLowerCase())) {
-                        if (!searchedUniques.some(e => e.Name === el.Name)) {
+                    if (el.Name.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                        if (!ArrayContainsName(searchedUniques, el.Name)) {
                             searchedUniques.push(el);
                         }
-                    } else if (el.Type.toLowerCase().includes(text.toLowerCase())) {
-                        if (!searchedUniques.some(e => e.Name === el.Name)) {
+                    } else if (el.Type.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                        if (!ArrayContainsName(searchedUniques, el.Name)) {
                             searchedUniques.push(el);
                         }
                     }
 
-                    el.Properties.forEach(prop => {
-                        if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                            if (!searchedUniques.some(e => e.Name === el.Name)) {
+                    for (var j = 0; j < el.Properties.length; j++) {
+                        var prop = el.Properties[j];
+                        if (prop.PropertyString.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                            if (!ArrayContainsName(searchedUniques, el.Name)) {
                                 searchedUniques.push(el);
                             }
                         }
-                    });
+                    };
                 } else {
-                    if (!searchedUniques.some(e => e.Name === el.Name)) {
+                    if (!ArrayContainsName(searchedUniques, el.Name)) {
                         searchedUniques.push(el);
                     }
                 }
             }
-        });
+        };
 
         if (!CompareItems(Uniques, searchedUniques)) {
             Uniques = searchedUniques;
@@ -515,37 +531,40 @@ function Search() {
         var searchedRunewords = [];
         change = true;
         var typeSearch = $("#search-runeword-type").val();
-        AllRunewords.forEach(el => {
-            if (typeSearch.toLowerCase() === "any" || el.Types.some(e => e.Name === typeSearch)) {
+        for (var i = 0; i < AllRunewords.length; i++) {
+            var el = AllRunewords[i];
+            if (typeSearch === null || typeSearch.toLowerCase() === "any" || ArrayContainsName(el.Types, typeSearch)) {
                 if (text.length > 1) {
-                    if (el.Name.toLowerCase().includes(text.toLowerCase())) {
-                        if (!searchedRunewords.some(e => e.Name === el.Name)) {
+                    if (el.Name.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                        if (!ArrayContainsName(searchedRunewords, el.Name)) {
                             searchedRunewords.push(el);
                         }
                     }
 
-                    el.Types.forEach(type => {
-                        if (type.Name.toLowerCase().includes(text.toLowerCase())) {
-                            if (!searchedRunewords.some(e => e.Name === el.Name)) {
+                    for (var j = 0; j < el.Types.length; j++) {
+                        var type = el.Types[j];
+                        if (type.Name.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                            if (!ArrayContainsName(searchedRunewords, el.Name)) {
                                 searchedRunewords.push(el);
                             }
                         }
-                    });
+                    };
 
-                    el.Properties.forEach(prop => {
-                        if (prop.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                            if (!searchedRunewords.some(e => e.Name === el.Name)) {
+                    for (var j = 0; j < el.Properties.length; j++) {
+                        var prop = el.Properties[j];
+                        if (prop.PropertyString.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                            if (!ArrayContainsName(searchedRunewords, el.Name)) {
                                 searchedRunewords.push(el);
                             }
                         }
-                    });
+                    };
                 } else {
-                    if (!searchedRunewords.some(e => e.Name === el.Name)) {
+                    if (!ArrayContainsName(searchedRunewords, el.Name)) {
                         searchedRunewords.push(el);
                     }
                 }
             }
-        });
+        };
 
         if (!CompareItems(Runewords, searchedRunewords)) {
             Runewords = searchedRunewords;
@@ -554,28 +573,29 @@ function Search() {
     } else if (activeField === "nav-cuberecipes") {
         change = true;
         CubeRecipes = [];
-        AllCubeRecipes.forEach(el => {
-            if (el.CubeRecipeDescription.toLowerCase().includes(text.toLowerCase())) {
+        for (var i = 0; i < AllCubeRecipes.length; i++) {
+            var el = AllCubeRecipes[i];
+            if (el.CubeRecipeDescription.toLowerCase().indexOf(text.toLowerCase()) > -1) {
                 CubeRecipes.push(el);
             }
-        });
+        };
     } else if (activeField === "nav-sets") {
         var searchedSets = [];
         var nameSearch = $("#search-set-name").val();
         for (var i = 0; i < AllSets.length; i++) {
             var el = AllSets[i];
-            if (nameSearch.toLowerCase() === "any" || el.Name === nameSearch) {
+            if (nameSearch === null || nameSearch.toLowerCase() === "any" || el.Name === nameSearch) {
                 if (text.length > 1) {
-                    if (el.Name.toLowerCase().includes(text.toLowerCase())) {
-                        if (!searchedSets.some(e => e.Name === el.Name)) {
+                    if (el.Name.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                        if (!ArrayContainsName(searchedSets, el.Name)) {
                             searchedSets.push(el);
                         }
                     }
 
                     for (var j = 0; j < el.PartialProperties.length; j++) {
                         var property = el.PartialProperties[j];
-                        if (property.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                            if (!searchedSets.some(e => e.Name === el.Name)) {
+                        if (property.PropertyString.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                            if (!ArrayContainsName(searchedSets, el.Name)) {
                                 searchedSets.push(el);
                             }
                         }
@@ -583,8 +603,8 @@ function Search() {
 
                     for (var j = 0; j < el.FullProperties.length; j++) {
                         var property = el.FullProperties[j];
-                        if (property.PropertyString.toLowerCase().includes(text.toLowerCase())) {
-                            if (!searchedSets.some(e => e.Name === el.Name)) {
+                        if (property.PropertyString.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                            if (!ArrayContainsName(searchedSets, el.Name)) {
                                 searchedSets.push(el);
                             }
                         }
@@ -592,20 +612,20 @@ function Search() {
 
                     for (var j = 0; j < el.SetItems.length; j++) {
                         var setItem = el.SetItems[j];
-                        if (setItem.Name.toLowerCase().includes(text.toLowerCase())) {
-                            if (!searchedSets.some(e => e.Name === el.Name)) {
+                        if (setItem.Name.toLowerCase().cindexOf(text.toLowerCase()) > -1) {
+                            if (!ArrayContainsName(searchedSets, el.Name)) {
                                 searchedSets.push(el);
                             }
 
-                            if (setItem.Type.toLowerCase().includes(text.toLowerCase())) {
-                                if (!searchedSets.some(e => e.Name === el.Name)) {
+                            if (setItem.Type.toLowerCase().indexOf(text.toLowerCase()) > -1) {
+                                if (!ArrayContainsName(searchedSets, el.Name)) {
                                     searchedSets.push(el);
                                 }
                             }
                         }
                     }
                 } else {
-                    if (!searchedSets.some(e => e.Name === el.Name)) {
+                    if (!ArrayContainsName(searchedSets, el.Name)) {
                         searchedSets.push(el);
                     }
                 }
@@ -619,6 +639,24 @@ function Search() {
     if (change) {
         RenderActive();
     }
+}
+
+function ArrayContainsName(array, name) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].Name === name) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function ArrayContainsString(array, name) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] === name) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function CompareItems(arr1, arr2) {
@@ -650,6 +688,19 @@ function UpdateOnSearchChange() {
     $(".search-input-change").on('change paste input', function () {
         Search();
     });
+}
+
+function AddMissingArrayOptions() {
+    if (!Array.prototype.some) {
+        Object.defineProperty(Array.prototype, "some", {
+            value: function (tester, that /*opt*/) {
+                for (var i = 0, n = this.length; i < n; i++)
+                    if (i in this && tester.call(that, this[i], i, this))
+                        return true;
+                return false;
+            }
+        });
+    }
 }
 
 $('document').ready(function () {

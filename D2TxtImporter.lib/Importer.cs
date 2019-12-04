@@ -66,7 +66,7 @@ namespace D2TxtImporter.lib
 
         public void Export()
         {
-            TxtExporter.ExportTxt(_outputPath, Uniques, Runewords, CubeRecipes, Sets);
+            //TxtExporter.ExportTxt(_outputPath, Uniques, Runewords, CubeRecipes, Sets); // Out of date
             JsonExporter.ExportJson(_outputPath, Uniques, Runewords, CubeRecipes, Sets);
             WebExporter.ExportWeb(_outputPath);
         }
