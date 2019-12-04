@@ -142,3 +142,8 @@ label, td, th, a, .page-item, .dataTables_info, span, a.page-link, .sr-only {
 .filter-input{
     background-color: rgba(255, 255, 255, 0.8);
 }
+
+.footer{
+    text-align: center;
+    margin: 10px;
+}
