@@ -1,6 +1,8 @@
 # D2TxtImporter
 This program is used to process all the .txt files of your mod and generate documentation for it.
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HW6L5XFFAFZ5J&source=url) Buy me a cup of coffee if you feel like it. I spend a significant amount of time on this project.
+
 # Guide
 To function correctly you need the following .tbl files (they can be named however you like, as long as they have the .tbl extension):
 - d2data.mpq
