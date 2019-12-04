@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommandLine;
+using System;
 
 namespace D2TxtImporter_console
 {
@@ -8,17 +9,16 @@ namespace D2TxtImporter_console
         {
             try
             {
-                var excelPath = args[0];
-                var tablePath = args[1];
-                var outputDir = args[2];
+                var parsedArgs = Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(o =>
+                {
+                    var importer = new D2TxtImporter.lib.Importer(o.ExcelPath, o.TablePath, o.OutputPath);
 
-                var importer = new D2TxtImporter.lib.Importer(excelPath, tablePath, outputDir);
+                    D2TxtImporter.lib.Model.CubeRecipe.UseDescription = o.CubeRecipeDescription;
 
-                importer.LoadData();
-                importer.ImportModel();
-                importer.Export();
-
-                Console.WriteLine("Success!");
+                    importer.LoadData();
+                    importer.ImportModel();
+                    importer.Export();
+                });
             }
             catch (Exception e)
             {
@@ -26,5 +26,20 @@ namespace D2TxtImporter_console
                 Console.ReadLine();
             }
         }
+    }
+
+    public class Options
+    {
+        [Option('e', "excelPath", Required = true, HelpText = "Path to the .txt files")]
+        public string ExcelPath { get; set; }
+
+        [Option('t', "tablePath", Required = true, HelpText = "Path to the .tbl files")]
+        public string TablePath { get; set; }
+
+        [Option('o', "outputPath", Required = true, HelpText = "Path the output is genereted at (must exist)")]
+        public string OutputPath { get; set; }
+
+        [Option("cubeRecipeDescription", Required = false, HelpText = "Use the description from CubeRecipes.txt instead of generating it")]
+        public bool CubeRecipeDescription { get; set; }
     }
 }
