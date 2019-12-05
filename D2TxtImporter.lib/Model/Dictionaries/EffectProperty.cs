@@ -18,16 +18,14 @@ namespace D2TxtImporter.lib.Model
         {
             EffectProperties = new Dictionary<string, EffectProperty>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/Properties.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/Properties.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-
                 var effect = new EffectProperty
                 {
-                    Code = values[0],
-                    Stat = values[5]
+                    Code = row["code"],
+                    Stat = row["stat1"]
                 };
 
                 EffectProperties[effect.Code] = effect;

@@ -15,28 +15,22 @@ namespace D2TxtImporter.lib.Model
         {
             Weapons = new Dictionary<string, Weapon>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/Weapons.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/Weapons.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[1]))
-                {
-                    continue;
-                }
-
                 var damageTypes = new List<DamageType>();
 
-                var isOneOrTwoHanded = values[12] == "1";
-                var isTwoHanded = values[13] == "1";
-                var isThrown = !string.IsNullOrEmpty(values[16]);
-                var name = values[0];
+                var isOneOrTwoHanded = row["1or2handed"] == "1";
+                var isTwoHanded = row["2handed"] == "1";
+                var isThrown = !string.IsNullOrEmpty(row["minmisdam"]);
+                var name = row["name"];
 
                 if (!isTwoHanded)
                 {
                     try
                     {
-                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.Normal, MinDamage = int.Parse(values[10]), MaxDamage = int.Parse(values[11]) });
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.Normal, MinDamage = int.Parse(row["mindam"]), MaxDamage = int.Parse(row["mindam"]) });
                     }
                     catch (Exception)
                     {
@@ -47,7 +41,7 @@ namespace D2TxtImporter.lib.Model
                 {
                     try
                     {
-                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.OneHanded, MinDamage = int.Parse(values[10]), MaxDamage = int.Parse(values[11]) });
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.OneHanded, MinDamage = int.Parse(row["mindam"]), MaxDamage = int.Parse(row["mindam"]) });
                     }
                     catch (Exception)
                     {
@@ -59,7 +53,7 @@ namespace D2TxtImporter.lib.Model
                 {
                     try
                     {
-                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.TwoHanded, MinDamage = int.Parse(values[14]), MaxDamage = int.Parse(values[15]) });
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.TwoHanded, MinDamage = int.Parse(row["2handmindam"]), MaxDamage = int.Parse(row["2handmaxdam"]) });
                     }
                     catch (Exception)
                     {
@@ -71,7 +65,7 @@ namespace D2TxtImporter.lib.Model
                 {
                     try
                     {
-                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.Thrown, MinDamage = int.Parse(values[16]), MaxDamage = int.Parse(values[17]) });
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.Thrown, MinDamage = int.Parse(row["minmisdam"]), MaxDamage = int.Parse(row["maxmisdam"]) });
                     }
                     catch (Exception)
                     {
@@ -79,28 +73,28 @@ namespace D2TxtImporter.lib.Model
                     }
                 }
 
-                var itemLevel = Utility.ToNullableInt(values[28]);
+                var itemLevel = Utility.ToNullableInt(row["level"]);
                 if (!itemLevel.HasValue)
                 {
                     throw new Exception($"Could not find item level for weapon '{name}' in Weapons.txt");
                 }
 
-                if (!ItemType.ItemTypes.ContainsKey(values[1]))
+                if (!ItemType.ItemTypes.ContainsKey(row["type"]))
                 {
-                    throw new Exception($"Could not find type '{values[1]}' in ItemTypes.txt for weapon '{name}' in Weapons.txt");
+                    throw new Exception($"Could not find type '{row["type"]}' in ItemTypes.txt for weapon '{name}' in Weapons.txt");
                 }
 
                 var weapon = new Weapon
                 {
                     Name = name,
                     DamageTypes = damageTypes,
-                    Code = values[3],
+                    Code = row["code"],
                     EquipmentType = EquipmentType.Weapon,
-                    RequiredStrength = !string.IsNullOrEmpty(values[23]) ? int.Parse(values[23]) : 0,
-                    RequiredDexterity = !string.IsNullOrEmpty(values[24]) ? int.Parse(values[24]) : 0,
-                    Durability = values[26] == "1" ? 0 : int.Parse(values[25]),
+                    RequiredStrength = !string.IsNullOrEmpty(row["reqstr"]) ? int.Parse(row["reqstr"]) : 0,
+                    RequiredDexterity = !string.IsNullOrEmpty(row["reqdex"]) ? int.Parse(row["reqdex"]) : 0,
+                    Durability = row["nodurability"] == "1" ? 0 : int.Parse(row["durability"]),
                     ItemLevel = itemLevel.Value,
-                    Type = ItemType.ItemTypes[values[1]]
+                    Type = ItemType.ItemTypes[row["type"]]
                 };
 
                 Weapons[weapon.Code] = weapon;

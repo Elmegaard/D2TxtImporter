@@ -22,21 +22,15 @@ namespace D2TxtImporter.lib.Model
         {
             MagicPrefixes = new Dictionary<int, MagicPrefix>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/MagicPrefix.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/MagicPrefix.txt");
 
             var index = 0;
-            foreach (var line in lines)
+            foreach (var row in table)
             {
                 index++;
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[0]))
-                {
-                    continue;
-                }
-
                 var magicPrefix = new MagicPrefix
                 {
-                    Name = values[0],
+                    Name = row["Name"],
                     Index = index - 1
                 };
 

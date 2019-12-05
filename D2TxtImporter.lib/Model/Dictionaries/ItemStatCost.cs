@@ -63,34 +63,29 @@ namespace D2TxtImporter.lib.Model
         {
             ItemStatCosts = new Dictionary<string, ItemStatCost>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/ItemStatCost.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/ItemStatCost.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[1]))
-                {
-                    continue;
-                }
-
                 var itemStatCost = new ItemStatCost
                 {
-                    Stat = values[0],
-                    Id = int.Parse(values[1]),
-                    Op = Utility.ToNullableInt(values[25]),
-                    OpParam = Utility.ToNullableInt(values[26]),
-                    DescriptionPriority = Utility.ToNullableInt(values[39]),
-                    DescriptionFunction = Utility.ToNullableInt(values[40]),
-                    DescriptionValue = Utility.ToNullableInt(values[41]),
-                    DescriptonStringPositive = Table.GetValue(values[42]),
-                    DescriptionStringNegative = Table.GetValue(values[43]),
-                    DescriptionString2 = Table.GetValue(values[44]),
-                    GroupDescription = Utility.ToNullableInt(values[45]),
-                    GroupDescriptionFunction = Utility.ToNullableInt(values[46]),
-                    GroupDescriptionValue = Utility.ToNullableInt(values[47]),
-                    GroupDescriptonStringPositive = Table.GetValue(values[48]),
-                    GroupDescriptionStringNegative = Table.GetValue(values[49]),
-                    GroupDescriptionString2 = Table.GetValue(values[50]),
+                   
+                    Stat = row["Stat"],
+                    Id = int.Parse(row["ID"]),
+                    Op = Utility.ToNullableInt(row["op"]),
+                    OpParam = Utility.ToNullableInt(row["op param"]),
+                    DescriptionPriority = Utility.ToNullableInt(row["descpriority"]),
+                    DescriptionFunction = Utility.ToNullableInt(row["descfunc"]),
+                    DescriptionValue = Utility.ToNullableInt(row["descval"]),
+                    DescriptonStringPositive = Table.GetValue(row["descstrpos"]),
+                    DescriptionStringNegative = Table.GetValue(row["descstrneg"]),
+                    DescriptionString2 = Table.GetValue(row["descstr2"]),
+                    GroupDescription = Utility.ToNullableInt(row["dgrp"]),
+                    GroupDescriptionFunction = Utility.ToNullableInt(row["dgrpfunc"]),
+                    GroupDescriptionValue = Utility.ToNullableInt(row["dgrpval"]),
+                    GroupDescriptonStringPositive = Table.GetValue(row["dgrpstrpos"]),
+                    GroupDescriptionStringNegative = Table.GetValue(row["dgrpstrneg"]),
+                    GroupDescriptionString2 = Table.GetValue(row["dgrpstr2"])
                 };
 
                 ItemStatCosts[itemStatCost.Stat] = itemStatCost;

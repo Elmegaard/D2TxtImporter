@@ -23,21 +23,15 @@ namespace D2TxtImporter.lib.Model
         {
             MonStats = new Dictionary<string, MonStat>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/MonStats.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/MonStats.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[1]))
-                {
-                    continue;
-                }
-
                 var monStat = new MonStat
                 {
-                    Id = values[0],
-                    Hcldx = values[1],
-                    NameStr = values[5]
+                    Id = row["Id"],
+                    Hcldx = row["hcIdx"],
+                    NameStr = row["NameStr"]
                 };
 
                 MonStats[monStat.Hcldx] = monStat;

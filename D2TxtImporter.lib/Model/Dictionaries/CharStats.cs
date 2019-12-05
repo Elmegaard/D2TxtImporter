@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,23 +57,17 @@ namespace D2TxtImporter.lib.Model
                 {20, "StrSklTabItem21" }
             };
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/CharStats.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/CharStats.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[1]))
-                {
-                    continue;
-                }
-
                 var charStat = new CharStat
                 {
-                    Class = values[0],
-                    StrAllSkills = values[43],
-                    StrSkillTab1 = values[44],
-                    StrSkillTab2 = values[45],
-                    StrSkillTab3 = values[46],
+                    Class = row["class"].ToString(),
+                    StrAllSkills = row["StrAllSkills"],
+                    StrSkillTab1 = row["StrSkillTab1"],
+                    StrSkillTab2 = row["StrSkillTab2"],
+                    StrSkillTab3 = row["StrSkillTab3"]
                 };
 
                 CharStats[charStat.Class.ToLower().Substring(0,3)] = charStat;

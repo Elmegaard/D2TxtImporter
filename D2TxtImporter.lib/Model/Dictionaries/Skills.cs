@@ -32,28 +32,22 @@ namespace D2TxtImporter.lib.Model
             NameSkillDictionary = new Dictionary<string, Skill>();
             DescSkillDictionary = new Dictionary<string, Skill>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/Skills.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/Skills.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[1]))
-                {
-                    continue;
-                }
-
-                var reqLevel = Utility.ToNullableInt(values[152]);
+                var reqLevel = Utility.ToNullableInt(row["reqlevel"]);
                 if (!reqLevel.HasValue || reqLevel.Value < 1)
                 {
-                    throw new Exception($"Invalid required level for skill '{values[0]}' in Skills.txt, should be an integer value 1 or above");
+                    throw new Exception($"Invalid required level for skill '{row["reqlevel"]}' in Skills.txt, should be an integer value 1 or above");
                 }
 
                 var skill = new Skill
                 {
-                    Name = values[0],
-                    Id = Utility.ToNullableInt(values[1]),
-                    CharClass = values[2],
-                    SkillDesc = values[3],
+                    Name = row["skill"],
+                    Id = Utility.ToNullableInt(row["Id"]),
+                    CharClass = row["charclass"],
+                    SkillDesc = row["skilldesc"],
                     RequiredLevel = reqLevel.Value
                 };
 

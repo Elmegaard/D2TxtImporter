@@ -16,7 +16,7 @@ namespace D2TxtImporter.lib.Model
             var files = Directory.GetFiles(tableFolder, "*.txt");
             foreach (var file in files)
             {
-                var lines = Importer.ReadCsvFile(file);
+                var lines = Importer.ReadTxtFileToList(file);
 
                 foreach (var line in lines)
                 {

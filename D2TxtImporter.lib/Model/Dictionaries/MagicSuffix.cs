@@ -22,21 +22,16 @@ namespace D2TxtImporter.lib.Model
         {
             MagicSuffixes = new Dictionary<int, MagicSuffix>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/MagicSuffix.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/MagicSuffix.txt");
 
             var index = 0;
-            foreach (var line in lines)
+            foreach (var row in table)
             {
                 index++;
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[0]))
-                {
-                    continue;
-                }
 
                 var magicSuffix = new MagicSuffix
                 {
-                    Name = values[0],
+                    Name = row["Name"],
                     Index = index - 1
                 };
 

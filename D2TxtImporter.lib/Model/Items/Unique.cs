@@ -14,43 +14,41 @@ namespace D2TxtImporter.lib.Model
         {
             var result = new List<Unique>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/UniqueItems.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/UniqueItems.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[6]))
+                if (string.IsNullOrEmpty(row["lvl"]))
                 {
                     continue;
                 }
 
-                var name = values[0];
+                var name = row["index"];
 
-                var itemLevel = Utility.ToNullableInt(values[6]);
+                var itemLevel = Utility.ToNullableInt(row["lvl"]);
                 if (!itemLevel.HasValue)
                 {
                     throw new Exception($"Could not find item level for '{name}' in UniqueItems.txt");
                 }
 
-                var requiredLevel = Utility.ToNullableInt(values[7]);
+                var requiredLevel = Utility.ToNullableInt(row["lvl req"]);
                 if (!requiredLevel.HasValue)
                 {
                     throw new Exception($"Could not find required level for '{name}' in UniqueItems.txt");
                 }
 
+                var code = row["code"];
                 var unique = new Unique
                 {
                     Name = name,
-                    Enabled = values[2] == "1",
+                    Enabled = row["enabled"] == "1",
                     ItemLevel = itemLevel.Value,
                     RequiredLevel = requiredLevel.Value,
-                    Code = values[8],
-                    Type = values[9],
+                    Code = code,
                     DamageArmorEnhanced = false
                 };
 
                 Equipment eq = null;
-                var code = values[8];
 
                 if (Armor.Armors.ContainsKey(code))
                 {
@@ -78,11 +76,18 @@ namespace D2TxtImporter.lib.Model
                 }
 
                 unique.Equipment = eq;
+                unique.Type = eq.Type.Name;
 
-                var propArray = values.Skip(21).ToArray();
-                propArray = propArray.Take(propArray.Count() - 1).ToArray();
+                var propArray = new List<string>();
+                for (var i = 1; i <= 12; i++)
+                {
+                    propArray.Add(row[$"prop{i}"]);
+                    propArray.Add(row[$"par{i}"]);
+                    propArray.Add(row[$"min{i}"]);
+                    propArray.Add(row[$"max{i}"]);
+                }
 
-                var properties = ItemProperty.GetProperties(propArray, unique.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
+                var properties = ItemProperty.GetProperties(propArray.ToArray(), unique.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
 
                 unique.Properties = properties;
 

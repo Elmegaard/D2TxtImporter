@@ -28,51 +28,45 @@ namespace D2TxtImporter.lib.Model
         {
             Armors = new Dictionary<string, Armor>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/Armor.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/Armor.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[1]))
-                {
-                    continue;
-                }
+                var name = row["name"];
 
-                var name = values[0];
-
-                if (!ItemType.ItemTypes.ContainsKey(values[48]))
+                if (!ItemType.ItemTypes.ContainsKey(row["type"]))
                 {
-                    throw new Exception($"Could not find type '{values[48]}' in ItemTypes.txt for armor '{name}' in Armor.txt");
+                    throw new Exception($"Could not find type '{row["type"]}' in ItemTypes.txt for armor '{name}' in Armor.txt");
 
                 }
-                var type = ItemType.ItemTypes[values[48]];
+                var type = ItemType.ItemTypes[row["type"]];
 
-                var minAc = Utility.ToNullableInt(values[5]);
+                var minAc = Utility.ToNullableInt(row["minac"]);
                 if (!minAc.HasValue)
                 {
                     throw new Exception($"Could not find MinAC for armor '{name}' in Armor.txt");
                 }
 
-                var maxAc = Utility.ToNullableInt(values[6]);
+                var maxAc = Utility.ToNullableInt(row["minac"]);
                 if (!maxAc.HasValue)
                 {
                     throw new Exception($"Could not find MaxAC for armor '{name}' in Armor.txt");
                 }
 
-                var requiredStrength = Utility.ToNullableInt(values[9]);
+                var requiredStrength = Utility.ToNullableInt(row["reqstr"]);
                 if (!requiredStrength.HasValue)
                 {
                     throw new Exception($"Could not find Required Strength for armor '{name}' in Armor.txt");
                 }
 
-                var durability = Utility.ToNullableInt(values[11]);
+                var durability = Utility.ToNullableInt(row["durability"]);
                 if (!durability.HasValue)
                 {
                     throw new Exception($"Could not find Durability for armor '{name}' in Armor.txt");
                 }
 
 
-                var itemLevel = Utility.ToNullableInt(values[13]);
+                var itemLevel = Utility.ToNullableInt(row["level"]);
                 if (!durability.HasValue)
                 {
                     throw new Exception($"Could not find Item Level for armor '{name}' in Armor.txt");
@@ -81,15 +75,15 @@ namespace D2TxtImporter.lib.Model
                 var armor = new Armor
                 {
                     Name = name,
-                    Code = values[17],
+                    Code = row["code"],
                     MinAc = minAc.Value,
                     MaxAc = maxAc.Value,
                     RequiredStrength = requiredStrength.Value,
                     Type = type,
                     EquipmentType = EquipmentType.Armor,
                     Durability = durability.Value,
-                    MinDamage = Utility.ToNullableInt(values[63]),
-                    MaxDamage = Utility.ToNullableInt(values[64]),
+                    MinDamage = Utility.ToNullableInt(row["mindam"]),
+                    MaxDamage = Utility.ToNullableInt(row["maxdam"]),
                     ItemLevel = itemLevel.Value
                 };
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 
@@ -71,9 +72,45 @@ namespace D2TxtImporter.lib
             WebExporter.ExportWeb(_outputPath);
         }
 
-        public static List<string> ReadCsvFile(string path)
+        public static List<string> ReadTxtFileToList(string path)
         {
-            return File.ReadAllLines(path).Skip(1).ToList();
+            return File.ReadAllLines(path).ToList();
+        }
+
+        public static List<Dictionary<string, string>> ReadTxtFileToDictionaryList(string path)
+        {
+            var table = new List<Dictionary<string, string>>();
+
+            var fileArray = File.ReadAllLines(path);
+            var headerArray = fileArray.Take(1).First().Split('\t');
+
+            var header = new List<string>();
+
+            foreach (var column in headerArray)
+            {
+                header.Add(column);
+            }
+
+            var dataArray = fileArray.Skip(1);
+            foreach (var valueLine in dataArray)
+            {
+                var values = valueLine.Split('\t');
+                if (string.IsNullOrEmpty(values[1]))
+                {
+                    continue;
+                }
+
+                var row = new Dictionary<string, string>();
+
+                for(var i = 0; i < values.Length; i++)
+                {
+                    row[headerArray[i]] = values[i];
+                }
+
+                table.Add(row);
+            }
+
+            return table;
         }
     }
 }

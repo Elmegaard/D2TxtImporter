@@ -20,45 +20,54 @@ namespace D2TxtImporter.lib.Model
         {
             var result = new List<CubeRecipe>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/CubeMain.txt");
+            var lines = Importer.ReadTxtFileToDictionaryList(excelFolder + "/CubeMain.txt");
 
-            foreach (var line in lines)
+            foreach (var row in lines)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[1]) || values[1] == "0")
+                if (row["enabled"] == "0")
                 {
                     continue;
                 }
 
                 var recipe = new CubeRecipe();
 
+                var descr = row["description"].Replace("rune ", "r");
+
+
                 if (!UseDescription)
                 {
                     // Params
-                    var paramArray = values.Skip(21).ToList().Take(25).ToList();
                     var modifiers = new List<CubeMod>();
-                    for (int i = 0; i < paramArray.Count; i += 5)
+                    for (int i = 1; i <= 5; i++)
                     {
-                        if (!string.IsNullOrEmpty(paramArray[i]))
+                        if (!string.IsNullOrEmpty(row[$"mod {i}"]))
                         {
                             modifiers.Add(new CubeMod
                             {
-                                Mod = paramArray[i],
-                                ModChance = paramArray[i + 1],
-                                ModParam = paramArray[i + 2],
-                                ModMin = paramArray[i + 3],
-                                ModMax = paramArray[i + 4],
+                                Mod = row[$"mod {i}"],
+                                ModChance = row[$"mod {i} chance"],
+                                ModParam = row[$"mod {i} param"],
+                                ModMin = row[$"mod {i} min"],
+                                ModMax = row[$"mod {i} max"]
                             });
                         }
                     }
 
                     // Input
-                    var numInputs = int.Parse(values[9]);
-                    var inputArray = values.Skip(10).ToList();
-                    inputArray = inputArray.Take(numInputs).ToList();
+                    var numInputs = Utility.ToNullableInt(row["numinputs"]);
+                    if (!numInputs.HasValue)
+                    {
+                        throw new Exception($"Cube recipe '{descr}' does not have a numinputs");
+                    }
+
+                    var inputArray = new List<string>();
+                    for (int i = 1; i <= numInputs.Value; i++)
+                    {
+                        inputArray.Add(row[$"input {i}"]);
+                    }
                     inputArray.RemoveAll(x => string.IsNullOrEmpty(x));
 
-                    recipe = new CubeRecipe(inputArray.ToArray(), values[17]);
+                    recipe = new CubeRecipe(inputArray.ToArray(), row["output"]);
 
                     if (recipe.Output.Contains("usetype"))
                     {
@@ -95,7 +104,6 @@ namespace D2TxtImporter.lib.Model
                     }
                 }
 
-                var descr = values[0].Replace("rune ", "r");
                 var matches = Regex.Matches(descr, @"(r\d\d)");
                 if (matches.Count > 0)
                 {

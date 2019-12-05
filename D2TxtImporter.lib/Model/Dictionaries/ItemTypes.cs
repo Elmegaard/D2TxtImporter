@@ -28,23 +28,17 @@ namespace D2TxtImporter.lib.Model
         {
             ItemTypes = new Dictionary<string, ItemType>();
 
-            var lines = Importer.ReadCsvFile(excelFolder + "/ItemTypes.txt");
+            var table = Importer.ReadTxtFileToDictionaryList(excelFolder + "/ItemTypes.txt");
 
-            foreach (var line in lines)
+            foreach (var row in table)
             {
-                var values = line.Split('\t');
-                if (string.IsNullOrEmpty(values[1]))
-                {
-                    continue;
-                }
-
                 var itemType = new ItemType
                 {
-                    Name = values[0],
-                    Code = values[1],
-                    Equiv1 = values[2],
-                    Equiv2 = values[3],
-                    Class = values[27]
+                    Name = row["ItemType"],
+                    Code = row["Code"],
+                    Equiv1 = row["Equiv1"],
+                    Equiv2 = row["Equiv2"],
+                    Class = row["Class"]
                 };
 
                 ItemTypes[itemType.Code] = itemType;
