@@ -73,7 +73,7 @@ namespace D2TxtImporter.lib.Model
             }
             else
             {
-                throw new Exception($"Could not find skill with id, name, or description '{skill}'");
+                throw new Exception($"Could not find skill with id, name, or description '{skill}' in Skills.txt");
             }
         }
 

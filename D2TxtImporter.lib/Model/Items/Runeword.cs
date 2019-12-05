@@ -24,19 +24,6 @@ namespace D2TxtImporter.lib.Model
                     continue;
                 }
 
-                // Add the properties
-                var propArray = new string[] {
-                    row["T1Code1"], row["T1Param1"], row["T1Min1"], row["T1Max1"],
-                    row["T1Code2"], row["T1Param2"], row["T1Min2"], row["T1Max2"],
-                    row["T1Code3"], row["T1Param3"], row["T1Min3"], row["T1Max3"],
-                    row["T1Code4"], row["T1Param4"], row["T1Min4"], row["T1Max4"],
-                    row["T1Code5"], row["T1Param5"], row["T1Min5"], row["T1Max5"],
-                    row["T1Code6"], row["T1Param6"], row["T1Min6"], row["T1Max6"],
-                    row["T1Code7"], row["T1Param7"], row["T1Min7"], row["T1Max7"]
-                };
-
-                var properties = ItemProperty.GetProperties(propArray).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
-
                 // Add the runes
                 var runeArray = new string[] { row["Rune1"], row["Rune2"], row["Rune3"], row["Rune4"], row["Rune5"], row["Rune6"] };
                 var runes = new List<Misc>();
@@ -69,11 +56,27 @@ namespace D2TxtImporter.lib.Model
                     RequiredLevel = runes.Max(x => x.RequiredLevel),
                     Code = row["Name"],
                     Types = types,
-                    Runes = runes,
-                    Properties = properties
+                    Runes = runes
                 };
 
-                if (properties.Count > 0)
+                var propList = new List<PropertyInfo>();
+                // Add the properties
+                for (int i = 1; i <= 7; i++)
+                {
+                    propList.Add(new PropertyInfo(row[$"T1Code{i}"], row[$"T1Param{i}"], row[$"T1Min{i}"], row[$"T1Max{i}"]));
+                }
+
+                try
+                {
+                    var properties = ItemProperty.GetProperties(propList).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
+                    runeword.Properties = properties;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Could not get properties for runeword '{runeword.Name}' in Runes.txt", e);
+                }
+
+                if (runeword.Properties.Count > 0)
                 {
                     result.Add(runeword);
                 }

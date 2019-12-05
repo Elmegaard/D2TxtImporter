@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace D2TxtImporter.lib.Model
 {
@@ -69,7 +70,7 @@ namespace D2TxtImporter.lib.Model
             {
                 var itemStatCost = new ItemStatCost
                 {
-                   
+
                     Stat = row["Stat"],
                     Id = int.Parse(row["ID"]),
                     Op = Utility.ToNullableInt(row["op"]),
@@ -290,20 +291,49 @@ namespace D2TxtImporter.lib.Model
                             break;
                         case 13:
                             var classReplace = "";
-                            if (parameter == "randclassskill")
+                            valueString = $"+{valueString}";
+
+                            var regex = Regex.Match(parameter, "randclassskill(%d+)"); // Work with custom randclasskill(digit) 
+                            if (regex.Success)
                             {
                                 classReplace = "(Random Class)";
+                                valueString = $"+{regex.Groups[1].Value}";
+                            }
+                            else if (parameter == "randclassskill")
+                            {
+                                classReplace = "(Random Class)";
+                                valueString = "+3";
                             }
                             else
                             {
+                                if (!CharStat.CharStats.ContainsKey(parameter))
+                                {
+                                    throw new Exception($"Could not find character class '{parameter}'\nNote: if you have made a custom version of 'randclassskill' to support different amount of skills change them to 'randclassskill<d>' for example 'randclassskill5' is supported.");
+                                }
                                 classReplace = CharStat.CharStats[parameter].Class;
                             }
                             lstValue = lstValue.Replace("%d", classReplace);
-                            valueString = $"+{valueString}";
                             break;
                         case 14:
-                            var skillTab = CharStat.SkillTabs[int.Parse(parameter)];
+                            var par = Utility.ToNullableInt(parameter);
+                            if (!par.HasValue)
+                            {
+                                throw new Exception($"Could not convert parameter '{parameter}' to a valid integer");
+                            }
+
+                            if (!CharStat.SkillTabs.ContainsKey(par.Value))
+                            {
+                                throw new Exception($"Could not find skill tab with id {par.Value}");
+                            }
+
+                            var skillTab = CharStat.SkillTabs[par.Value];
+
                             var className = CharStat.CharStats.Values.First(x => x.StrSkillTab1 == skillTab || x.StrSkillTab2 == skillTab || x.StrSkillTab3 == skillTab).Class;
+
+                            if (!Table.Tables.ContainsKey(skillTab))
+                            {
+                                throw new Exception($"Could not find translation key '{skillTab}' in any .tbl file");
+                            }
 
                             lstValue = Table.Tables[skillTab];
                             valueString = $"{lstValue.Replace("%d", valueString)} ({className} only)";
@@ -333,6 +363,10 @@ namespace D2TxtImporter.lib.Model
                             valueString = $"{GetValueString(value * -1, value2 * -1)}%";
                             break;
                         case 23:
+                            if (!MonStat.MonStats.ContainsKey(parameter))
+                            {
+                                throw new Exception($"Could not find monster with id '{parameter}' in MonStats.txt");
+                            }
                             valueString = $"{valueString}% {lstValue} {MonStat.MonStats[parameter].NameStr}";
                             DescriptionValue = 3;
                             break;
@@ -345,6 +379,10 @@ namespace D2TxtImporter.lib.Model
                             if (!string.IsNullOrEmpty(charClass))
                             {
                                 // Add requirement if one is there
+                                if (!CharStat.CharStats.ContainsKey(Skill.GetSkill(parameter).CharClass))
+                                {
+                                    throw new Exception($"Could not find character skill tab '{Skill.GetSkill(parameter).CharClass}' property");
+                                }
                                 reqString = $" ({CharStat.CharStats[Skill.GetSkill(parameter).CharClass].Class} Only)";
                             }
                             valueString = $"+{valueString} to {Skill.GetSkill(parameter).Name}{reqString}";

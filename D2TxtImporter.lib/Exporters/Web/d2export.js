@@ -79,6 +79,7 @@ function GetUniqueItemDiv(el) {
                 }
                 $divDamage.append($spanDamageString);
                 $divDamage.append($spanDamageNumbers);
+                $divDamage.append($("<br>"));
             };
             break;
         case 2: // Jewelery

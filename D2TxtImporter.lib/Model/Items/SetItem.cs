@@ -88,30 +88,40 @@ namespace D2TxtImporter.lib.Model
                 setItem.Equipment = eq;
                 setItem.Type = eq.Type.Name;
 
+                var propList = new List<PropertyInfo>();
                 // Add the properties
-                var propArray = new string[] {
-                    row["prop1"], row["par1"], row["min1"], row["max1"],
-                    row["prop2"], row["par2"], row["min2"], row["max2"],
-                    row["prop3"], row["par3"], row["min3"], row["max3"],
-                    row["prop4"], row["par4"], row["min4"], row["max4"],
-                    row["prop5"], row["par5"], row["min5"], row["max5"],
-                    row["prop6"], row["par6"], row["min6"], row["max6"],
-                    row["prop7"], row["par7"], row["min7"], row["max7"],
-                    row["prop8"], row["par8"], row["min8"], row["max8"],
-                    row["prop9"], row["par9"], row["min9"], row["max9"]
-                };
-                var properties = ItemProperty.GetProperties(propArray, setItem.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
-                setItem.Properties = properties;
+                for (int i = 1; i <= 9; i++)
+                {
+                    propList.Add(new PropertyInfo(row[$"prop{i}"], row[$"par{i}"], row[$"min{i}"], row[$"max{i}"]));
+                }
 
-                var setPropArray = new string[] {
-                    row["aprop1a"], row["apar1a"], row["amin1a"], row["amax1a"], row["aprop1b"], row["apar1b"], row["amin1b"], row["amax1b"],
-                    row["aprop2a"], row["apar2a"], row["amin2a"], row["amax2a"], row["aprop2b"], row["apar2b"], row["amin2b"], row["amax2b"],
-                    row["aprop3a"], row["apar3a"], row["amin3a"], row["amax3a"], row["aprop3b"], row["apar3b"], row["amin3b"], row["amax3b"],
-                    row["aprop4a"], row["apar4a"], row["amin4a"], row["amax4a"], row["aprop4b"], row["apar4b"], row["amin4b"], row["amax4b"],
-                    row["aprop5a"], row["apar5a"], row["amin5a"], row["amax5a"], row["aprop5b"], row["apar5b"], row["amin5b"], row["amax5b"]
-                };
-                var setProperties = ItemProperty.GetProperties(setPropArray, setItem.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
-                setItem.SetProperties = setProperties;
+                try
+                {
+                    var properties = ItemProperty.GetProperties(propList, setItem.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
+                    setItem.Properties = properties;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Could not get properties for item '{setItem.Name}' in SetItems.txt", e);
+                }
+
+                propList = new List<PropertyInfo>();
+                // Add the properties
+                for (int i = 1; i <= 5; i++)
+                {
+                    propList.Add(new PropertyInfo(row[$"aprop{i}a"], row[$"apar{i}a"], row[$"amin{i}a"], row[$"amax{i}a"]));
+                    propList.Add(new PropertyInfo(row[$"aprop{i}b"], row[$"apar{i}b"], row[$"amin{i}b"], row[$"amax{i}b"]));
+                }
+
+                try
+                {
+                    var setProperties = ItemProperty.GetProperties(propList, setItem.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
+                    setItem.SetProperties = setProperties;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Could not get set properties for item '{setItem.Name}' in SetItems.txt", e);
+                }
 
                 Unique.AddDamageArmorString(setItem);
 

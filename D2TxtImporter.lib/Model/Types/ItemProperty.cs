@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace D2TxtImporter.lib.Model
@@ -17,7 +18,7 @@ namespace D2TxtImporter.lib.Model
         {
             if (!EffectProperty.EffectProperties.ContainsKey(property.ToLower()))
             {
-                throw new System.Exception($"Could not find property '{property.ToLower()}' in Properties.txt");
+                throw new Exception($"Could not find property '{property.ToLower()}' parameter '{parameter}' min '{min}' max '{max}' index '{index}' itemlvl '{itemLevel}' in Properties.txt");
             }
 
             Property = EffectProperty.EffectProperties[property.ToLower()];
@@ -68,19 +69,31 @@ namespace D2TxtImporter.lib.Model
                 Parameter = Property.Code;
             }
 
+            if (!ItemStatCost.ItemStatCosts.ContainsKey(stat))
+            {
+                throw new System.Exception($"Could not find stat '{stat}' in ItemStatCost.txt");
+            }
+
             ItemStatCost = ItemStatCost.ItemStatCosts[stat];
-            PropertyString = ItemStatCost.PropertyString(Min, Max, Parameter, itemLevel);
+            try
+            {
+                PropertyString = ItemStatCost.PropertyString(Min, Max, Parameter, itemLevel);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Could not generate properties for property '{property}' with parameter '{parameter}' min '{min}' max '{max}' index '{index}' itemlvl '{itemLevel}'", e);
+            }
         }
 
-        public static List<ItemProperty> GetProperties(string[] properties, int itemLevel = 0)
+        public static List<ItemProperty> GetProperties(List<PropertyInfo> properties, int itemLevel = 0)
         {
             var result = new List<ItemProperty>();
 
-            for (int i = 0; i < properties.Length; i += 4)
+            foreach (var property in properties)
             {
-                if (!string.IsNullOrEmpty(properties[i]) && !properties[i].StartsWith("*"))
+                if (!string.IsNullOrEmpty(property.Property) && !property.Property.StartsWith("*"))
                 {
-                    var prop = new ItemProperty(properties[i], properties[i + 1], Utility.ToNullableInt(properties[i + 2]), Utility.ToNullableInt(properties[i + 3]), i / 4, itemLevel);
+                    var prop = new ItemProperty(property.Property, property.Parameter, property.Min, property.Max, properties.IndexOf(property), itemLevel);
                     if (prop.Property.Code.ToLower() != "state") // Don't add states (auras)
                     {
                         result.Add(prop);

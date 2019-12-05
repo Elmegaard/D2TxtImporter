@@ -78,18 +78,22 @@ namespace D2TxtImporter.lib.Model
                 unique.Equipment = eq;
                 unique.Type = eq.Type.Name;
 
-                var propArray = new List<string>();
-                for (var i = 1; i <= 12; i++)
+                var propList = new List<PropertyInfo>();
+                // Add the properties
+                for (int i = 1; i <= 12; i++)
                 {
-                    propArray.Add(row[$"prop{i}"]);
-                    propArray.Add(row[$"par{i}"]);
-                    propArray.Add(row[$"min{i}"]);
-                    propArray.Add(row[$"max{i}"]);
+                    propList.Add(new PropertyInfo(row[$"prop{i}"], row[$"par{i}"], row[$"min{i}"], row[$"max{i}"]));
                 }
 
-                var properties = ItemProperty.GetProperties(propArray.ToArray(), unique.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
-
-                unique.Properties = properties;
+                try
+                {
+                    var properties = ItemProperty.GetProperties(propList, unique.ItemLevel).OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
+                    unique.Properties = properties;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Could not get properties for unique '{unique.Name}' in UniqueItems.txt", e);
+                }
 
                 AddDamageArmorString(unique);
 

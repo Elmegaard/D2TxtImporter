@@ -86,7 +86,14 @@ namespace D2TxtImporter.client
             }
             catch (Exception ex)
             {
-                var errorDialog = new ErrorDialog(ex.Message + "\n\n" + ex.StackTrace);
+                var errorMessage = "";
+                do
+                {
+                    errorMessage += $"Message:\n{ex.Message}\n\nStacktrace:\n{ex.StackTrace}\n\n";
+                    ex = ex.InnerException;
+                }
+                while (ex != null);
+                var errorDialog = new ErrorDialog(errorMessage);
                 errorDialog.Show();
             }
         }

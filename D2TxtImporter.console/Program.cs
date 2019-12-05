@@ -22,7 +22,15 @@ namespace D2TxtImporter_console
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                var errorMessage = "";
+                do
+                {
+                    errorMessage += $"Message:\n{e.Message}\n\nStacktrace:\n{e.StackTrace}\n\n";
+                    e = e.InnerException;
+                }
+                while (e != null);
+
+                Console.WriteLine(errorMessage);
                 Console.ReadLine();
             }
         }

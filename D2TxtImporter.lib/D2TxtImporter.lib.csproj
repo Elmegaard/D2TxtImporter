@@ -68,6 +68,7 @@
     <Compile Include="Model\Dictionaries\Table.cs" />
     <Compile Include="Model\Items\Unique.cs" />
     <Compile Include="Model\Dictionaries\EffectProperty.cs" />
+    <Compile Include="Model\Types\PropertyInfo.cs" />
     <Compile Include="Model\Utility.cs" />
     <Compile Include="Model\Equipment\Weapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
