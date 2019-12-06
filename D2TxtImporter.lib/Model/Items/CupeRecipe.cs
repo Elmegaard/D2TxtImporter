@@ -109,6 +109,10 @@ namespace D2TxtImporter.lib.Model
                 {
                     foreach (Match match in matches)
                     {
+                        if (!Misc.MiscItems.ContainsKey(match.Groups[1].Value))
+                        {
+                            throw new Exception($"Could not find code {match.Groups[1].Value} in Misc.txt, this is probably trying to replace a rune name");
+                        }
                         var rune = Misc.MiscItems[match.Groups[1].Value];
 
                         descr = descr.Replace(rune.Code, rune.Name);
