@@ -613,7 +613,7 @@ function Search() {
 
                     for (var j = 0; j < el.SetItems.length; j++) {
                         var setItem = el.SetItems[j];
-                        if (setItem.Name.toLowerCase().cindexOf(text.toLowerCase()) > -1) {
+                        if (setItem.Name.toLowerCase().indexOf(text.toLowerCase()) > -1) {
                             if (!ArrayContainsName(searchedSets, el.Name)) {
                                 searchedSets.push(el);
                             }
