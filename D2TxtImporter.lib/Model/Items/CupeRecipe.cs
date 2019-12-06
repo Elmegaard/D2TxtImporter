@@ -111,7 +111,7 @@ namespace D2TxtImporter.lib.Model
                     {
                         if (!Misc.MiscItems.ContainsKey(match.Groups[1].Value))
                         {
-                            throw new Exception($"Could not find code {match.Groups[1].Value} in Misc.txt, this is probably trying to replace a rune name");
+                            throw new Exception($"Could not find code '{match.Groups[1].Value}' in Misc.txt for cube recipe: '{descr}', this is probably trying to replace a rune name");
                         }
                         var rune = Misc.MiscItems[match.Groups[1].Value];
 
