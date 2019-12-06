@@ -293,7 +293,7 @@ namespace D2TxtImporter.lib.Model
                             var classReplace = "";
                             valueString = $"+{valueString}";
 
-                            var regex = Regex.Match(parameter, "randclassskill(%d+)"); // Work with custom randclasskill(digit) 
+                            var regex = Regex.Match(parameter, @"randclassskill(\d+)"); // Work with custom randclasskill(digit) 
                             if (regex.Success)
                             {
                                 classReplace = "(Random Class)";

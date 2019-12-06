@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,13 @@ namespace D2TxtImporter.lib.Model
 {
     public class PropertyInfo
     {
+        [JsonIgnore]
         public string Property { get; set; }
+        [JsonIgnore]
         public string Parameter { get; set; }
+        [JsonIgnore]
         public int? Min { get; set; }
+        [JsonIgnore]
         public int? Max { get; set; }
 
         public PropertyInfo(string property, string parameter, int? min, int? max)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,11 @@ namespace D2TxtImporter.lib.Model
     public class DamageType
     {
         public DamageTypeEnum Type { get; set; }
+
+        [JsonIgnore]
         public int MinDamage { get; set; }
+
+        [JsonIgnore]
         public int MaxDamage { get; set; }
         public string DamageString { get; set; }
 
