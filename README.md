@@ -27,7 +27,6 @@ To get information use:
 - Rework hard coded values (enhanced damage, skill tree names, etc.)
 - Add support for all DescFunc from ItemStatCosts.txt, I do not have text files that use all of them and can't really test it all with vanilla .txt files. If a "todo" shows up in your output, please post the todo in a new issue along with how it is supposed to look so I can correctly generate the output.
 - Cleanup the mess of a code this entire project is..
-- Add better exception handling so the exceptions actually makes sense
 - Add better searching on web part
 - Internet Explorer not supported, and I am not doing it either.
 
