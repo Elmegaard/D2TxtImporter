@@ -439,18 +439,7 @@ namespace D2TxtImporter.lib.Model
 
         private static double CalculatePerLevel(string parameter, int? op, int? op_param, string stat)
         {
-            var val = int.Parse(parameter) / Math.Pow(op.Value, op_param.Value);
-            if (stat == "item_maxdamage_perlevel")
-            {
-                val *= 10;
-                val = Math.Round(val * 4, MidpointRounding.ToEven) / 4; // Round to nearest quarter
-            }
-            else if (stat == "item_armor_perlevel")
-            {
-                val *= 8;
-                val = Math.Round(val * 4, MidpointRounding.ToEven) / 4; // Round to nearest quarter
-            }
-
+            var val = int.Parse(parameter) / 8d;
             return val;
         }
 
