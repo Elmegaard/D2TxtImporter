@@ -200,7 +200,7 @@ function RenderRunewords() {
         $divRunes.addClass("runes");
         for (var j = 0; j < el.Runes.length; j++) {
             var rune = el.Runes[j];
-            var $spanRune = $("<span>").text(rune.Name.replace(" Rune", ""));
+            var $spanRune = $("<span>").text(rune.Name.replace(" Rune", "")).addClass("unique-text");
             $divRunes.append($spanRune);
         };
         $item.append($divRunes);
