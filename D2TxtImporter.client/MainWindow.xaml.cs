@@ -89,7 +89,7 @@ namespace D2TxtImporter.client
                 var errorMessage = "";
                 do
                 {
-                    errorMessage += $"Message:\n{ex.Message}\n\nStacktrace:\n{ex.StackTrace}\n\n";
+                    errorMessage += $"Message:\n{ex.Message}\n\n";
                     ex = ex.InnerException;
                 }
                 while (ex != null);

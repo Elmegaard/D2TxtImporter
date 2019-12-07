@@ -19,7 +19,6 @@ namespace D2TxtImporter.lib
 
         public Importer(string excelPath, string tablePath, string outputDir)
         {
-
             if (!Directory.Exists(outputDir))
             {
                 throw new Exception($"Could not find output directory at '{outputDir}'");
@@ -40,36 +39,75 @@ namespace D2TxtImporter.lib
             _tablePath = tablePath.Trim('/', '\\');
         }
 
+        private void HandleException(Exception e)
+        {
+            var exePath = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}";
+            var ex = e;
+
+            var errorMessage = "";
+            do
+            {
+                errorMessage += $"Message:\n{ex.Message}\n\nStacktrace:\n{ex.StackTrace}\n\n";
+                ex = ex.InnerException;
+            }
+            while (ex != null);
+
+            File.WriteAllText($"{exePath}/errorlog.txt", errorMessage);
+
+            throw e;
+        }
+
         public void LoadData()
         {
-            Model.Table.ImportFromTbl(_tablePath);
-            Model.MagicPrefix.Import(_excelPath);
-            Model.MagicSuffix.Import(_excelPath);
-            Model.ItemStatCost.Import(_excelPath);
-            Model.EffectProperty.Import(_excelPath);
-            Model.ItemType.Import(_excelPath);
-            Model.Armor.Import(_excelPath);
-            Model.Weapon.Import(_excelPath);
-            Model.Skill.Import(_excelPath);
-            Model.CharStat.Import(_excelPath);
-            Model.MonStat.Import(_excelPath);
-            Model.Misc.Import(_excelPath);
-            Model.SetItem.Import(_excelPath);
+            try
+            {
+                Model.Table.ImportFromTbl(_tablePath);
+                Model.MagicPrefix.Import(_excelPath);
+                Model.MagicSuffix.Import(_excelPath);
+                Model.ItemStatCost.Import(_excelPath);
+                Model.EffectProperty.Import(_excelPath);
+                Model.ItemType.Import(_excelPath);
+                Model.Armor.Import(_excelPath);
+                Model.Weapon.Import(_excelPath);
+                Model.Skill.Import(_excelPath);
+                Model.CharStat.Import(_excelPath);
+                Model.MonStat.Import(_excelPath);
+                Model.Misc.Import(_excelPath);
+                Model.SetItem.Import(_excelPath);
+            }
+            catch (Exception e)
+            {
+                HandleException(e);
+            }
         }
 
         public void ImportModel()
         {
-            Uniques = Model.Unique.Import(_excelPath);
-            Runewords = Model.Runeword.Import(_excelPath);
-            CubeRecipes = Model.CubeRecipe.Import(_excelPath);
-            Sets = Model.Set.Import(_excelPath);
+            try
+            {
+                Uniques = Model.Unique.Import(_excelPath);
+                Runewords = Model.Runeword.Import(_excelPath);
+                CubeRecipes = Model.CubeRecipe.Import(_excelPath);
+                Sets = Model.Set.Import(_excelPath);
+            }
+            catch (Exception e)
+            {
+                HandleException(e);
+            }
         }
 
         public void Export()
         {
-            //TxtExporter.ExportTxt(_outputPath, Uniques, Runewords, CubeRecipes, Sets); // Out of date
-            JsonExporter.ExportJson(_outputPath, Uniques, Runewords, CubeRecipes, Sets);
-            WebExporter.ExportWeb(_outputPath);
+            try
+            {
+                //TxtExporter.ExportTxt(_outputPath, Uniques, Runewords, CubeRecipes, Sets); // Out of date
+                JsonExporter.ExportJson(_outputPath, Uniques, Runewords, CubeRecipes, Sets);
+                WebExporter.ExportWeb(_outputPath);
+            }
+            catch (Exception e)
+            {
+                HandleException(e);
+            }
         }
 
         public static List<string> ReadTxtFileToList(string path)
@@ -102,7 +140,7 @@ namespace D2TxtImporter.lib
 
                 var row = new Dictionary<string, string>();
 
-                for(var i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     row[headerArray[i]] = values[i];
                 }

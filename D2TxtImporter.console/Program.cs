@@ -25,7 +25,7 @@ namespace D2TxtImporter_console
                 var errorMessage = "";
                 do
                 {
-                    errorMessage += $"Message:\n{e.Message}\n\nStacktrace:\n{e.StackTrace}\n\n";
+                    errorMessage += $"Message:\n{e.Message}\n\n";
                     e = e.InnerException;
                 }
                 while (e != null);
