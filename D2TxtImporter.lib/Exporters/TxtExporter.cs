@@ -121,7 +121,7 @@ namespace D2TxtImporter.lib
                 var types = "";
                 foreach (var type in runeword.Types)
                 {
-                    types += type.Name + "/";
+                    types += type.Index + "/";
                 }
                 types = types.Trim('/');
 

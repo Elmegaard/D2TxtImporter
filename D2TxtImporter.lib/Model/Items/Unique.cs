@@ -76,7 +76,7 @@ namespace D2TxtImporter.lib.Model
                 }
 
                 unique.Equipment = eq;
-                unique.Type = eq.Type.Name;
+                unique.Type = eq.Type.Index;
 
                 var propList = new List<PropertyInfo>();
                 // Add the properties

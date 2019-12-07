@@ -9,7 +9,18 @@ namespace D2TxtImporter.lib.Model
 {
     public class ItemType
     {
-        public string Name { get; set; }
+        public string Name
+        {
+            get
+            {
+                if (Table.Tables.ContainsKey(Index))
+                {
+                    return Table.GetValue(Index);
+                }
+                return Index;
+            }
+        }
+        public string Index { get; set; }
 
         [JsonIgnore]
         public string Code { get; set; }
@@ -37,7 +48,7 @@ namespace D2TxtImporter.lib.Model
             {
                 var itemType = new ItemType
                 {
-                    Name = row["ItemType"],
+                    Index = row["ItemType"],
                     Code = row["Code"],
                     Equiv1 = row["Equiv1"],
                     Equiv2 = row["Equiv2"],
@@ -51,7 +62,7 @@ namespace D2TxtImporter.lib.Model
 
         public override string ToString()
         {
-            return Name;
+            return Index;
         }
     }
 }

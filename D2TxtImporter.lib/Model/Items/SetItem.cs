@@ -86,7 +86,7 @@ namespace D2TxtImporter.lib.Model
                 }
 
                 setItem.Equipment = eq;
-                setItem.Type = eq.Type.Name;
+                setItem.Type = eq.Type.Index;
 
                 var propList = new List<PropertyInfo>();
                 // Add the properties

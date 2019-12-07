@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,10 @@ namespace D2TxtImporter.lib.Model
         public static bool UseDescription { get; set; }
         public string Description { get; set; }
         public string Item { get; set; }
+        [JsonIgnore]
         public List<string> InputList { get; set; }
         public string Output { get; set; }
+        public string Input { get; set; }
         public string CubeRecipeDescription { get; set; }
 
         public static List<CubeRecipe> Import(string excelFolder)
@@ -96,12 +99,23 @@ namespace D2TxtImporter.lib.Model
                         {
                             recipe.Output = recipe.Output.Replace("useitem", ItemType.ItemTypes[item].Name);
                         }
+                        else
+                        {
+                            recipe.Output = recipe.Output.Replace("useitem", "");
+                        }
 
                         if (modifiers.Count > 0 && modifiers[0].Mod == "sock")
                         {
                             recipe.Output = $"Socketed {recipe.Output}";
                         }
                     }
+
+                    recipe.Input = "";
+                    foreach (var input in recipe.InputList)
+                    {
+                        recipe.Input += $"{input} + ";
+                    }
+                    recipe.Input = recipe.Input.Substring(0, recipe.Input.LastIndexOf('+'));
                 }
 
                 var matches = Regex.Matches(descr, @"(r\d\d)");
@@ -127,14 +141,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 else
                 {
-                    var tempDescr = "";
-                    foreach (var input in recipe.InputList)
-                    {
-                        tempDescr += $"{input} + ";
-                    }
-                    tempDescr = tempDescr.Substring(0, tempDescr.LastIndexOf('+'));
-
-                    recipe.CubeRecipeDescription = $"{tempDescr}= {recipe.Output}";
+                    recipe.CubeRecipeDescription = $"{recipe.Input}= {recipe.Output}";
                 }
 
                 recipe.CubeRecipeDescription = System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(recipe.CubeRecipeDescription);
@@ -164,6 +171,11 @@ namespace D2TxtImporter.lib.Model
                 var inputParams = input.Replace("\"", "").Split(',');
                 var item = ReplaceItemName(inputParams[0]);
 
+                if (Table.Tables.ContainsKey(item))
+                {
+                    item = Table.GetValue(item);
+                }
+
                 var parameters = inputParams.Skip(1).ToArray();
                 var parameterString = GetParameterString(parameters);
 
@@ -179,6 +191,11 @@ namespace D2TxtImporter.lib.Model
         {
             var outputParams = output.Replace("\"", "").Split(',');
             var item = ReplaceItemName(outputParams[0]);
+
+            if (Table.Tables.ContainsKey(item))
+            {
+                item = Table.GetValue(item);
+            }
 
             var parameters = outputParams.Skip(1).ToArray();
             var parameterString = GetParameterString(parameters);
