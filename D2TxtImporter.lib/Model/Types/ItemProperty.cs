@@ -18,7 +18,6 @@ namespace D2TxtImporter.lib.Model
         [JsonIgnore]
         public ItemStatCost ItemStatCost { get; set; }
         public string PropertyString { get; set; }
-        [JsonIgnore]
         public int Index { get; set; }
 
         public ItemProperty(string property, string parameter, int? min, int? max, int index, int itemLevel = 0)

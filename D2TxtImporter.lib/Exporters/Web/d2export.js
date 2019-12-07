@@ -10,7 +10,7 @@ var AllCubeRecipes = {};
 var Sets = {};
 var AllSets = {};
 
-function GetUniqueItemDiv(el) {
+function GetUniqueItemDiv(el, itemType) {
     var $item = $("<div>");
     $item.addClass("item");
     $item.addClass("row");
@@ -18,14 +18,22 @@ function GetUniqueItemDiv(el) {
     // Name
     var $spanName = $("<span>");
     $spanName.text(el.Name);
-    $spanName.addClass("unique-text");
+    if (itemType === "unique") {
+        $spanName.addClass("unique-text");
+    } else if (itemType === "set") {
+        $spanName.addClass("set-text");
+    }
     $spanName.addClass("col-sm-12");
     $item.append($spanName);
 
     // Type
     var $spanType = $("<span>");
     $spanType.text(el.Type);
-    $spanType.addClass("unique-text");
+    if (itemType === "unique") {
+        $spanType.addClass("unique-text");
+    } else if (itemType === "set") {
+        $spanType.addClass("set-text");
+    }
     $spanType.addClass("col-sm-12");
     $item.append($spanType);
 
@@ -161,7 +169,7 @@ function RenderUniques() {
 
     for (var i = 0; i < Uniques.length; i++) {
         var el = Uniques[i];
-        var $item = GetUniqueItemDiv(el);
+        var $item = GetUniqueItemDiv(el, "unique");
 
         var $tr = $("<tr>");
         var $td = $("<td>");
@@ -316,7 +324,7 @@ function RenderSets() {
         for (var j = 0; j < set.SetItems.length; j++) {
             var el = set.SetItems[j];
 
-            var uniqueItemDiv = GetUniqueItemDiv(el);
+            var uniqueItemDiv = GetUniqueItemDiv(el, "set");
             $item.append(uniqueItemDiv.children());
             for (var k = 0; k < el.SetPropertiesString.length; k++) {
                 var propString = el.SetPropertiesString[k];
