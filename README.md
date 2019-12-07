@@ -31,7 +31,7 @@ To get information use:
 - Internet Explorer not supported, and I am not doing it either.
 
 # Issues
-If you open an issue, please provide the required .txt and .tbl files so I can debug it. As mentioned above, I only have the vanilla files for 1.13c to test with.
+If you open an issue, please provide the required .txt and .tbl files so I can debug it. As mentioned above, I only have the vanilla files for 1.13c to test with. Also attach the errorlog.txt file.
 
 # Credits
 - .tbl import functionality: https://github.com/kambala-decapitator/QTblEditor
