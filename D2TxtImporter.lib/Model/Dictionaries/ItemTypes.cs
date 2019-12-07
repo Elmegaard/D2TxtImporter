@@ -22,6 +22,9 @@ namespace D2TxtImporter.lib.Model
         public string Equiv1 { get; set; }
 
         [JsonIgnore]
+        public string BodyLoc1 { get; set; }
+
+        [JsonIgnore]
         public static Dictionary<string, ItemType> ItemTypes;
 
         public static void Import(string excelFolder)
@@ -38,7 +41,8 @@ namespace D2TxtImporter.lib.Model
                     Code = row["Code"],
                     Equiv1 = row["Equiv1"],
                     Equiv2 = row["Equiv2"],
-                    Class = row["Class"]
+                    Class = row["Class"],
+                    BodyLoc1 = row["BodyLoc1"]
                 };
 
                 ItemTypes[itemType.Code] = itemType;

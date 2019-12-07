@@ -73,6 +73,7 @@ namespace D2TxtImporter.lib
                 Model.CharStat.Import(_excelPath);
                 Model.MonStat.Import(_excelPath);
                 Model.Misc.Import(_excelPath);
+                Model.Gem.Import(_excelPath);
                 Model.SetItem.Import(_excelPath);
             }
             catch (Exception e)

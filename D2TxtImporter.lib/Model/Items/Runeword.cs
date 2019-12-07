@@ -40,11 +40,43 @@ namespace D2TxtImporter.lib.Model
                 var typeArray = new string[] { row["itype1"], row["itype2"], row["itype3"], row["itype4"], row["itype5"], row["itype6"] };
                 var types = new List<ItemType>();
 
+                var shieldCounted = false;
+                var weaponCounted = false;
+                var armorCounted = false;
+                var typeCount = 0;
+
                 for (int i = 0; i < typeArray.Count(); i++)
                 {
                     if (!string.IsNullOrEmpty(typeArray[i]) && !typeArray[i].StartsWith("*"))
                     {
-                        types.Add(ItemType.ItemTypes[typeArray[i]]);
+                        var type = ItemType.ItemTypes[typeArray[i]];
+                        types.Add(type);
+
+                        // Count the amount of types, if this is more than 1 we add the type suffix later
+                        if (type.Equiv1 == "shld" || type.Code == "shld") // Shield
+                        {
+                            if (!shieldCounted)
+                            {
+                                typeCount++;
+                            }
+                            shieldCounted = true;
+                        }
+                        else if (type.BodyLoc1 == "rarm" || type.Code == "weap") // Weapon
+                        {
+                            if (!weaponCounted)
+                            {
+                                typeCount++;
+                            }
+                            weaponCounted = true;
+                        }
+                        else // Armor
+                        {
+                            if (!armorCounted)
+                            {
+                                typeCount++;
+                            }
+                            armorCounted = true;
+                        }
                     }
                 }
 
@@ -76,8 +108,72 @@ namespace D2TxtImporter.lib.Model
                     throw new Exception($"Could not get properties for runeword '{runeword.Name}' in Runes.txt", e);
                 }
 
+                // Add rune properties
+                foreach (var rune in runeword.Runes)
+                {
+                    if (!Gem.Gems.ContainsKey(rune.Name))
+                    {
+                        throw new Exception($"Could not find rune '{rune.Name}' in Gems.txt");
+                    }
+
+                    var runeGem = Gem.Gems[rune.Name];
+                    var wepAdded = false;
+                    var shieldAdded = false;
+                    var armorAdded = false;
+
+                    foreach (var type in runeword.Types)
+                    {
+                        if (type.Equiv1 == "shld" || type.Code == "shld") // Shield
+                        {
+                            if (!shieldAdded)
+                            {
+                                var properties = runeGem.ShieldProperties.Select(x => new ItemProperty(x)).ToList();
+
+                                if (typeCount > 1)
+                                {
+                                    properties.ForEach(x => x.Suffix = " (Shield)");
+                                }
+
+                                runeword.Properties.AddRange(properties);
+                            }
+                            shieldAdded = true;
+                        }
+                        else if (type.BodyLoc1 == "rarm" || type.Code == "weap") // Weapon
+                        {
+                            if (!wepAdded)
+                            {
+                                var properties = runeGem.WeaponProperties.Select(x => new ItemProperty(x)).ToList();
+
+                                if (typeCount > 1)
+                                {
+                                    properties.ForEach(x => x.Suffix = " (Weapon)");
+                                }
+
+                                runeword.Properties.AddRange(properties);
+                            }
+                            wepAdded = true;
+                        }
+                        else // Armor
+                        {
+                            if (!armorAdded)
+                            {
+                                var properties = runeGem.HelmProperties.Select(x => new ItemProperty(x)).ToList();
+
+                                if (typeCount > 1)
+                                {
+                                    properties.ForEach(x => x.Suffix = " (Armor)");
+                                }
+
+                                runeword.Properties.AddRange(properties);
+                            }
+                            armorAdded = true;
+                        }
+                    }
+                }
+
                 if (runeword.Properties.Count > 0)
                 {
+                    ItemProperty.CleanupDublicates(runeword.Properties);
                     result.Add(runeword);
                 }
             }

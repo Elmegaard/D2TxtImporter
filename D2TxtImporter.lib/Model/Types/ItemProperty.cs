@@ -17,10 +17,17 @@ namespace D2TxtImporter.lib.Model
         public int? Max { get; set; }
         [JsonIgnore]
         public ItemStatCost ItemStatCost { get; set; }
-        public string PropertyString { get; set; }
-        public int Index { get; set; }
 
-        public ItemProperty(string property, string parameter, int? min, int? max, int index, int itemLevel = 0)
+        private string _propertyString;
+        public string PropertyString { get => _propertyString + Suffix; set { _propertyString = value; } }
+        public int Index { get; set; }
+        [JsonIgnore]
+        public int ItemLevel { get; set; }
+        [JsonIgnore]
+        public string Suffix { get; set; }
+
+
+        public ItemProperty(string property, string parameter, int? min, int? max, int index, int itemLevel = 0, string suffix = "")
         {
             if (!EffectProperty.EffectProperties.ContainsKey(property.ToLower()))
             {
@@ -32,6 +39,8 @@ namespace D2TxtImporter.lib.Model
             Min = min;
             Max = max;
             Index = index;
+            ItemLevel = ItemLevel;
+            Suffix = suffix;
 
             var stat = Property.Stat;
 
@@ -89,6 +98,17 @@ namespace D2TxtImporter.lib.Model
             {
                 throw new Exception($"Could not generate properties for property '{property}' with parameter '{parameter}' min '{min}' max '{max}' index '{index}' itemlvl '{itemLevel}'", e);
             }
+        }
+
+        public ItemProperty(ItemProperty itemProperty)
+        {
+            Property = itemProperty.Property;
+            Parameter = itemProperty.Parameter;
+            Min = itemProperty.Min;
+            Max = itemProperty.Max;
+            ItemStatCost = itemProperty.ItemStatCost;
+            PropertyString = itemProperty.PropertyString;
+            Index = itemProperty.Index;
         }
 
         public static List<ItemProperty> GetProperties(List<PropertyInfo> properties, int itemLevel = 0)
@@ -178,6 +198,29 @@ namespace D2TxtImporter.lib.Model
             }
 
             return result;
+        }
+
+        public static void CleanupDublicates(List<ItemProperty> properties)
+        {
+            var dupes = properties.GroupBy(x => x.ItemStatCost.Stat).Where(x => x.Skip(1).Any()).ToList();
+            if (dupes.Count > 0)
+            {
+                foreach (var group in dupes)
+                {
+                    int? min = 0;
+                    int? max = 0;
+
+                    foreach (var prop in group)
+                    {
+                        min += prop.Min;
+                        max += prop.Max;
+                    }
+                    var newProp = new ItemProperty(group.First().Property.Code, group.First().Parameter, min, max, group.First().Index, group.First().ItemLevel, group.First().Suffix);
+                    properties.RemoveAll(x => x.ItemStatCost.Stat == newProp.ItemStatCost.Stat);
+                    properties.Add(newProp);
+                }
+            }
+            properties = properties.OrderByDescending(x => x.ItemStatCost == null ? 0 : x.ItemStatCost.DescriptionPriority).ToList();
         }
 
         public override string ToString()
