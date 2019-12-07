@@ -48,7 +48,7 @@ namespace D2TxtImporter.lib.Model
 
                 var setItem = new SetItem
                 {
-                    Name = name,
+                    Index = name,
                     Set = row["set"],
                     Enabled = true,
                     ItemLevel = itemLevel.Value,

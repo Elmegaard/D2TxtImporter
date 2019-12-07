@@ -50,7 +50,7 @@ namespace D2TxtImporter.lib.Model
 
                 var runeword = new Runeword
                 {
-                    Name = row["Rune Name"],
+                    Index = row["Name"],
                     Enabled = true,
                     ItemLevel = runes.Max(x => x.ItemLevel),
                     RequiredLevel = runes.Max(x => x.RequiredLevel),

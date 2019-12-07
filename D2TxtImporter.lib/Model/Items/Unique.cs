@@ -40,7 +40,7 @@ namespace D2TxtImporter.lib.Model
                 var code = row["code"];
                 var unique = new Unique
                 {
-                    Name = name,
+                    Index = name,
                     Enabled = row["enabled"] == "1",
                     ItemLevel = itemLevel.Value,
                     RequiredLevel = requiredLevel.Value,

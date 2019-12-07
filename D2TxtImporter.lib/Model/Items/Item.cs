@@ -8,7 +8,19 @@ namespace D2TxtImporter.lib.Model
 {
     public class Item
     {
-        public string Name { get; set; }
+        public string Name
+        {
+            get
+            {
+                if (!Table.Tables.ContainsKey(Index))
+                {
+                    throw new Exception($"Could not find translation for '{Index}' in any .tbl files");
+                }
+
+                return Table.Tables[Index];
+            }
+        }
+        public string Index { get; set; }
         public bool Enabled { get; set; }
         public int ItemLevel { get; set; }
         public int RequiredLevel { get; set; }
