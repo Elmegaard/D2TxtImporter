@@ -439,7 +439,13 @@ namespace D2TxtImporter.lib.Model
 
         private static double CalculatePerLevel(string parameter, int? op, int? op_param, string stat)
         {
-            var val = int.Parse(parameter) / 8d;
+            var para = Utility.ToNullableInt(parameter);
+            if (!para.HasValue)
+            {
+                throw new Exception($"Could not calculate per level, as parameter '{parameter}' is not a valid integer");
+            }
+
+            var val = para.Value / 8d;
             return val;
         }
 
