@@ -137,6 +137,18 @@ namespace D2TxtImporter.lib.Model
             };
 
             ItemStatCosts["eledam"] = eledam;
+
+            var resAll = new ItemStatCost
+            {
+                Stat = "res-all",
+                DescriptionPriority = 34,
+                DescriptionFunction = 4, // lstValue
+                DescriptonStringPositive = Table.GetValue("strModAllResistances"),
+                DescriptionStringNegative = Table.GetValue("strModAllResistances"),
+                DescriptionValue = 2 // Do not add value
+            };
+
+            ItemStatCosts["res-all"] = resAll;
         }
 
         public static void FixBrokenEntries()

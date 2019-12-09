@@ -33,5 +33,10 @@ namespace D2TxtImporter.lib.Model
             Min = Utility.ToNullableInt(min);
             Max = Utility.ToNullableInt(max);
         }
+
+        public override string ToString()
+        {
+            return Property;
+        }
     }
 }

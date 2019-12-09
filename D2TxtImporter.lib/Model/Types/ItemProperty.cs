@@ -84,12 +84,21 @@ namespace D2TxtImporter.lib.Model
                 Parameter = Property.Code;
             }
 
+            // Fix manual set
+            switch (Property.Code)
+            {
+                case "res-all":
+                    stat = Property.Code;
+                    break;
+            }
+
             if (!ItemStatCost.ItemStatCosts.ContainsKey(stat))
             {
-                throw new System.Exception($"Could not find stat '{stat}' in ItemStatCost.txt");
+                throw new Exception($"Could not find stat '{stat}' in ItemStatCost.txt");
             }
 
             ItemStatCost = ItemStatCost.ItemStatCosts[stat];
+
             try
             {
                 PropertyString = ItemStatCost.PropertyString(Min, Max, Parameter, itemLevel);
