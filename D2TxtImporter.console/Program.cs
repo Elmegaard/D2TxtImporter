@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using System;
+using System.IO;
 
 namespace D2TxtImporter_console
 {
@@ -32,6 +33,13 @@ namespace D2TxtImporter_console
                 while (e != null);
 
                 Console.WriteLine(errorMessage);
+                Console.ReadLine();
+            }
+            var debugFile = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}/debuglog.txt";
+            if (File.Exists(debugFile))
+            {
+                var errorLines = File.ReadAllText(debugFile);
+                Console.WriteLine(errorLines);
                 Console.ReadLine();
             }
         }

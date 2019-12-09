@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
@@ -81,20 +82,22 @@ namespace D2TxtImporter.client
 
                 // Temporary Export, should be moved to its own button at some point
                 _mainViewModel.Importer.Export();
-
-                MessageBox.Show("Success!");
             }
             catch (Exception ex)
             {
-                var errorMessage = "";
-                do
-                {
-                    errorMessage += $"Message:\n{ex.Message}\n\n";
-                    ex = ex.InnerException;
-                }
-                while (ex != null);
-                var errorDialog = new ErrorDialog(errorMessage);
+            }
+
+            var debugFile = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}/debuglog.txt";
+            if (File.Exists(debugFile))
+            {
+                var errorLines = File.ReadAllText(debugFile);
+
+                var errorDialog = new ErrorDialog(errorLines);
                 errorDialog.Show();
+            }
+            else
+            {
+                MessageBox.Show("Success!");
             }
         }
 

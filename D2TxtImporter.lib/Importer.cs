@@ -21,11 +21,21 @@ namespace D2TxtImporter.lib
         private readonly static string _exceptionFile = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}/errorlog.txt";
         private readonly static string _debugFile = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}/debuglog.txt";
 
+        private static List<Exception> _exceptionsWritten { get; set; }
+
         public Importer(string excelPath, string tablePath, string outputDir)
         {
+            _exceptionsWritten = new List<Exception>();
+
             // Empty output files
-            File.WriteAllText(_exceptionFile, "");
-            File.WriteAllText(_debugFile, "");
+            if (File.Exists(_exceptionFile))
+            {
+                File.Delete(_exceptionFile);
+            }
+            if (File.Exists(_debugFile))
+            {
+                File.Delete(_debugFile);
+            }
 
             if (!Directory.Exists(outputDir))
             {
@@ -49,6 +59,17 @@ namespace D2TxtImporter.lib
 
         private static void WriteException(Exception e)
         {
+            if (_exceptionsWritten.Contains(e))
+            {
+                if (!ContinueOnException)
+                {
+                    throw e;
+                }
+
+                return;
+            }
+            _exceptionsWritten.Add(e);
+
             var ex = e;
 
             var errorMessage = "";
@@ -63,6 +84,11 @@ namespace D2TxtImporter.lib
 
             File.AppendAllText(_exceptionFile, errorMessage + "\n\n");
             File.AppendAllText(_debugFile, debugMessage + "\n\n");
+
+            if (!ContinueOnException)
+            {
+                throw e;
+            }
         }
 
         public static void LogException(Exception e)
