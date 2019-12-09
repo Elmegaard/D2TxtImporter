@@ -54,11 +54,23 @@ namespace D2TxtImporter.client
         {
             get
             {
-                return D2TxtImporter.lib.Model.CubeRecipe.UseDescription;
+                return lib.Model.CubeRecipe.UseDescription;
             }
             set
             {
-                D2TxtImporter.lib.Model.CubeRecipe.UseDescription = value;
+                lib.Model.CubeRecipe.UseDescription = value;
+            }
+        }
+
+        public bool ContinueOnException
+        {
+            get
+            {
+                return lib.Importer.ContinueOnException;
+            }
+            set
+            {
+                lib.Importer.ContinueOnException = value;
             }
         }
 

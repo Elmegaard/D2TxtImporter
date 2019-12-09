@@ -14,6 +14,7 @@ namespace D2TxtImporter_console
                     var importer = new D2TxtImporter.lib.Importer(o.ExcelPath, o.TablePath, o.OutputPath);
 
                     D2TxtImporter.lib.Model.CubeRecipe.UseDescription = o.CubeRecipeDescription;
+                    D2TxtImporter.lib.Importer.ContinueOnException = o.ContinueOnException;
 
                     importer.LoadData();
                     importer.ImportModel();
@@ -49,5 +50,8 @@ namespace D2TxtImporter_console
 
         [Option("cubeRecipeDescription", Required = false, HelpText = "Use the description from CubeRecipes.txt instead of generating it")]
         public bool CubeRecipeDescription { get; set; }
+
+        [Option("continueOnException", Required = false, HelpText = "If an exception occures, log it and continue. Check debuglog.txt and errorlog.txt for info")]
+        public bool ContinueOnException { get; set; }
     }
 }

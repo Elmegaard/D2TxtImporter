@@ -43,7 +43,7 @@ namespace D2TxtImporter.lib.Model
 
             if (files.Length == 0)
             {
-                throw new System.Exception($"Could not find any .tbl files in '{tableFolder}'");
+                Importer.LogException(new System.Exception($"Could not find any .tbl files in '{tableFolder}'"));
             }
 
             foreach (var file in files)
@@ -76,7 +76,7 @@ namespace D2TxtImporter.lib.Model
 
             if (!string.IsNullOrEmpty(key))
             {
-                throw new System.Exception($"Could not find key '{key}' in any .tbl file");
+                Importer.LogException(new System.Exception($"Could not find key '{key}' in any .tbl file"));
             }
 
             return null;

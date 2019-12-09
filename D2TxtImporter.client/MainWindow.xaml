@@ -39,7 +39,12 @@
 
         <GroupBox Grid.Row="1" Header="Settings">
             <Grid Margin="5">
-                <CheckBox IsChecked="{Binding CubeRecipeUseDescription}">Use Cube Recipe Description</CheckBox>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Row="0" IsChecked="{Binding CubeRecipeUseDescription}">Use Cube Recipe Description</CheckBox>
+                <CheckBox Grid.Row="1" IsChecked="{Binding ContinueOnException}">Continue on Exception</CheckBox>
             </Grid>
         </GroupBox>
 

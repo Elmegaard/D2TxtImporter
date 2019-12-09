@@ -16,9 +16,17 @@ namespace D2TxtImporter.lib
         public List<Model.Runeword> Runewords { get; set; }
         public List<Model.CubeRecipe> CubeRecipes { get; set; }
         public List<Model.Set> Sets { get; set; }
+        public static bool ContinueOnException { get; set; }
+
+        private readonly static string _exceptionFile = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}/errorlog.txt";
+        private readonly static string _debugFile = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}/debuglog.txt";
 
         public Importer(string excelPath, string tablePath, string outputDir)
         {
+            // Empty output files
+            File.WriteAllText(_exceptionFile, "");
+            File.WriteAllText(_debugFile, "");
+
             if (!Directory.Exists(outputDir))
             {
                 throw new Exception($"Could not find output directory at '{outputDir}'");
@@ -39,22 +47,32 @@ namespace D2TxtImporter.lib
             _tablePath = tablePath.Trim('/', '\\');
         }
 
-        private void HandleException(Exception e)
+        private static void WriteException(Exception e)
         {
-            var exePath = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}";
             var ex = e;
 
             var errorMessage = "";
+            var debugMessage = "";
             do
             {
                 errorMessage += $"Message:\n{ex.Message}\n\nStacktrace:\n{ex.StackTrace}\n\n";
+                debugMessage += $"Message:\n{ex.Message}\n\n";
                 ex = ex.InnerException;
             }
             while (ex != null);
 
-            File.WriteAllText($"{exePath}/errorlog.txt", errorMessage);
+            File.AppendAllText(_exceptionFile, errorMessage + "\n\n");
+            File.AppendAllText(_debugFile, debugMessage + "\n\n");
+        }
 
-            throw e;
+        public static void LogException(Exception e)
+        {
+            WriteException(e);
+
+            if (!ContinueOnException)
+            {
+                throw e;
+            }
         }
 
         public void LoadData()
@@ -78,7 +96,7 @@ namespace D2TxtImporter.lib
             }
             catch (Exception e)
             {
-                HandleException(e);
+                WriteException(e);
             }
         }
 
@@ -93,7 +111,7 @@ namespace D2TxtImporter.lib
             }
             catch (Exception e)
             {
-                HandleException(e);
+                WriteException(e);
             }
         }
 
@@ -107,7 +125,7 @@ namespace D2TxtImporter.lib
             }
             catch (Exception e)
             {
-                HandleException(e);
+                WriteException(e);
             }
         }
 

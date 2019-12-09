@@ -39,7 +39,7 @@ namespace D2TxtImporter.lib.Model
                 var reqLevel = Utility.ToNullableInt(row["reqlevel"]);
                 if (!reqLevel.HasValue || reqLevel.Value < 1)
                 {
-                    throw new Exception($"Invalid required level for skill '{row["reqlevel"]}' in Skills.txt, should be an integer value 1 or above");
+                    Importer.LogException(new Exception($"Invalid required level for skill '{row["reqlevel"]}' in Skills.txt, should be an integer value 1 or above"));
                 }
 
                 var skill = new Skill

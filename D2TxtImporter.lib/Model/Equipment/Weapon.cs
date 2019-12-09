@@ -34,7 +34,7 @@ namespace D2TxtImporter.lib.Model
                     }
                     catch (Exception)
                     {
-                        throw new Exception($"Could not get min or max damage for weapon: '{name}' in Weapons.txt");
+                        Importer.LogException(new Exception($"Could not get min or max damage for weapon: '{name}' in Weapons.txt"));
                     }
                 }
                 else if (isOneOrTwoHanded)
@@ -45,7 +45,7 @@ namespace D2TxtImporter.lib.Model
                     }
                     catch (Exception)
                     {
-                        throw new Exception($"Could not get min or max one handed damage for weapon: '{name}' in Weapons.txt");
+                        Importer.LogException(new Exception($"Could not get min or max one handed damage for weapon: '{name}' in Weapons.txt"));
                     }
                 }
 
@@ -57,7 +57,7 @@ namespace D2TxtImporter.lib.Model
                     }
                     catch (Exception)
                     {
-                        throw new Exception($"Could not get min or max two handed damage for weapon: '{name}' in Weapons.txt");
+                        Importer.LogException(new Exception($"Could not get min or max two handed damage for weapon: '{name}' in Weapons.txt"));
                     }
                 }
 
@@ -69,19 +69,19 @@ namespace D2TxtImporter.lib.Model
                     }
                     catch (Exception)
                     {
-                        throw new Exception($"Could not get min or max thrown damage for weapon: '{name}' in Weapons.txt");
+                        Importer.LogException(new Exception($"Could not get min or max thrown damage for weapon: '{name}' in Weapons.txt"));
                     }
                 }
 
                 var itemLevel = Utility.ToNullableInt(row["level"]);
                 if (!itemLevel.HasValue)
                 {
-                    throw new Exception($"Could not find item level for weapon '{name}' in Weapons.txt");
+                    Importer.LogException(new Exception($"Could not find item level for weapon '{name}' in Weapons.txt"));
                 }
 
                 if (!ItemType.ItemTypes.ContainsKey(row["type"]))
                 {
-                    throw new Exception($"Could not find type '{row["type"]}' in ItemTypes.txt for weapon '{name}' in Weapons.txt");
+                    Importer.LogException(new Exception($"Could not find type '{row["type"]}' in ItemTypes.txt for weapon '{name}' in Weapons.txt"));
                 }
 
                 var weapon = new Weapon

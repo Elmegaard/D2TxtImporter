@@ -60,7 +60,7 @@ namespace D2TxtImporter.lib.Model
                     var numInputs = Utility.ToNullableInt(row["numinputs"]);
                     if (!numInputs.HasValue)
                     {
-                        throw new Exception($"Cube recipe '{descr}' does not have a numinputs");
+                        Importer.LogException(new Exception($"Cube recipe '{descr}' does not have a numinputs"));
                     }
 
                     var inputArray = new List<string>();
