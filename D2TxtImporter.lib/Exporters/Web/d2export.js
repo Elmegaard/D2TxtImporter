@@ -423,6 +423,7 @@ function GenerateSearchBarUniques() {
     searchBar.css("display", "flex");
 
     var typeDropdown = $("#search-unique-type");
+    typeDropdown.html("<option disabled selected>Item Type</option>");
     for (var i = 0; i < UniqueSearchItems.types.length; i++) {
         var type = UniqueSearchItems.types[i];
         var typeOption = $("<option>");
@@ -432,6 +433,7 @@ function GenerateSearchBarUniques() {
     };
 
     var equipmentNameDropdown = $("#search-unique-equipment-name");
+    equipmentNameDropdown.html("<option disabled selected>Equipment Name</option>");
     for (var i = 0; i < UniqueSearchItems.equipmentTypes.length; i++) {
         var type = UniqueSearchItems.equipmentTypes[i];
         var typeOption = $("<option>");
@@ -447,6 +449,7 @@ function GenerateSearchBarRunewords() {
     searchBar.css("display", "flex");
 
     var typeDropdown = $("#search-runeword-type");
+    typeDropdown.html("<option disabled selected>Item Type</option>");
     for (var i = 0; i < RuneWordsSearchItems.types.length; i++) {
         var type = RuneWordsSearchItems.types[i];
         var typeOption = $("<option>");
@@ -511,7 +514,7 @@ GetRunewords();
 GetCubeRecipes();
 GetSets();
 
-function Search() {
+function Search(forceSearch = false) {
     AddMissingArrayOptions();
     var text = $("#searchField")[0].value;
     var activeField = $(".nav-link.active")[0].id;
@@ -665,7 +668,7 @@ function Search() {
         change = true;
     }
 
-    if (change) {
+    if (change || forceSearch) {
         RenderActive();
     }
 }
@@ -744,25 +747,25 @@ $('document').ready(function () {
     $("#nav-uniques").click(function () {
         $("#searchField")[0].value = "";
         GenerateSearchBarUniques();
-        RenderActive();
+        Search(true);
     });
 
     $("#nav-runewords").click(function () {
         $("#searchField")[0].value = "";
         GenerateSearchBarRunewords();
-        RenderActive();
+        Search(true);
     });
 
     $("#nav-cuberecipes").click(function () {
         $("#searchField")[0].value = "";
         GenerateSearchBarCubeRecipes();
-        RenderActive();
+        Search(true);
     });
 
     $("#nav-sets").click(function () {
         $("#searchField")[0].value = "";
         GenerateSearchBarSets();
-        RenderActive();
+        Search(true);
     });
 
     UpdateOnSearchChange();
