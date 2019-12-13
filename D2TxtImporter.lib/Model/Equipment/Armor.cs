@@ -74,7 +74,6 @@ namespace D2TxtImporter.lib.Model
 
                 var armor = new Armor
                 {
-                    Name = name,
                     Code = row["code"],
                     MinAc = minAc.Value,
                     MaxAc = maxAc.Value,

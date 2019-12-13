@@ -86,7 +86,6 @@ namespace D2TxtImporter.lib.Model
 
                 var weapon = new Weapon
                 {
-                    Name = name,
                     DamageTypes = damageTypes,
                     Code = row["code"],
                     EquipmentType = EquipmentType.Weapon,

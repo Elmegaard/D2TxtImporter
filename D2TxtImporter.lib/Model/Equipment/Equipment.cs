@@ -6,7 +6,7 @@ namespace D2TxtImporter.lib.Model
     public class Equipment
     {
         public EquipmentType EquipmentType { get; set; }
-        public string Name { get; set; }
+        public string Name { get { return Table.GetValue(Code); } }
         [JsonIgnore]
         public string Code { get; set; }
         public int RequiredStrength { get; set; }

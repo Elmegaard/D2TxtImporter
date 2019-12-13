@@ -66,7 +66,6 @@ namespace D2TxtImporter.lib.Model
                     {
                         Code = misc.Code,
                         EquipmentType = EquipmentType.Jewelery,
-                        Name = misc.Name,
                         Type = misc.Type
                     };
                 }

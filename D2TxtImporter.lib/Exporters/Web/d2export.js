@@ -28,7 +28,7 @@ function GetUniqueItemDiv(el, itemType) {
 
     // Type
     var $spanType = $("<span>");
-    $spanType.text(el.Type);
+    $spanType.text(el.Equipment.Name);
     if (itemType === "unique") {
         $spanType.addClass("unique-text");
     } else if (itemType === "set") {
@@ -357,16 +357,26 @@ var RuneWordsSearchItems = {};
 
 function GetUniqueSearch() {
     var types = [];
+    var equipmentTypes = [];
     for (var i = 0; i < AllUniques.length; i++) {
         var el = AllUniques[i];
+        // Types
         if (!ArrayContainsString(types, el.Equipment.Type.Name)) {
             types.push(el.Equipment.Type.Name);
+        }
+
+        // Equipment Types
+        if (!ArrayContainsString(types, el.Equipment.Name)) {
+            equipmentTypes.push(el.Equipment.Name);
         }
     };
     types.sort();
     types.unshift("Any");
 
-    UniqueSearchItems = { "types": types };
+    equipmentTypes.sort();
+    equipmentTypes.unshift("Any");
+
+    UniqueSearchItems = { "types": types, "equipmentTypes": equipmentTypes };
 }
 
 function GetRunewordsSearch() {
@@ -419,6 +429,15 @@ function GenerateSearchBarUniques() {
         typeOption.text(type);
         typeOption.val(type);
         typeDropdown.append(typeOption);
+    };
+
+    var equipmentNameDropdown = $("#search-unique-equipment-name");
+    for (var i = 0; i < UniqueSearchItems.equipmentTypes.length; i++) {
+        var type = UniqueSearchItems.equipmentTypes[i];
+        var typeOption = $("<option>");
+        typeOption.text(type);
+        typeOption.val(type);
+        equipmentNameDropdown.append(typeOption);
     };
 }
 
@@ -502,9 +521,10 @@ function Search() {
     if (activeField === "nav-uniques") {
         var searchedUniques = [];
         var typeSearch = $("#search-unique-type").val();
+        var equipmentNameSearch = $("#search-unique-equipment-name").val();
         for (var i = 0; i < AllUniques.length; i++) {
             var el = AllUniques[i];
-            if (typeSearch === null || typeSearch.toLowerCase() === "any" || el.Equipment.Type.Name === typeSearch) {
+            if ((typeSearch === null || typeSearch.toLowerCase() === "any" || el.Equipment.Type.Name === typeSearch) && (equipmentNameSearch === null || equipmentNameSearch.toLowerCase() === "any" || el.Equipment.Name === equipmentNameSearch)) {
                 if (text.length > 1) {
                     if (el.Name.toLowerCase().indexOf(text.toLowerCase()) > -1) {
                         if (!ArrayContainsName(searchedUniques, el.Name)) {
