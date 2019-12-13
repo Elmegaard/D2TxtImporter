@@ -7,15 +7,11 @@ using System.Threading.Tasks;
 
 namespace D2TxtImporter.lib.Model
 {
-    public class Gem
+    public class Gem : Item
     {
-        public string Name { get { return Index; } }
-        [JsonIgnore]
-        public string Index { get; set; }
+        public new string Name { get { return Index; } }
         [JsonIgnore]
         public string Letter { get; set; }
-        [JsonIgnore]
-        public string Code { get; set; }
         [JsonIgnore]
         public int NumMods { get; set; }
         [JsonIgnore]
@@ -39,7 +35,7 @@ namespace D2TxtImporter.lib.Model
                 var numMods = Utility.ToNullableInt(row["nummods"]);
                 if (!numMods.HasValue)
                 {
-                    Importer.LogException(new Exception($"Invalid nummods for '{row["name"]}' in Gems.txt"));
+                    ExceptionHandler.LogException(new Exception($"Invalid nummods for '{row["name"]}' in Gems.txt"));
                 }
 
                 var gem = new Gem
@@ -64,7 +60,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get weapon properties for gem '{gem.Index}' in Gems.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get weapon properties for gem '{gem.Index}' in Gems.txt", e));
                 }
 
                 // Add the properties
@@ -81,7 +77,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get helm properties for gem '{gem.Index}' in Gems.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get helm properties for gem '{gem.Index}' in Gems.txt", e));
                 }
 
 
@@ -99,7 +95,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get shield properties for gem '{gem.Index}' in Gems.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get shield properties for gem '{gem.Index}' in Gems.txt", e));
                 }
 
                 Gems[gem.Index] = gem;

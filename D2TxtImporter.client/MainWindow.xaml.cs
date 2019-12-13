@@ -83,7 +83,7 @@ namespace D2TxtImporter.client
                 // Temporary Export, should be moved to its own button at some point
                 _mainViewModel.Importer.Export();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 

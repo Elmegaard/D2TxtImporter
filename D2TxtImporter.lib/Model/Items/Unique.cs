@@ -28,13 +28,13 @@ namespace D2TxtImporter.lib.Model
                 var itemLevel = Utility.ToNullableInt(row["lvl"]);
                 if (!itemLevel.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find item level for '{name}' in UniqueItems.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find item level for '{name}' in UniqueItems.txt"));
                 }
 
                 var requiredLevel = Utility.ToNullableInt(row["lvl req"]);
                 if (!requiredLevel.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find required level for '{name}' in UniqueItems.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find required level for '{name}' in UniqueItems.txt"));
                 }
 
                 var code = row["code"];
@@ -72,7 +72,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 else
                 {
-                    Importer.LogException(new Exception($"Could not find code '{code}' in Weapons.txt, Armor.txt, or Misc.txt for set item '{unique.Name}' in UniqueItems.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find code '{code}' in Weapons.txt, Armor.txt, or Misc.txt for set item '{unique.Name}' in UniqueItems.txt"));
                 }
 
                 unique.Equipment = eq;
@@ -92,7 +92,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get properties for unique '{unique.Name}' in UniqueItems.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get properties for unique '{unique.Name}' in UniqueItems.txt", e));
                 }
 
                 AddDamageArmorString(unique);

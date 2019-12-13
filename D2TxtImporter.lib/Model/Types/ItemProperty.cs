@@ -8,6 +8,9 @@ namespace D2TxtImporter.lib.Model
     public class ItemProperty
     {
         [JsonIgnore]
+        public static ItemProperty CurrentItemProperty { get; set; }
+
+        [JsonIgnore]
         public EffectProperty Property { get; set; }
         [JsonIgnore]
         public string Parameter { get; set; }
@@ -26,21 +29,23 @@ namespace D2TxtImporter.lib.Model
         [JsonIgnore]
         public string Suffix { get; set; }
 
-
         public ItemProperty(string property, string parameter, int? min, int? max, int index, int itemLevel = 0, string suffix = "")
         {
-            if (!EffectProperty.EffectProperties.ContainsKey(property.ToLower()))
-            {
-                throw new Exception($"Could not find property '{property.ToLower()}' parameter '{parameter}' min '{min}' max '{max}' index '{index}' itemlvl '{itemLevel}' in Properties.txt");
-            }
+            CurrentItemProperty = this;
 
-            Property = EffectProperty.EffectProperties[property.ToLower()];
             Parameter = parameter;
             Min = min;
             Max = max;
             Index = index;
             ItemLevel = ItemLevel;
             Suffix = suffix;
+
+            if (!EffectProperty.EffectProperties.ContainsKey(property.ToLower()))
+            {
+                throw ItemPropertyException.Create($"Could not find property '{property.ToLower()}' parameter '{parameter}' min '{min}' max '{max}' index '{index}' itemlvl '{itemLevel}' in Properties.txt");
+            }
+
+            Property = EffectProperty.EffectProperties[property.ToLower()];
 
             var stat = Property.Stat;
 
@@ -94,7 +99,7 @@ namespace D2TxtImporter.lib.Model
 
             if (!ItemStatCost.ItemStatCosts.ContainsKey(stat))
             {
-                throw new Exception($"Could not find stat '{stat}' in ItemStatCost.txt");
+                throw ItemPropertyException.Create($"Could not find stat '{stat}' in ItemStatCost.txt");
             }
 
             ItemStatCost = ItemStatCost.ItemStatCosts[stat];
@@ -105,12 +110,18 @@ namespace D2TxtImporter.lib.Model
             }
             catch (Exception e)
             {
-                throw new Exception($"Could not generate properties for property '{property}' with parameter '{parameter}' min '{min}' max '{max}' index '{index}' itemlvl '{itemLevel}'", e);
+                if (e as ItemStatCostException == null)
+                {
+                    throw ItemPropertyException.Create($"Could not generate properties for property '{property}' with parameter '{parameter}' min '{min}' max '{max}' index '{index}' itemlvl '{itemLevel}'", e);
+                }
+
+                throw e;
             }
         }
 
         public ItemProperty(ItemProperty itemProperty)
         {
+            CurrentItemProperty = this;
             Property = itemProperty.Property;
             Parameter = itemProperty.Parameter;
             Min = itemProperty.Min;

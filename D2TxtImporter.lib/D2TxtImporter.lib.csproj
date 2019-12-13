@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\ExceptionHandler.cs" />
     <Compile Include="Exporters\JsonExporter.cs" />
     <Compile Include="Exporters\WebExporter.cs" />
     <Compile Include="Importer.cs" />

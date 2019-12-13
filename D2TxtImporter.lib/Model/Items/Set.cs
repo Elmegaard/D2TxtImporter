@@ -32,7 +32,7 @@ namespace D2TxtImporter.lib.Model
                 var level = Utility.ToNullableInt(row["level"]);
                 if (!level.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not get level of set {set.Name} from Sets.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not get level of set {set.Name} from Sets.txt"));
                 }
 
                 set.Level = level.Value;
@@ -52,7 +52,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get properties for set '{set.Name}' in Sets.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get properties for set '{set.Name}' in Sets.txt", e));
                 }
 
                 propList = new List<PropertyInfo>();
@@ -69,7 +69,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get properties for set '{set.Name}' in Sets.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get properties for set '{set.Name}' in Sets.txt", e));
                 }
 
                 set.SetItems = SetItem.SetItems.Where(x => x.Set == set.Index).ToList();

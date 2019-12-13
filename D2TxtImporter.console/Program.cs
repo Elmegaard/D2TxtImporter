@@ -15,7 +15,7 @@ namespace D2TxtImporter_console
                     var importer = new D2TxtImporter.lib.Importer(o.ExcelPath, o.TablePath, o.OutputPath);
 
                     D2TxtImporter.lib.Model.CubeRecipe.UseDescription = o.CubeRecipeDescription;
-                    D2TxtImporter.lib.Importer.ContinueOnException = o.ContinueOnException;
+                    D2TxtImporter.lib.ExceptionHandler.ContinueOnException = o.ContinueOnException;
 
                     importer.LoadData();
                     importer.ImportModel();

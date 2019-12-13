@@ -105,7 +105,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get properties for runeword '{runeword.Name}' in Runes.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get properties for runeword '{runeword.Name}' in Runes.txt", e));
                 }
 
                 // Add rune properties
@@ -113,7 +113,7 @@ namespace D2TxtImporter.lib.Model
                 {
                     if (!Gem.Gems.ContainsKey(rune.Name))
                     {
-                        Importer.LogException(new Exception($"Could not find rune '{rune.Name}' in Gems.txt"));
+                        ExceptionHandler.LogException(new Exception($"Could not find rune '{rune.Name}' in Gems.txt"));
                     }
 
                     var runeGem = Gem.Gems[rune.Name];

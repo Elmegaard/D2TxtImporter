@@ -320,7 +320,7 @@ namespace D2TxtImporter.lib.Model
                             {
                                 if (!CharStat.CharStats.ContainsKey(parameter))
                                 {
-                                    throw new Exception($"Could not find character class '{parameter}'\nNote: if you have made a custom version of 'randclassskill' to support different amount of skills change them to 'randclassskill<d>' for example 'randclassskill5' is supported.");
+                                    throw ItemStatCostException.Create($"Could not find character class '{parameter}'\nNote: if you have made a custom version of 'randclassskill' to support different amount of skills change them to 'randclassskill<d>' for example 'randclassskill5' is supported.");
                                 }
                                 classReplace = CharStat.CharStats[parameter].Class;
                             }
@@ -330,12 +330,12 @@ namespace D2TxtImporter.lib.Model
                             var par = Utility.ToNullableInt(parameter);
                             if (!par.HasValue)
                             {
-                                throw new Exception($"Could not convert parameter '{parameter}' to a valid integer");
+                                throw ItemStatCostException.Create($"Could not convert parameter '{parameter}' to a valid integer");
                             }
 
                             if (!CharStat.SkillTabs.ContainsKey(par.Value))
                             {
-                                throw new Exception($"Could not find skill tab with id {par.Value}");
+                                throw ItemStatCostException.Create($"Could not find skill tab with id {par.Value}");
                             }
 
                             var skillTab = CharStat.SkillTabs[par.Value];
@@ -344,7 +344,7 @@ namespace D2TxtImporter.lib.Model
 
                             if (!Table.Tables.ContainsKey(skillTab))
                             {
-                                throw new Exception($"Could not find translation key '{skillTab}' in any .tbl file");
+                                throw ItemStatCostException.Create($"Could not find translation key '{skillTab}' in any .tbl file");
                             }
 
                             lstValue = Table.Tables[skillTab];
@@ -377,7 +377,7 @@ namespace D2TxtImporter.lib.Model
                         case 23:
                             if (!MonStat.MonStats.ContainsKey(parameter))
                             {
-                                throw new Exception($"Could not find monster with id '{parameter}' in MonStats.txt");
+                                throw ItemStatCostException.Create($"Could not find monster with id '{parameter}' in MonStats.txt");
                             }
                             valueString = $"{valueString}% {lstValue} {MonStat.MonStats[parameter].NameStr}";
                             DescriptionValue = 3;
@@ -393,7 +393,7 @@ namespace D2TxtImporter.lib.Model
                                 // Add requirement if one is there
                                 if (!CharStat.CharStats.ContainsKey(Skill.GetSkill(parameter).CharClass))
                                 {
-                                    throw new Exception($"Could not find character skill tab '{Skill.GetSkill(parameter).CharClass}' property");
+                                    throw ItemStatCostException.Create($"Could not find character skill tab '{Skill.GetSkill(parameter).CharClass}' property");
                                 }
                                 reqString = $" ({CharStat.CharStats[Skill.GetSkill(parameter).CharClass].Class} Only)";
                             }
@@ -454,7 +454,7 @@ namespace D2TxtImporter.lib.Model
             var para = Utility.ToNullableInt(parameter);
             if (!para.HasValue)
             {
-                throw new Exception($"Could not calculate per level, as parameter '{parameter}' is not a valid integer");
+                throw ItemStatCostException.Create($"Could not calculate per level, as parameter '{parameter}' is not a valid integer");
             }
 
             var val = para.Value / 8d;

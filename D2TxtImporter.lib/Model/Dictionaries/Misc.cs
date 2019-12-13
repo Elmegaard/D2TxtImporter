@@ -42,19 +42,19 @@ namespace D2TxtImporter.lib.Model
 
                 if (!ItemType.ItemTypes.ContainsKey(row["type"]))
                 {
-                    Importer.LogException(new Exception($"Could not find code '{row["type"]}' in ItemTypes.txt for type field in Misc.txt item {name}"));
+                    ExceptionHandler.LogException(new Exception($"Could not find code '{row["type"]}' in ItemTypes.txt for type field in Misc.txt item {name}"));
                 }
 
                 var itemLevel = Utility.ToNullableInt(row["level"]);
                 if (!itemLevel.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find item level for '{name}' in Misc.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find item level for '{name}' in Misc.txt"));
                 }
 
                 var requiredLevel = Utility.ToNullableInt(row["levelreq"]);
                 if (!requiredLevel.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find required level for '{name}' in Misc.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find required level for '{name}' in Misc.txt"));
                 }
 
                 var misc = new Misc

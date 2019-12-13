@@ -66,11 +66,11 @@ namespace D2TxtImporter.client
         {
             get
             {
-                return lib.Importer.ContinueOnException;
+                return lib.ExceptionHandler.ContinueOnException;
             }
             set
             {
-                lib.Importer.ContinueOnException = value;
+                lib.ExceptionHandler.ContinueOnException = value;
             }
         }
 

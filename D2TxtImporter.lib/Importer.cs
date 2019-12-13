@@ -16,26 +16,10 @@ namespace D2TxtImporter.lib
         public List<Model.Runeword> Runewords { get; set; }
         public List<Model.CubeRecipe> CubeRecipes { get; set; }
         public List<Model.Set> Sets { get; set; }
-        public static bool ContinueOnException { get; set; }
-
-        private readonly static string _exceptionFile = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}/errorlog.txt";
-        private readonly static string _debugFile = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}/debuglog.txt";
-
-        private static List<Exception> _exceptionsWritten { get; set; }
 
         public Importer(string excelPath, string tablePath, string outputDir)
         {
-            _exceptionsWritten = new List<Exception>();
-
-            // Empty output files
-            if (File.Exists(_exceptionFile))
-            {
-                File.Delete(_exceptionFile);
-            }
-            if (File.Exists(_debugFile))
-            {
-                File.Delete(_debugFile);
-            }
+            ExceptionHandler.Initialize();
 
             if (!Directory.Exists(outputDir))
             {
@@ -57,49 +41,7 @@ namespace D2TxtImporter.lib
             _tablePath = tablePath.Trim('/', '\\');
         }
 
-        private static void WriteException(Exception e)
-        {
-            if (_exceptionsWritten.Contains(e))
-            {
-                if (!ContinueOnException)
-                {
-                    throw e;
-                }
 
-                return;
-            }
-            _exceptionsWritten.Add(e);
-
-            var ex = e;
-
-            var errorMessage = "";
-            var debugMessage = "";
-            do
-            {
-                errorMessage += $"Message:\n{ex.Message}\n\nStacktrace:\n{ex.StackTrace}\n\n";
-                debugMessage += $"Message:\n{ex.Message}\n\n";
-                ex = ex.InnerException;
-            }
-            while (ex != null);
-
-            File.AppendAllText(_exceptionFile, errorMessage + "\n\n");
-            File.AppendAllText(_debugFile, debugMessage + "\n\n");
-
-            if (!ContinueOnException)
-            {
-                throw e;
-            }
-        }
-
-        public static void LogException(Exception e)
-        {
-            WriteException(e);
-
-            if (!ContinueOnException)
-            {
-                throw e;
-            }
-        }
 
         public void LoadData()
         {
@@ -122,7 +64,7 @@ namespace D2TxtImporter.lib
             }
             catch (Exception e)
             {
-                WriteException(e);
+                ExceptionHandler.WriteException(e);
             }
         }
 
@@ -137,7 +79,7 @@ namespace D2TxtImporter.lib
             }
             catch (Exception e)
             {
-                WriteException(e);
+                ExceptionHandler.WriteException(e);
             }
         }
 
@@ -151,7 +93,7 @@ namespace D2TxtImporter.lib
             }
             catch (Exception e)
             {
-                WriteException(e);
+                ExceptionHandler.WriteException(e);
             }
         }
 

@@ -37,13 +37,13 @@ namespace D2TxtImporter.lib.Model
                 var itemLevel = Utility.ToNullableInt(row["lvl"]);
                 if (!itemLevel.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find item level for '{name}' in SetItems.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find item level for '{name}' in SetItems.txt"));
                 }
 
                 var requiredLevel = Utility.ToNullableInt(row["lvl req"]);
                 if (!requiredLevel.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find required level for '{name}' in SetItems.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find required level for '{name}' in SetItems.txt"));
                 }
 
                 var setItem = new SetItem
@@ -82,7 +82,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 else
                 {
-                    Importer.LogException(new Exception($"Could not find code '{setItem.Code}' in Weapons.txt, Armor.txt, or Misc.txt for set item '{setItem.Name}' in SetItems.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find code '{setItem.Code}' in Weapons.txt, Armor.txt, or Misc.txt for set item '{setItem.Name}' in SetItems.txt"));
                 }
 
                 setItem.Equipment = eq;
@@ -102,7 +102,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get properties for item '{setItem.Name}' in SetItems.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get properties for item '{setItem.Name}' in SetItems.txt", e));
                 }
 
                 propList = new List<PropertyInfo>();
@@ -120,7 +120,7 @@ namespace D2TxtImporter.lib.Model
                 }
                 catch (Exception e)
                 {
-                    Importer.LogException(new Exception($"Could not get set properties for item '{setItem.Name}' in SetItems.txt", e));
+                    ExceptionHandler.LogException(new Exception($"Could not get set properties for item '{setItem.Name}' in SetItems.txt", e));
                 }
 
                 Unique.AddDamageArmorString(setItem);

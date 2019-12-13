@@ -36,7 +36,7 @@ namespace D2TxtImporter.lib.Model
 
                 if (!ItemType.ItemTypes.ContainsKey(row["type"]))
                 {
-                    Importer.LogException(new Exception($"Could not find type '{row["type"]}' in ItemTypes.txt for armor '{name}' in Armor.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find type '{row["type"]}' in ItemTypes.txt for armor '{name}' in Armor.txt"));
 
                 }
                 var type = ItemType.ItemTypes[row["type"]];
@@ -44,32 +44,32 @@ namespace D2TxtImporter.lib.Model
                 var minAc = Utility.ToNullableInt(row["minac"]);
                 if (!minAc.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find MinAC for armor '{name}' in Armor.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find MinAC for armor '{name}' in Armor.txt"));
                 }
 
                 var maxAc = Utility.ToNullableInt(row["minac"]);
                 if (!maxAc.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find MaxAC for armor '{name}' in Armor.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find MaxAC for armor '{name}' in Armor.txt"));
                 }
 
                 var requiredStrength = Utility.ToNullableInt(row["reqstr"]);
                 if (!requiredStrength.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find Required Strength for armor '{name}' in Armor.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find Required Strength for armor '{name}' in Armor.txt"));
                 }
 
                 var durability = Utility.ToNullableInt(row["durability"]);
                 if (!durability.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find Durability for armor '{name}' in Armor.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find Durability for armor '{name}' in Armor.txt"));
                 }
 
 
                 var itemLevel = Utility.ToNullableInt(row["level"]);
                 if (!durability.HasValue)
                 {
-                    Importer.LogException(new Exception($"Could not find Item Level for armor '{name}' in Armor.txt"));
+                    ExceptionHandler.LogException(new Exception($"Could not find Item Level for armor '{name}' in Armor.txt"));
                 }
 
                 var armor = new Armor

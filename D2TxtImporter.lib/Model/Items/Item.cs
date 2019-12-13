@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace D2TxtImporter.lib.Model
 {
     public class Item
     {
+        [JsonIgnore]
+        public static Item CurrentItem { get; set; }
+
         public string Name
         {
             get
@@ -28,6 +32,11 @@ namespace D2TxtImporter.lib.Model
         public List<ItemProperty> Properties { get; set; }
         public bool DamageArmorEnhanced { get; set; }
         public Equipment Equipment { get; set; }
+
+        public Item()
+        {
+            CurrentItem = this;
+        }
 
         public override string ToString()
         {
