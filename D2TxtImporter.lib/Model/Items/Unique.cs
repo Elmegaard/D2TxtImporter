@@ -50,11 +50,11 @@ namespace D2TxtImporter.lib.Model
 
                 if (Armor.Armors.ContainsKey(code))
                 {
-                    eq = Armor.Armors[code];
+                    eq = (Armor)Armor.Armors[code].Clone();
                 }
                 else if (Weapon.Weapons.ContainsKey(code))
                 {
-                    eq = Weapon.Weapons[code];
+                    eq = (Weapon)Weapon.Weapons[code].Clone();
                 }
                 else if (Misc.MiscItems.ContainsKey(code))
                 {

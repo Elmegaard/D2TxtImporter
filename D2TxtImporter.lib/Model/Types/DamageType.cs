@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D2TxtImporter.lib.Model
 {
-    public class DamageType
+    public class DamageType : ICloneable
     {
         public DamageTypeEnum Type { get; set; }
 
@@ -17,6 +13,17 @@ namespace D2TxtImporter.lib.Model
         [JsonIgnore]
         public int MaxDamage { get; set; }
         public string DamageString { get; set; }
+
+        public object Clone()
+        {
+            return new DamageType
+            {
+                DamageString = this.DamageString,
+                Type = this.Type,
+                MaxDamage = this.MaxDamage,
+                MinDamage = this.MinDamage
+            };
+        }
 
         public override string ToString()
         {

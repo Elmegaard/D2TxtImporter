@@ -100,6 +100,24 @@ namespace D2TxtImporter.lib.Model
             }
         }
 
+        public new object Clone()
+        {
+            var dmgTypes = new List<DamageType>();
+            this.DamageTypes.ForEach(x => dmgTypes.Add((DamageType)x.Clone()));
+
+            return new Weapon
+            {
+                EquipmentType = this.EquipmentType,
+                Code = this.Code,
+                RequiredStrength = this.RequiredStrength,
+                RequiredDexterity = this.RequiredDexterity,
+                Durability = this.Durability,
+                ItemLevel = this.ItemLevel,
+                Type = this.Type,
+                DamageTypes = dmgTypes
+            };
+        }
+
         public override string ToString()
         {
             return Name;

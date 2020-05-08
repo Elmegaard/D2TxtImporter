@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D2TxtImporter.lib.Model
 {
@@ -88,6 +85,27 @@ namespace D2TxtImporter.lib.Model
 
                 Armors[armor.Code] = armor;
             }
+        }
+
+        public new object Clone()
+        {
+            return new Armor
+            {
+                EquipmentType = this.EquipmentType,
+                Code = this.Code,
+                RequiredStrength = this.RequiredStrength,
+                RequiredDexterity = this.RequiredDexterity,
+                Durability = this.Durability,
+                ItemLevel = this.ItemLevel,
+                Type = this.Type,
+                MinAc = this.MinAc,
+                MaxAc = this.MaxAc,
+                MinDamage = this.MinDamage,
+                MaxDamage = this.MaxDamage,
+                DamageString = this.DamageString,
+                DamageStringPrefix = this.DamageStringPrefix,
+                ArmorString = this.ArmorString
+            };
         }
 
         public override string ToString()
