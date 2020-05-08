@@ -29,6 +29,8 @@ namespace D2TxtImporter.lib.Model
         [JsonIgnore]
         public string Suffix { get; set; }
 
+        private static List<string> _ignoredProperties = new List<string> { "state", "bloody" };
+
         public ItemProperty(string property, string parameter, int? min, int? max, int index, int itemLevel = 0, string suffix = "")
         {
             CurrentItemProperty = this;
@@ -140,7 +142,7 @@ namespace D2TxtImporter.lib.Model
                 if (!string.IsNullOrEmpty(property.Property) && !property.Property.StartsWith("*"))
                 {
                     var prop = new ItemProperty(property.Property, property.Parameter, property.Min, property.Max, properties.IndexOf(property), itemLevel);
-                    if (prop.Property.Code.ToLower() != "state") // Don't add states (auras)
+                    if (!_ignoredProperties.Contains(prop.Property.Code.ToLower())) // Don't add hidden stats
                     {
                         result.Add(prop);
                     }
