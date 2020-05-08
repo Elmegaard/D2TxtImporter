@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D2TxtImporter.lib.Model
 {
@@ -104,6 +102,16 @@ namespace D2TxtImporter.lib.Model
 
         public static void AddDamageArmorString(Item unique)
         {
+            if (unique == null)
+            {
+                throw new Exception("The unique item does not exist, something is wrong with one of your unique items.");
+            }
+
+            if (unique.Equipment == null)
+            {
+                throw new Exception($"Could not find equipment for item '{unique.Name}'");
+            }
+
             if (unique.Equipment.EquipmentType == EquipmentType.Weapon)
             {
                 var weapon = unique.Equipment as Weapon;
