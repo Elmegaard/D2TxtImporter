@@ -30,7 +30,7 @@ namespace D2TxtImporter.lib.Model
                 {
                     try
                     {
-                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.Normal, MinDamage = int.Parse(row["mindam"]), MaxDamage = int.Parse(row["mindam"]) });
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.Normal, MinDamage = int.Parse(row["mindam"]), MaxDamage = int.Parse(row["maxdam"]) });
                     }
                     catch (Exception)
                     {
@@ -41,7 +41,7 @@ namespace D2TxtImporter.lib.Model
                 {
                     try
                     {
-                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.OneHanded, MinDamage = int.Parse(row["mindam"]), MaxDamage = int.Parse(row["mindam"]) });
+                        damageTypes.Add(new DamageType { Type = DamageTypeEnum.OneHanded, MinDamage = int.Parse(row["mindam"]), MaxDamage = int.Parse(row["maxdam"]) });
                     }
                     catch (Exception)
                     {
