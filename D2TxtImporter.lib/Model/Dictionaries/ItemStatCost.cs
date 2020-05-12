@@ -365,6 +365,12 @@ namespace D2TxtImporter.lib.Model
                             valueString = lstValue.Replace("%d%", value.Value.ToString())
                                                      .Replace("%d", valueString)
                                                      .Replace("%s", skill.SkillDesc);
+
+                            if (string.IsNullOrEmpty(skill.SkillDesc))
+                            {
+                                throw ItemStatCostException.Create($"Skill for property has missing 'skilldesc' in Skills.txt: name: '{skill.Name}', id: '{skill.Id}'");
+                            }
+
                             break;
                         case 16:
                             valueString = lstValue.Replace("%d", valueString)
