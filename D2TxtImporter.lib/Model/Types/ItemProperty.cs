@@ -12,24 +12,34 @@ namespace D2TxtImporter.lib.Model
 
         [JsonIgnore]
         public EffectProperty Property { get; set; }
+
         [JsonIgnore]
         public string Parameter { get; set; }
+
         [JsonIgnore]
         public int? Min { get; set; }
+
         [JsonIgnore]
         public int? Max { get; set; }
+
         [JsonIgnore]
         public ItemStatCost ItemStatCost { get; set; }
 
         private string _propertyString;
         public string PropertyString { get => _propertyString + Suffix; set { _propertyString = value; } }
         public int Index { get; set; }
+
         [JsonIgnore]
         public int ItemLevel { get; set; }
+
         [JsonIgnore]
         public string Suffix { get; set; }
 
+        [JsonIgnore]
         private static List<string> _ignoredProperties = new List<string> { "state", "bloody" };
+
+        [JsonIgnore]
+        public string CompareKey => ItemStatCost.Stat + Parameter;
 
         public ItemProperty(string property, string parameter, int? min, int? max, int index, int itemLevel = 0, string suffix = "")
         {
@@ -224,7 +234,9 @@ namespace D2TxtImporter.lib.Model
 
         public static void CleanupDublicates(List<ItemProperty> properties)
         {
-            var dupes = properties.GroupBy(x => x.ItemStatCost.Stat).Where(x => x.Skip(1).Any()).ToList();
+
+            var dupes = properties.GroupBy(x => x.CompareKey).Where(x => x.Skip(1).Any()).ToList();
+
             if (dupes.Count > 0)
             {
                 foreach (var group in dupes)
