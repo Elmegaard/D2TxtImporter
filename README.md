@@ -1,3 +1,6 @@
+# Huge Thank-You to Elmegaard For This Code. Please buy him a coffee.
+
+
 # D2TxtImporter
 This program is used to process all the .txt files of your mod and generate documentation for it.
 
