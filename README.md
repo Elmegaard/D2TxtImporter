@@ -1,3 +1,20 @@
+# Huge Thank-You to Elmegaard For This Code. Please buy him a coffee.
+1. You need to extract two files:
+  - C:\Program Files (x86)\Diablo II\ProjectD2\pd2data.mpq (data/global/excel/*) -> some_path\pd2-text-files
+  - C:\Program Files (x86)\Diablo II\ProjectD2\pd2data.mpq (data/local/LNG/ENG/*) -> some_path\pd2-table-files
+
+Here is an example run of the console variant:
+
+```
+./D2TxtImporter.console.exe \
+  --excelPath "C:\Users\camer\Desktop\pd2-text-files" \
+  --tablePath "C:\Users\camer\Desktop\pd2-table-files" \
+  --outputPath "C:\Users\camer\Desktop\pd2-json-files" \
+  --continueOnException \
+  --cubeRecipeDescription
+```
+
+
 # D2TxtImporter
 This program is used to process all the .txt files of your mod and generate documentation for it.
 
